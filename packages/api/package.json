@@ -1,0 +1,16 @@
+{
+  "name": "@cofe/api",
+  "version": "0.1.0",
+  "type": "module",
+  "sideEffects": false,
+  "main": "index.ts",
+  "module": "index.ts",
+  "license": "MIT",
+  "author": "crossjs <liwenfu@crossjs.com>",
+  "devDependencies": {
+    "next": "^11.1.2"
+  },
+  "peerDependencies": {
+    "next": "^11.1.2"
+  }
+}

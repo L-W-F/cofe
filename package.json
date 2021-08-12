@@ -1,0 +1,40 @@
+{
+  "name": "cofe",
+  "version": "0.1.0",
+  "description": "No-Code System",
+  "keywords": [
+    "chakra-ui",
+    "jsonschema",
+    "low-code",
+    "next.js",
+    "no-code",
+    "unified"
+  ],
+  "private": true,
+  "workspaces": [
+    "applications/*",
+    "packages/*"
+  ],
+  "license": "MIT",
+  "author": "crossjs <liwenfu@crossjs.com>",
+  "repository": "git@github.com:crossjs/cofe.git",
+  "scripts": {
+    "commit": "cz",
+    "dev": "concurrently \"yarn workspace db dev\" \"yarn workspace studio dev\"",
+    "start": "concurrently \"yarn workspace db start\" \"yarn workspace page start\""
+  },
+  "devDependencies": {
+    "commitizen": "^4.2.4",
+    "concurrently": "^6.2.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^7.32.0",
+    "eslint-config-cofe": "^0.0.2",
+    "prettier": "^2.4.1",
+    "typescript": "^4.4.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

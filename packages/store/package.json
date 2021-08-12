@@ -1,0 +1,23 @@
+{
+  "name": "@cofe/store",
+  "version": "0.1.0",
+  "type": "module",
+  "sideEffects": false,
+  "main": "index.ts",
+  "module": "index.ts",
+  "license": "MIT",
+  "author": "crossjs <liwenfu@crossjs.com>",
+  "dependencies": {
+    "@cofe/utils": "^0.1.0",
+    "lodash": "^4.17.21",
+    "react": "^17.0.2",
+    "redux": "^4.1.1",
+    "shallowequal": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/asap": "^2.0.0",
+    "@types/lodash": "^4.14.173",
+    "@types/react": "^17.0.22",
+    "@types/shallowequal": "^1.1.1"
+  }
+}

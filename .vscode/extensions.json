@@ -1,0 +1,17 @@
+{
+  "recommendations": [
+    "streetsidesoftware.code-spell-checker", // Code Spell Checker
+    "editorconfig.editorconfig", // EditorConfig for VS Code
+    "bierner.emojisense", // :emojisense:
+    "donjayamanne.githistory", // Git History
+    "eamodio.gitlens", // GitLens — Git supercharged
+    "xabikos.javascriptsnippets", // JavaScript (ES6) code snippets
+    "shd101wyy.markdown-preview-enhanced", // Markdown Preview Enhanced
+    "esbenp.prettier-vscode", // Prettier - Code formatter
+    "jasonnutter.search-node-modules", // Search node_modules
+    "dbaeumer.vscode-eslint", // ESLint
+    "vscode-icons-team.vscode-icons", // vscode-icons
+    "pflannery.vscode-versionlens", // Version Lens
+    "visualstudioexptteam.vscodeintellicode" // Visual Studio IntelliCode
+  ]
+}
