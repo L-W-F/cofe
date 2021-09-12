@@ -22,10 +22,10 @@ export const Header = memo(() => {
     >
       <Logo />
       <DropMenu />
+      <UndoRedo />
       <Box flex={1} />
       <InteractionIndicator />
       <Box flex={1} />
-      <UndoRedo />
       <EditModeSwitch />
       <ColorModeSwitch />
       <Link
