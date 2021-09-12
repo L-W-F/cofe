@@ -1,12 +1,11 @@
-import React, { memo } from 'react';
-import shallowEqual from 'shallowequal';
+import React from 'react';
 import { HistoryView } from '../history/HistoryView';
 import { Pane } from '../layout/Pane';
 
-export const HistoryPanel = memo(() => {
+export const HistoryPanel = () => {
   return (
     <Pane heading="Histories">
       <HistoryView />
     </Pane>
   );
-}, shallowEqual);
+};

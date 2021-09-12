@@ -1,12 +1,11 @@
-import React, { memo } from 'react';
-import shallowEqual from 'shallowequal';
+import React from 'react';
 import { Pane } from '../layout/Pane';
 import { TreeView } from '../tree/TreeView';
 
-export const TreePanel = memo(() => {
+export const TreePanel = () => {
   return (
     <Pane heading="Tree">
       <TreeView />
     </Pane>
   );
-}, shallowEqual);
+};
