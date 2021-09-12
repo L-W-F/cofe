@@ -4,10 +4,6 @@ import { CofeIcon } from '../../icons/CofeIcon';
 
 export const Logo = () => {
   return (
-    <Icon
-      as={CofeIcon}
-      w="5"
-      h="5"
-    />
+    <Icon as={CofeIcon} w="5" h="5" />
   );
 };
