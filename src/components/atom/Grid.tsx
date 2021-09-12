@@ -20,7 +20,7 @@ export const GridAtom = ({
         isEditorMode
           ? {
               '&:before': {
-                content: '"View"',
+                content: '"Grid"',
                 color: 'gray.400',
                 height: '1rem',
               },
