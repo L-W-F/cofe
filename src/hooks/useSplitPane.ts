@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { clamp } from 'lodash';
 
 export interface UseSplitPaneOptions {
   direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse';
@@ -61,7 +62,7 @@ export const useSplitPane = (
       if (startHandleRef.current) {
         startHandleRef.current = false;
 
-        onEnd?.(latestSizeRef.current);
+        onEnd?.(clamp(latestSizeRef.current, minSize, maxSize));
       }
     };
 
@@ -72,11 +73,11 @@ export const useSplitPane = (
       document.removeEventListener('mouseup', onMouseUp, true);
       document.removeEventListener('mousemove', onMouseMove, true);
     };
-  }, [isHorizontal, isReversed, onEnd, step]);
+  }, [isHorizontal, isReversed, maxSize, minSize, onEnd, step]);
 
   return {
     paneRef: resizePaneRef,
-    size: Math.max(minSize, Math.min(maxSize, size)),
+    size: clamp(size, minSize, maxSize),
     handleProps: {
       onMouseDown: (event: React.MouseEvent) => {
         onStart?.();
