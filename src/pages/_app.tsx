@@ -1,8 +1,9 @@
 import React from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import { ChakraProvider } from '@chakra-ui/react';
 import { Store } from '../store';
-import { Theme } from '../theme';
+import { theme } from '../theme';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
@@ -14,12 +15,12 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         <link rel="icon" href="favicon.svg" />
       </Head>
       <Store initialStates={pageProps.initialStates}>
-        <Theme>
+        <ChakraProvider resetCSS theme={theme}>
           <Component
             // suppressHydrationWarning
             {...pageProps}
           />
-        </Theme>
+        </ChakraProvider>
       </Store>
     </>
   );
