@@ -85,7 +85,7 @@ const Index = (
           width={`${sp1.size}px`}
           overflow="hidden"
         >
-          <LeftPane />
+          {sp1.size ? <LeftPane /> : null}
         </Flex>
         <SplitHandle {...sp1.handleProps} />
         <Flex flex={1}>
@@ -98,7 +98,7 @@ const Index = (
             width={`${sp2.size}px`}
             overflow="hidden"
           >
-            <RightPane />
+            {sp2.size ? <RightPane /> : null}
           </Flex>
         </Flex>
       </Flex>
@@ -113,10 +113,18 @@ export const getServerSideProps = async (
 
   if (db.data === null) {
     db.data = {
-      page: { stack: [test], cursor: 0 },
-      config: {},
+      page: {
+        stack: [test],
+        cursor: 0,
+      },
+      config: {
+        leftPaneSize: 240,
+        rightPaneSize: 240,
+      },
     };
-    await db.write();
+
+    // skip await for performance
+    db.write();
   }
 
   return {
