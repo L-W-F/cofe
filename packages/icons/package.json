@@ -1,0 +1,16 @@
+{
+  "name": "@cofe/icons",
+  "version": "0.1.0",
+  "type": "module",
+  "sideEffects": false,
+  "main": "index.ts",
+  "module": "index.ts",
+  "license": "MIT",
+  "author": "crossjs <liwenfu@crossjs.com>",
+  "dependencies": {
+    "react": "^17.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.20"
+  }
+}
