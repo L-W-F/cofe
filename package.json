@@ -51,7 +51,7 @@
     "@types/js-cookie": "^2.2.7",
     "@types/json-schema": "^7.0.9",
     "@types/lodash": "^4.14.172",
-    "@types/react": "^17.0.20",
+    "@types/react": "^17.0.21",
     "@types/shallowequal": "^1.1.1",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
