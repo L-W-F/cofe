@@ -90,26 +90,23 @@ export const createStore = (middlewares: Middleware[] = []) => {
         createStates(initialStates),
         enhancer,
       );
-    } else {
-      // https://github.com/facebook/react/issues/18178#issuecomment-595846312
-      if (isInitialStatesChanged) {
-        store = createReduxStore(
-          combineReducers(_reducers),
-          createStates({
-            /**
-             * 浅合并，以避免类似情况发生：
-             *     { user: { name: 'x', permissions: { a: 1 } } }
-             *   + { user: { name: 'y', permissions: { b: 1 } } }
-             *  => { user: { name: 'y', permissions: { a: 1, b: 1 } } }
-             */
-            ...store.getState(),
-            ...initialStates,
-          }),
-          enhancer,
-        );
-      } else if (isModulesChanged) {
-        store.replaceReducer(combineReducers(_reducers));
-      }
+    } else if (isInitialStatesChanged) {
+      store = createReduxStore(
+        combineReducers(_reducers),
+        createStates({
+          /**
+           * 浅合并，以避免类似情况发生：
+           *     { user: { name: 'x', permissions: { a: 1 } } }
+           *   + { user: { name: 'y', permissions: { b: 1 } } }
+           *  => { user: { name: 'y', permissions: { a: 1, b: 1 } } }
+           */
+          ...store.getState(),
+          ...initialStates,
+        }),
+        enhancer,
+      );
+    } else if (isModulesChanged) {
+      store.replaceReducer(combineReducers(_reducers));
     }
 
     return store;
