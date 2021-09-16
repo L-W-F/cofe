@@ -11,7 +11,7 @@ export const ButtonAtom = ({
   disabled: isDisabled,
   ...props
 }: ButtonAtomProps) => {
-  const isEditorMode = useStore<boolean>('config.editMode');
+  const isEditorMode = useStore<boolean>('whoami.config.editMode');
 
   return (
     <Button

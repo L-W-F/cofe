@@ -83,29 +83,38 @@ export const createStore = (middlewares: Middleware[] = []) => {
       currentInitialStates = initialStates;
     }
 
-    // For SSG and SSR always create a new store
     if (!store || typeof window === 'undefined') {
+      /**
+       * 1. 未初始化
+       * 2. 服务端渲染
+       * 2.1 总是生成新 store，避免跨用户、跨页面数据冲突
+       */
       store = createReduxStore(
         combineReducers(_reducers),
         createStates(initialStates),
         enhancer,
       );
     } else if (isInitialStatesChanged) {
+      /**
+       * 1. 肯定是客户端渲染
+       * 2. states 浅合并，以避免类似情况发生
+       *       { user: { name: 'x', permissions: { a: 1 } } }
+       *     + { user: { name: 'y', permissions: { b: 1 } } }
+       *    => { user: { name: 'y', permissions: { a: 1, b: 1 } } }
+       */
       store = createReduxStore(
         combineReducers(_reducers),
         createStates({
-          /**
-           * 浅合并，以避免类似情况发生：
-           *     { user: { name: 'x', permissions: { a: 1 } } }
-           *   + { user: { name: 'y', permissions: { b: 1 } } }
-           *  => { user: { name: 'y', permissions: { a: 1, b: 1 } } }
-           */
           ...store.getState(),
           ...initialStates,
         }),
         enhancer,
       );
     } else if (isModulesChanged) {
+      /**
+       * 1. 肯定是客户端渲染
+       * 2. 直接替换 reducer
+       */
       store.replaceReducer(combineReducers(_reducers));
     }
 

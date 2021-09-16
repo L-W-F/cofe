@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { clamp } from 'lodash';
 
 export interface UseSplitPaneOptions {
@@ -7,8 +7,10 @@ export interface UseSplitPaneOptions {
   maxSize?: number;
   minSize?: number;
   step?: number;
-  onStart?: () => void;
-  onEnd?: (size: number) => void;
+  onInit?: (size: number, pane: HTMLDivElement) => void;
+  onStart?: (size: number, pane: HTMLDivElement) => void;
+  onResize?: (size: number, pane: HTMLDivElement) => void;
+  onEnd?: (size: number, pane: HTMLDivElement) => void;
 }
 
 export const useSplitPane = (
@@ -18,24 +20,25 @@ export const useSplitPane = (
     maxSize = Number.MAX_SAFE_INTEGER,
     minSize = 0,
     step = 0,
+    onInit,
     onStart,
+    onResize,
     onEnd,
   }: UseSplitPaneOptions = {} as UseSplitPaneOptions,
 ) => {
-  const resizePaneRef = useRef<HTMLDivElement>();
-  const startHandleRef = useRef<boolean>(false);
+  const paneRef = useRef<HTMLDivElement>();
+  const isActiveRef = useRef<boolean>(false);
   const startSizeRef = useRef<number>(initialSize);
   const startOffsetRef = useRef<number>(0);
-  const latestSizeRef = useRef<number>(initialSize);
+  const finalSizeRef = useRef<number>(initialSize);
 
-  const [size, setSize] = useState(initialSize);
   const isHorizontal = /^row/.test(direction);
   const isReversed = /reverse$/.test(direction);
 
   useEffect(() => {
     const onMouseMove = (event: MouseEvent) => {
-      if (startHandleRef.current) {
-        const paneNode = resizePaneRef.current;
+      if (isActiveRef.current) {
+        const paneNode = paneRef.current;
 
         if (paneNode) {
           let distance =
@@ -50,19 +53,22 @@ export const useSplitPane = (
             distance = Math.floor(distance / step) * step;
           }
 
-          latestSizeRef.current =
+          finalSizeRef.current =
             startSizeRef.current - (isReversed ? -distance : distance);
 
-          setSize(latestSizeRef.current);
+          onResize?.(
+            clamp(finalSizeRef.current, minSize, maxSize),
+            paneRef.current,
+          );
         }
       }
     };
 
     const onMouseUp = (event: MouseEvent) => {
-      if (startHandleRef.current) {
-        startHandleRef.current = false;
+      if (isActiveRef.current) {
+        isActiveRef.current = false;
 
-        onEnd?.(clamp(latestSizeRef.current, minSize, maxSize));
+        onEnd?.(clamp(finalSizeRef.current, minSize, maxSize), paneRef.current);
       }
     };
 
@@ -73,21 +79,24 @@ export const useSplitPane = (
       document.removeEventListener('mouseup', onMouseUp, true);
       document.removeEventListener('mousemove', onMouseMove, true);
     };
-  }, [isHorizontal, isReversed, maxSize, minSize, onEnd, step]);
+  }, [isHorizontal, isReversed, maxSize, minSize, onEnd, onResize, step]);
+
+  useEffect(() => {
+    onInit?.(startSizeRef.current, paneRef.current);
+  }, [onInit]);
 
   return {
-    paneRef: resizePaneRef,
-    size: clamp(size, minSize, maxSize),
+    paneRef,
+    // size: clamp(size, minSize, maxSize),
     handleProps: {
       onMouseDown: (event: React.MouseEvent) => {
-        onStart?.();
-
-        startHandleRef.current = true;
+        isActiveRef.current = true;
         startSizeRef.current =
-          resizePaneRef.current.getBoundingClientRect()[
+          paneRef.current.getBoundingClientRect()[
             isHorizontal ? 'width' : 'height'
           ];
         startOffsetRef.current = isHorizontal ? event.clientX : event.clientY;
+        onStart?.(startSizeRef.current, paneRef.current);
       },
     },
   };

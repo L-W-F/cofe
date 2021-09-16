@@ -1,16 +1,18 @@
 {
   "cSpell.words": [
-    "COFE",
     "Chakra",
-    "Coord",
-    "Menlo",
-    "VERCEL",
     "codefree",
+    "COFE",
+    "Coord",
+    "gssp",
+    "hocs",
+    "Menlo",
     "middlewares",
     "monospace",
     "rjsf",
     "shallowequal",
-    "unist"
+    "unist",
+    "VERCEL"
   ],
   "editor.renderWhitespace": "all",
   "eslint.format.enable": true,

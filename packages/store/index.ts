@@ -17,3 +17,15 @@ export const { Store, getState, useStore, useDispatch } = createStore(
       ]
     : [],
 );
+
+declare global {
+  interface Window {
+    store: any;
+  }
+}
+
+if (process.env.NODE_ENV === 'development') {
+  if (typeof window !== 'undefined') {
+    window.store = { Store, getState, useStore, useDispatch };
+  }
+}
