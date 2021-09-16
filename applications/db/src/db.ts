@@ -1,27 +1,114 @@
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-import { DbData } from '@cofe/types';
-import { chain } from 'lodash';
+import { Db } from '@cofe/types';
 import { JSONFile, Low, Memory } from 'lowdb';
-import { example } from './example';
+import { ValuesType } from 'utility-types';
+import { makeExample } from './example';
 
 const adapter = process.env.VERCEL
-  ? new Memory<Record<string, DbData>>()
-  : new JSONFile<Record<string, DbData>>(
+  ? new Memory<Db>()
+  : new JSONFile<Db>(
       join(dirname(fileURLToPath(import.meta.url)), '../data/db.json'),
     );
 
-export const db = new Low(adapter);
+const db = new Low<Db>(adapter);
 
-export const dbc = async () => {
+async function ensureGet<K extends keyof Db>(scope: K) {
   await db.read();
 
-  if (db.data === null) {
-    db.data = example;
+  let changed = false;
 
-    // skip await for performance
-    await db.write();
+  if (db.data === null) {
+    db.data = makeExample();
+
+    changed = true;
   }
 
-  return chain(db.data);
-};
+  if (!db.data[scope]) {
+    db.data[scope] = [];
+
+    changed = true;
+  }
+
+  if (changed) {
+    await db.write();
+  }
+}
+
+export async function get<K extends keyof Db, T = Db[K]>(
+  scope: K,
+  filter?: string | ((item: ValuesType<T>) => boolean),
+): Promise<T> {
+  await ensureGet(scope);
+
+  const data: any = db.data[scope];
+
+  return filter
+    ? data.filter(
+        typeof filter === 'string' ? (item: any) => item.id === filter : filter,
+      )
+    : data;
+}
+
+export async function getOne<K extends keyof Db, T = Db[K]>(
+  scope: K,
+  filter: string | ((item: ValuesType<T>) => boolean),
+): Promise<ValuesType<T>> {
+  await ensureGet(scope);
+
+  const data: any = db.data[scope];
+
+  return data.find(
+    typeof filter === 'string' ? (item: any) => item.id === filter : filter,
+  );
+}
+
+function ensureSet<K extends keyof Db>(scope: K) {
+  if (!db.data) {
+    db.data = {};
+  }
+
+  if (!db.data[scope]) {
+    db.data[scope] = [];
+  }
+}
+
+export async function set<K extends keyof Db, T = Db[K]>(
+  scope: K,
+  value: ValuesType<T>,
+  replace?: boolean,
+) {
+  ensureSet(scope);
+
+  const data: any = db.data[scope];
+
+  const index = data.findIndex(({ id }) => id === (value as any)?.id);
+
+  if (index === -1) {
+    data.push(value);
+  } else {
+    data[index] = replace
+      ? value
+      : {
+          ...data[index],
+          ...value,
+        };
+  }
+
+  return db.write();
+}
+
+export async function del<K extends keyof Db, T = Db[K]>(
+  scope: K,
+  filter: string | ((item: ValuesType<T>) => boolean),
+) {
+  ensureSet(scope);
+
+  const data: any = db.data[scope];
+
+  db.data[scope] = data.filter((item: any) =>
+    typeof filter === 'string' ? item.id !== filter : !filter(item),
+  );
+
+  return db.write();
+}

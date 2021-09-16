@@ -3,16 +3,17 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import { useSplitPane } from '@cofe/hooks';
 import { useDispatch } from '@cofe/store';
-import { DbData } from '@cofe/types';
-import { CanvasPane } from '../src/components/CanvasPane';
-import { Header } from '../src/components/Header';
-import { DropMenu } from '../src/components/header/DropMenu';
-import { EditModeSwitch } from '../src/components/header/EditModeSwitch';
-import { InteractionIndicator } from '../src/components/header/InteractionIndicator';
-import { UndoRedo } from '../src/components/header/UndoRedo';
-import { Container } from '../src/components/layout/Container';
-import { LeftPane } from '../src/components/LeftPane';
-import { RightPane } from '../src/components/RightPane';
+import { CofePage, CofeSnapshot } from '@cofe/types';
+import { CanvasPane } from 'components/CanvasPane';
+import { Header } from 'components/Header';
+import { DropMenu } from 'components/header/DropMenu';
+import { EditModeSwitch } from 'components/header/EditModeSwitch';
+import { InteractionIndicator } from 'components/header/InteractionIndicator';
+import { UndoRedo } from 'components/header/UndoRedo';
+import { Container } from 'components/layout/Container';
+import { LeftPane } from 'components/LeftPane';
+import { RightPane } from 'components/RightPane';
+import { get } from 'utils/io';
 
 const SplitHandle = (props: ReturnType<typeof useSplitPane>['handleProps']) => {
   const [hoverColor, activeColor] = useColorModeValue(
@@ -49,13 +50,13 @@ const SplitHandle = (props: ReturnType<typeof useSplitPane>['handleProps']) => {
   );
 };
 
-const Editor = (
+const PageEditor = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => {
   const dispatch = useDispatch();
 
   const sp1 = useSplitPane({
-    initialSize: props.initialStates.config.leftPaneSize,
+    // initialSize: props.initialStates.config.leftPaneSize,
     maxSize: 400,
     onEnd: (size) => {
       dispatch('SET_LEFT_PANE_SIZE')(size);
@@ -64,7 +65,7 @@ const Editor = (
 
   const sp2 = useSplitPane({
     direction: 'row-reverse',
-    initialSize: props.initialStates.config.rightPaneSize,
+    // initialSize: props.initialStates.config.rightPaneSize,
     maxSize: 400,
     onEnd: (size) => {
       dispatch('SET_RIGHT_PANE_SIZE')(size);
@@ -119,7 +120,7 @@ const Editor = (
 export const getServerSideProps = async (
   context: GetServerSidePropsContext<{ id: string }>,
 ) => {
-  if (!context.req.cookies.user) {
+  if (!context.req.cookies.token) {
     return {
       redirect: {
         destination: '/401',
@@ -128,28 +129,29 @@ export const getServerSideProps = async (
     };
   }
 
-  const { config, pages }: DbData = await fetch(
-    `${process.env.DB_URL}/api/store`,
-    {
-      method: 'GET',
+  const [page, stack]: [CofePage, CofeSnapshot['stack']] = await Promise.all([
+    get(`${process.env.DB_URL}/api/pages/${context.params.id}`, {
       headers: {
-        'Content-Type': 'application/json',
-        Cookie: context.req.headers.cookie,
+        Authorization: `Bearer ${context.req.cookies.token}`,
       },
-    },
-  ).then((response) => response.json());
+    }),
+    get(`${process.env.DB_URL}/api/pages/${context.params.id}/snapshots`, {
+      headers: {
+        Authorization: `Bearer ${context.req.cookies.token}`,
+      },
+    }),
+  ]);
 
   return {
     props: {
       initialStates: {
-        config,
         editor: {
-          stack: pages,
-          cursor: 0,
+          stack: [...stack, page.tree],
+          cursor: stack.length ?? 0,
         },
       },
     },
   };
 };
 
-export default Editor;
+export default PageEditor;

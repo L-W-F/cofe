@@ -1,17 +1,24 @@
 import React from 'react';
 import App, { AppContext, AppProps } from 'next/app';
 import Head from 'next/head';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, cookieStorageManager } from '@chakra-ui/react';
 import { Store } from '@cofe/store';
-import { DbData } from '@cofe/types';
-import { modules } from '../src/store';
-import { theme } from '../src/theme';
+import { CofeWhoami } from '@cofe/types';
+import { parse } from 'cookie';
+import { modules } from 'store';
+import { theme } from 'theme';
+import { get } from 'utils/io';
+
+const cmKey = 'chakra-ui-color-mode';
 
 const MyApp = ({
   Component,
   pageProps,
+  colorMode,
   initialStates,
-}: AppProps & { initialStates: any }) => {
+}: AppProps & { colorMode: string; initialStates: any }) => {
+  const colorModeManager = cookieStorageManager(`${cmKey}=${colorMode}`);
+
   return (
     <>
       <Head>
@@ -24,7 +31,11 @@ const MyApp = ({
         modules={modules}
         initialStates={{ ...initialStates, ...pageProps.initialStates }}
       >
-        <ChakraProvider resetCSS theme={theme}>
+        <ChakraProvider
+          resetCSS
+          theme={theme}
+          colorModeManager={colorModeManager}
+        >
           <Component
             // suppressHydrationWarning
             {...pageProps}
@@ -36,41 +47,37 @@ const MyApp = ({
 };
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
-  const appProps = await App.getInitialProps(appContext);
+  const { pageProps } = await App.getInitialProps(appContext);
 
   if (!appContext.ctx.req) {
     return {
-      ...appProps,
+      pageProps,
     };
   }
 
-  if (!appContext.ctx.req.headers.cookie?.match(/(^|; )user=\d+(; |$)/)) {
-    // if (!appContext.ctx.req.url.match(/^\/40(1|3|4)/)) {
-    //   appContext.ctx.res.writeHead(307, '/401');
-    // }
+  const cookies = parse(appContext.ctx.req.headers.cookie ?? '');
 
+  const colorMode = cookies[cmKey] ?? '';
+
+  if (!cookies.token) {
     return {
-      ...appProps,
+      pageProps,
+      colorMode,
     };
   }
 
-  const { config, whoami }: DbData = await fetch(
-    `${process.env.DB_URL}/api/store`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Cookie: appContext.ctx.req.headers.cookie,
-      },
+  const whoami: CofeWhoami = await get(`${process.env.DB_URL}/api/whoami`, {
+    headers: {
+      Authorization: `Bearer ${cookies.token}`,
     },
-  ).then((response) => response.json());
+  });
 
   return {
+    pageProps,
+    colorMode,
     initialStates: {
-      config,
       whoami,
     },
-    ...appProps,
   };
 };
 

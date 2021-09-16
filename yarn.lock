@@ -1055,10 +1055,10 @@
   resolved "https://registry.nlark.com/@types/asap/download/@types/asap-2.0.0.tgz?cache=0&sync_timestamp=1629706596296&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fasap%2Fdownload%2F%40types%2Fasap-2.0.0.tgz#d529e9608c83499a62ae08c871c5e62271aa2963"
   integrity sha1-1SnpYIyDSZpirgjIccXmInGqKWM=
 
-"@types/js-cookie@^2.2.7":
-  version "2.2.7"
-  resolved "https://registry.nlark.com/@types/js-cookie/download/@types/js-cookie-2.2.7.tgz#226a9e31680835a6188e887f3988e60c04d3f6a3"
-  integrity sha1-ImqeMWgINaYYjoh/OYjmDATT9qM=
+"@types/cookie@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.nlark.com/@types/cookie/download/@types/cookie-0.4.1.tgz?cache=0&sync_timestamp=1629707141196&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fcookie%2Fdownload%2F%40types%2Fcookie-0.4.1.tgz#bfd02c1f2224567676c1545199f87c3a861d878d"
+  integrity sha1-v9AsHyIkVnZ2wVRRmfh8OoYdh40=
 
 "@types/json-schema@^7.0.7", "@types/json-schema@^7.0.9":
   version "7.0.9"
@@ -1077,10 +1077,15 @@
   dependencies:
     "@types/lodash" "*"
 
-"@types/lodash@*", "@types/lodash@^4.14.172":
+"@types/lodash@*":
   version "4.14.172"
   resolved "https://registry.nlark.com/@types/lodash/download/@types/lodash-4.14.172.tgz#aad774c28e7bfd7a67de25408e03ee5a8c3d028a"
   integrity sha1-qtd0wo57/Xpn3iVAjgPuWow9Aoo=
+
+"@types/lodash@^4.14.173":
+  version "4.14.173"
+  resolved "https://registry.nlark.com/@types/lodash/download/@types/lodash-4.14.173.tgz#9d3b674c67a26cf673756f6aca7b429f237f91ed"
+  integrity sha1-nTtnTGeibPZzdW9qyntCnyN/ke0=
 
 "@types/node@*":
   version "16.9.1"
@@ -1102,10 +1107,19 @@
   resolved "https://registry.nlark.com/@types/prop-types/download/@types/prop-types-15.7.4.tgz?cache=0&sync_timestamp=1629708789374&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fprop-types%2Fdownload%2F%40types%2Fprop-types-15.7.4.tgz#fcf7205c25dff795ee79af1e30da2c9790808f11"
   integrity sha1-/PcgXCXf95Xuea8eMNosl5CAjxE=
 
-"@types/react@^17.0.0", "@types/react@^17.0.20":
+"@types/react@^17.0.0":
   version "17.0.20"
   resolved "https://registry.nlark.com/@types/react/download/@types/react-17.0.20.tgz#a4284b184d47975c71658cd69e759b6bd37c3b8c"
   integrity sha1-pChLGE1Hl1xxZYzWnnWba9N8O4w=
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/scheduler" "*"
+    csstype "^3.0.2"
+
+"@types/react@^17.0.21":
+  version "17.0.21"
+  resolved "https://registry.nlark.com/@types/react/download/@types/react-17.0.21.tgz?cache=0&sync_timestamp=1631653538706&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Freact%2Fdownload%2F%40types%2Freact-17.0.21.tgz#069c43177cd419afaab5ce26bb4e9056549f7ea6"
+  integrity sha1-BpxDF3zUGa+qtc4mu06QVlSffqY=
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -1830,6 +1844,11 @@ convert-source-map@^1.5.0:
   integrity sha1-8zc8MtIbTXgN2ABFFGhPt5HKQ2k=
   dependencies:
     safe-buffer "~5.1.1"
+
+cookie@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.nlark.com/cookie/download/cookie-0.4.1.tgz#afd713fe26ebd21ba95ceb61f9a8116e50a537d1"
+  integrity sha1-r9cT/ibr0hupXOth+agRblClN9E=
 
 copy-to-clipboard@3.3.1:
   version "3.3.1"
@@ -3223,11 +3242,6 @@ jest-worker@27.0.0-next.5:
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
 
-js-cookie@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.nlark.com/js-cookie/download/js-cookie-3.0.1.tgz#9e39b4c6c2f56563708d7d31f6f5f21873a92414"
-  integrity sha1-njm0xsL1ZWNwjX0x9vXyGHOpJBQ=
-
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.nlark.com/js-tokens/download/js-tokens-4.0.0.tgz?cache=0&sync_timestamp=1619345098261&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fjs-tokens%2Fdownload%2Fjs-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -3432,12 +3446,12 @@ loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
-lowdb@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.nlark.com/lowdb/download/lowdb-2.1.0.tgz?cache=0&sync_timestamp=1621854209936&other_urls=https%3A%2F%2Fregistry.nlark.com%2Flowdb%2Fdownload%2Flowdb-2.1.0.tgz#c8063e228b5ab3e082ece90e0512537ecb6e1e2a"
-  integrity sha1-yAY+Iotas+CC7OkOBRJTfstuHio=
+lowdb@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.nlark.com/lowdb/download/lowdb-3.0.0.tgz?cache=0&sync_timestamp=1631543458160&other_urls=https%3A%2F%2Fregistry.nlark.com%2Flowdb%2Fdownload%2Flowdb-3.0.0.tgz#c10ab4e7eb86f1cbe255e35e60ffb0c6f42049e0"
+  integrity sha1-wQq05+uG8cviVeNeYP+wxvQgSeA=
   dependencies:
-    steno "^1.0.0"
+    steno "^2.1.0"
 
 lru-cache@^6.0.0:
   version "6.0.0"
@@ -4014,10 +4028,10 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.nlark.com/prettier/download/prettier-2.4.0.tgz?cache=0&sync_timestamp=1631179311919&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fprettier%2Fdownload%2Fprettier-2.4.0.tgz#85bdfe0f70c3e777cf13a4ffff39713ca6f64cba"
-  integrity sha1-hb3+D3DD53fPE6T//zlxPKb2TLo=
+prettier@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.nlark.com/prettier/download/prettier-2.4.1.tgz?cache=0&sync_timestamp=1631777111780&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fprettier%2Fdownload%2Fprettier-2.4.1.tgz#671e11c89c14a4cfc876ce564106c4a6726c9f5c"
+  integrity sha1-Zx4RyJwUpM/Ids5WQQbEpnJsn1w=
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
@@ -4579,10 +4593,10 @@ stacktrace-parser@0.1.10:
   resolved "https://registry.npm.taobao.org/statuses/download/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
   integrity sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=
 
-steno@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.nlark.com/steno/download/steno-1.0.0.tgz#475e32c6066ec9760229eaaf1550601764fbecba"
-  integrity sha1-R14yxgZuyXYCKeqvFVBgF2T77Lo=
+steno@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.nlark.com/steno/download/steno-2.1.0.tgz#05a9c378ce42ed04f642cda6fcb41787a10e4e33"
+  integrity sha1-BanDeM5C7QT2Qs2m/LQXh6EOTjM=
 
 stream-browserify@3.0.0:
   version "3.0.0"
@@ -5141,6 +5155,11 @@ util@^0.11.0:
   integrity sha1-MjZzNyDsZLsn9uJvQhqqLhtYjWE=
   dependencies:
     inherits "2.0.3"
+
+utility-types@^3.10.0:
+  version "3.10.0"
+  resolved "https://registry.npm.taobao.org/utility-types/download/utility-types-3.10.0.tgz#ea4148f9a741015f05ed74fd615e1d20e6bed82b"
+  integrity sha1-6kFI+adBAV8F7XT9YV4dIOa+2Cs=
 
 v8-compile-cache@^2.0.3:
   version "2.3.0"

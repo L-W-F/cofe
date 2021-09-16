@@ -8,7 +8,7 @@ import { PreviewCanvas } from './preview/Canvas';
 
 export const CanvasPane = memo((props: PaneProps) => {
   const currentTree = useCurrentTree();
-  const isEditorMode = useStore<boolean>('config.editMode');
+  const isEditorMode = useStore<boolean>('whoami.config.editMode');
 
   return !isEditorMode ? (
     <Pane p={4} {...props}>

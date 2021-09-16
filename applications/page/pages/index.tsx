@@ -14,17 +14,17 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useStore } from '@cofe/store';
-import { DbData } from '@cofe/types';
+import { CofeApp } from '@cofe/types';
 import { Card, CardContent, CardHeader } from '@cofe/ui';
 import { formatDate } from '@cofe/utils';
-import { map, pick } from 'lodash/fp';
-import { Header } from '../src/components/Header';
-import { Container } from '../src/components/layout/Container';
+import { Header } from 'components/Header';
+import { Container } from 'components/layout/Container';
+import { get } from 'utils/io';
 
 const Index = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => {
-  const pages = useStore('pages');
+  const apps = useStore('apps');
 
   return (
     <Container
@@ -51,10 +51,10 @@ const Index = (
               </Tr>
             </Thead>
             <Tbody>
-              {pages.map(({ id, title, description, createdAt }) => (
+              {apps.map(({ id, title, description, createdAt }) => (
                 <Tr key={id}>
                   <Td>
-                    <Link href={`/${id}`} passHref>
+                    <Link href={`/apps/${id}`} passHref>
                       <ChakraLink>{title}</ChakraLink>
                     </Link>
                   </Td>
@@ -73,7 +73,7 @@ const Index = (
 export const getServerSideProps = async (
   context: GetServerSidePropsContext,
 ) => {
-  if (!context.req.cookies.user) {
+  if (!context.req.cookies.token) {
     return {
       redirect: {
         destination: '/401',
@@ -82,22 +82,17 @@ export const getServerSideProps = async (
     };
   }
 
-  const { pages = [] }: DbData = await fetch(
-    `${process.env.DB_URL}/api/store`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Cookie: context.req.headers.cookie,
-      },
+  const apps: CofeApp[] = await get(`${process.env.DB_URL}/api/apps`, {
+    headers: {
+      Authorization: `Bearer ${context.req.cookies.token}`,
     },
-  ).then((response) => response.json());
+  });
 
   return {
     props: {
       timestamp: formatDate(Date.now()),
       initialStates: {
-        pages: map(pick(['id', 'title', 'description', 'createdAt']))(pages),
+        apps,
       },
     },
   };

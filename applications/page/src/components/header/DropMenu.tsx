@@ -1,33 +1,20 @@
 import React, { useCallback, useEffect } from 'react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
+  AlertStatus,
   IconButton,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  useToast,
 } from '@chakra-ui/react';
-import { getState } from '@cofe/store';
+// import { getState } from '@cofe/store';
 import { isMac } from '@cofe/utils';
+import { useToast } from '../../hooks/useToast';
+// import { pick } from 'lodash/fp';
 
 export const DropMenu = () => {
-  const toast = useToast({
-    position: 'top',
-  });
-
-  const showToast = useCallback(
-    (title: string) => {
-      const id = 'save-state';
-
-      if (toast.isActive(id)) {
-        toast.update(id, { title });
-      } else {
-        toast({ id, title });
-      }
-    },
-    [toast],
-  );
+  const toast = useToast('save');
 
   const keydown = useCallback(
     async (e) => {
@@ -36,20 +23,22 @@ export const DropMenu = () => {
         if (e.key.toLowerCase() === 's') {
           e.preventDefault();
 
-          showToast('saving...');
+          toast('saving...');
 
-          await fetch('/api/store', {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(getState(['config', 'editor', 'pages'])),
-          });
-          showToast('saved!');
+          // await fetch('/api/store', {
+          //   method: 'PUT',
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //   },
+          //   body: JSON.stringify(
+          //     pick(['config', 'editor', 'pages'])(getState()),
+          //   ),
+          // });
+          toast('saved!', 'success');
         }
       }
     },
-    [showToast],
+    [toast],
   );
 
   useEffect(() => {
