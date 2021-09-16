@@ -150,7 +150,7 @@ export const createStore = (middlewares: Middleware[] = []) => {
     );
   };
 
-  const getState = store?.getState() ?? null;
+  const getState = () => store?.getState() ?? null;
 
   function useStore<T extends unknown = any>(
     key: string | ((state: any) => any) = identity,
