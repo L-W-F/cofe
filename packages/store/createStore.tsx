@@ -28,8 +28,6 @@ type StoreReducers = {
   [K in keyof StoreModules]: StoreModules[K]['reducer'];
 };
 
-export const hydrateStateActionType = '__HYDRATE_STATE__';
-
 export const createStore = (middlewares: Middleware[] = []) => {
   const enhancer = applyMiddleware(...middlewares);
 
@@ -59,32 +57,21 @@ export const createStore = (middlewares: Middleware[] = []) => {
       }
     });
 
-  const createReducer = (reducers: StoreReducers) => {
-    const reducer = combineReducers(reducers);
-
-    return (state: StoreStates, action: AnyAction) => {
-      switch (action.type) {
-        case hydrateStateActionType:
-          return reducer(action.payload, action);
-        default:
-          return reducer(state, action);
-      }
-    };
-  };
-
   const initializeStore = (
     modules?: StoreModules,
     initialStates?: StoreStates,
   ) => {
-    const isModulesChanged = !shallowequal(currentModules, modules);
+    const isModulesChanged = !isEqual(currentModules, modules);
 
     if (isModulesChanged) {
-      Object.entries(modules).forEach(([name, { initialState, reducer }]) => {
-        _states[name] = initialState;
-        _reducers[name] = reducer;
-      });
+      currentModules = { ...currentModules, ...modules };
 
-      currentModules = modules;
+      Object.entries(currentModules).forEach(
+        ([name, { initialState, reducer }]) => {
+          _states[name] = initialState;
+          _reducers[name] = reducer;
+        },
+      );
     }
 
     const isInitialStatesChanged = !isEqual(
@@ -99,20 +86,16 @@ export const createStore = (middlewares: Middleware[] = []) => {
     // For SSG and SSR always create a new store
     if (!store || typeof window === 'undefined') {
       store = createReduxStore(
-        createReducer(_reducers),
+        combineReducers(_reducers),
         createStates(initialStates),
         enhancer,
       );
     } else {
-      if (isModulesChanged) {
-        store.replaceReducer(createReducer(_reducers));
-      }
-
       // https://github.com/facebook/react/issues/18178#issuecomment-595846312
       if (isInitialStatesChanged) {
-        store.dispatch({
-          type: hydrateStateActionType,
-          payload: createStates({
+        store = createReduxStore(
+          combineReducers(_reducers),
+          createStates({
             /**
              * 浅合并，以避免类似情况发生：
              *     { user: { name: 'x', permissions: { a: 1 } } }
@@ -122,7 +105,10 @@ export const createStore = (middlewares: Middleware[] = []) => {
             ...store.getState(),
             ...initialStates,
           }),
-        });
+          enhancer,
+        );
+      } else if (isModulesChanged) {
+        store.replaceReducer(combineReducers(_reducers));
       }
     }
 

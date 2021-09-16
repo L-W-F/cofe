@@ -1,5 +1,5 @@
 import { createLogger } from './createLogger';
-import { createStore, hydrateStateActionType } from './createStore';
+import { createStore } from './createStore';
 
 export type { AnyAction } from 'redux';
 
@@ -12,7 +12,6 @@ export const { Store, getState, useStore, useDispatch } = createStore(
   process.env.NODE_ENV === 'development'
     ? [
         createLogger({
-          filter: ({ type }) => type !== hydrateStateActionType,
           prefix: 'global',
         }),
       ]
