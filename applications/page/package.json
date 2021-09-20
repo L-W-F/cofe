@@ -49,7 +49,7 @@
     "@types/cookie": "^0.4.1",
     "@types/json-schema": "^7.0.9",
     "@types/lodash": "^4.14.173",
-    "@types/react": "^17.0.21",
+    "@types/react": "^17.0.22",
     "@types/shallowequal": "^1.1.1",
     "eslint": "^7.32.0",
     "eslint-config-cofe": "^0.0.2",
