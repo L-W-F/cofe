@@ -13,7 +13,7 @@
   "dependencies": {
     "@chakra-ui/icons": "^1.0.15",
     "@chakra-ui/react": "^1.6.7",
-    "@chakra-ui/theme-tools": "^1.2.0",
+    "@chakra-ui/theme-tools": "^1.2.1",
     "@cofe/atoms": "^0.1.0",
     "@cofe/api": "^0.1.0",
     "@cofe/form": "^0.1.0",

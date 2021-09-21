@@ -1472,7 +1472,7 @@
     "@chakra-ui/form-control" "1.4.1"
     "@chakra-ui/utils" "1.8.2"
 
-"@chakra-ui/theme-tools@1.2.0", "@chakra-ui/theme-tools@^1.1.9", "@chakra-ui/theme-tools@^1.2.0":
+"@chakra-ui/theme-tools@1.2.0":
   version "1.2.0"
   resolved "https://registry.nlark.com/@chakra-ui/theme-tools/download/@chakra-ui/theme-tools-1.2.0.tgz#bad1194d38000bf92feb2e8f0e41cd664b9ee6ca"
   integrity sha1-utEZTTgAC/kv6y6PDkHNZkue5so=
@@ -1480,6 +1480,14 @@
     "@chakra-ui/utils" "1.8.2"
     "@types/tinycolor2" "1.4.2"
     tinycolor2 "1.4.2"
+
+"@chakra-ui/theme-tools@^1.1.9", "@chakra-ui/theme-tools@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/theme-tools/-/theme-tools-1.2.1.tgz#940b169f54e1229da419fb644b215e1d41a724ae"
+  integrity sha512-e3Ql6SJyog7Rrk6DWUGyxzkzyAukodGIbH5DxTp9tLq10UhxZyGOYUQe7m/wL6XQ2zRQSIzcgvqWdTbxtkiwug==
+  dependencies:
+    "@chakra-ui/utils" "1.8.2"
+    "@ctrl/tinycolor" "^3.4.0"
 
 "@chakra-ui/theme@1.10.1":
   version "1.10.1"
@@ -1573,6 +1581,11 @@
   integrity sha1-Es+26TI3KxgWr4kA4tEGlK3SgZE=
   dependencies:
     chalk "^4.0.0"
+
+"@ctrl/tinycolor@^3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@ctrl/tinycolor/-/tinycolor-3.4.0.tgz#c3c5ae543c897caa9c2a68630bed355be5f9990f"
+  integrity sha512-JZButFdZ1+/xAfpguQHoabIXkcqRRKpMrWKBkpEZZyxfY9C1DpADFB8PEqGSTeFr135SaTRfKqGKx5xSCLI7ZQ==
 
 "@emotion/babel-plugin@^11.3.0":
   version "11.3.0"
