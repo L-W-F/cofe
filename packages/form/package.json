@@ -9,12 +9,12 @@
   "author": "crossjs <liwenfu@crossjs.com>",
   "dependencies": {
     "@chakra-ui/icons": "^1.0.15",
-    "@chakra-ui/react": "^1.6.7",
+    "@chakra-ui/react": "^1.6.8",
     "@rjsf/core": "^3.1.0",
     "react": "^17.0.2"
   },
   "devDependencies": {
     "@types/json-schema": "^7.0.9",
-    "@types/react": "^17.0.22"
+    "@types/react": "^17.0.24"
   }
 }
