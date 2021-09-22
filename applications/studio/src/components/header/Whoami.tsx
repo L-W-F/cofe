@@ -3,7 +3,6 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import {
   Avatar,
-  Button,
   Link,
   Menu,
   MenuButton,
@@ -20,11 +19,7 @@ export const Whoami = () => {
   const { push } = useRouter();
 
   if (!whoami?.username) {
-    return (
-      <NextLink href="/login" passHref>
-        <Button>Login</Button>
-      </NextLink>
-    );
+    return null;
   }
 
   return (

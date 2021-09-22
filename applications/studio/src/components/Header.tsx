@@ -23,7 +23,7 @@ export const Header = ({ children = <Box flex={1} /> }: FlexProps) => {
       alignItems="center"
       justifyItems="flex-end"
     >
-      <NextLink aria-label="Go to home page" href="/" passHref>
+      <NextLink aria-label="返回首页" href="/" passHref>
         <Link>
           <Logo />
         </Link>
@@ -32,7 +32,7 @@ export const Header = ({ children = <Box flex={1} /> }: FlexProps) => {
       <ColorModeSwitch />
       <Link
         isExternal
-        aria-label="Go to COFE GitHub page"
+        aria-label="查看代码仓库"
         href="https://github.com/crossjs/cofe"
       >
         <Icon

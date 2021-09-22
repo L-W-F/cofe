@@ -6,13 +6,11 @@ import {
   Box,
   Button,
   chakra,
-  Flex,
   FormControl,
   FormLabel,
   Input,
   Link,
   Stack,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import { compose } from '@cofe/gssp';
 import { PasswordField } from '@cofe/ui';
@@ -21,7 +19,7 @@ import { Header } from 'components/Header';
 import { Container } from 'components/layout/Container';
 import { post } from 'utils/io';
 
-const Login = (
+const Signup = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => {
   const [username, setUsername] = useState('Admin');
@@ -38,9 +36,9 @@ const Login = (
             onSubmit={async (e) => {
               e.preventDefault();
 
-              await post('/api/login', { username, password });
+              await post('/api/signup', { username, password });
 
-              replace('/');
+              replace('/login');
             }}
             {...props}
           >
@@ -59,14 +57,7 @@ const Login = (
                 />
               </FormControl>
               <FormControl id="password">
-                <Flex justify="space-between">
-                  <FormLabel>密码</FormLabel>
-                  <NextLink href="/password-reset" passHref>
-                    <Link color={useColorModeValue('teal.600', 'teal.200')}>
-                      重设密码
-                    </Link>
-                  </NextLink>
-                </Flex>
+                <FormLabel>密码</FormLabel>
                 <PasswordField
                   value={password}
                   onChange={(e) => {
@@ -74,17 +65,16 @@ const Login = (
                   }}
                 />
               </FormControl>
-              <Button type="submit" colorScheme="teal" size="lg" fontSize="md">
-                提交登录
+              <Button type="submit" colorScheme="blue" size="lg" fontSize="md">
+                提交注册
               </Button>
             </Stack>
           </chakra.form>
           <Box mt={4}>
-            还没有账号？
-            <NextLink href="/signup" passHref>
-              <Link>注册</Link>
+            已有账号？ 直接
+            <NextLink href="/login" passHref>
+              <Link>登录</Link>
             </NextLink>
-            一个
           </Box>
         </Box>
       </Box>
@@ -110,4 +100,4 @@ export const getServerSideProps = compose(
   },
 );
 
-export default Login;
+export default Signup;

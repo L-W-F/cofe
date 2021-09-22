@@ -1,16 +1,11 @@
 import * as React from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {
-  Box,
-  Flex,
-  FormControl,
-  FormLabel,
   IconButton,
   Input,
   InputGroup,
   InputProps,
   InputRightElement,
-  useColorModeValue as mode,
   useDisclosure,
   useMergeRefs,
 } from '@chakra-ui/react';
@@ -40,40 +35,29 @@ export const PasswordField = React.forwardRef<HTMLInputElement, InputProps>(
     };
 
     return (
-      <FormControl id="password">
-        <Flex justify="space-between">
-          <FormLabel>Password</FormLabel>
-          <Box
-            as="a"
-            color={mode('blue.600', 'blue.200')}
-            fontWeight="semibold"
-            fontSize="sm"
-          >
-            Forgot Password?
-          </Box>
-        </Flex>
-        <InputGroup>
-          <InputRightElement>
-            <IconButton
-              bg="transparent !important"
-              variant="ghost"
-              aria-label={isOpen ? 'Mask password' : 'Reveal password'}
-              icon={isOpen ? <ViewOffIcon /> : <ViewIcon />}
-              onClick={onClickReveal}
-            />
-          </InputRightElement>
-          <Input
-            ref={mergeRef}
-            name="password"
-            type={isOpen ? 'text' : 'password'}
-            autoComplete="current-password"
-            required
-            {...props}
+      <InputGroup>
+        <InputRightElement>
+          <IconButton
+            bg="transparent !important"
+            variant="ghost"
+            aria-label={isOpen ? '隐藏密码' : '显示密码'}
+            icon={isOpen ? <ViewOffIcon /> : <ViewIcon />}
+            onClick={onClickReveal}
           />
-        </InputGroup>
-      </FormControl>
+        </InputRightElement>
+        <Input
+          ref={mergeRef}
+          name="password"
+          type={isOpen ? 'text' : 'password'}
+          autoComplete="current-password"
+          required
+          {...props}
+        />
+      </InputGroup>
     );
   },
 );
 
-PasswordField.displayName = 'PasswordField';
+if (process.env.NODE_ENV === 'development') {
+  PasswordField.displayName = 'PasswordField';
+}
