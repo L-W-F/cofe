@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { clamp } from 'lodash-es';
+import { clamp } from 'lodash';
 
 export interface UseSplitPaneOptions {
   direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse';
