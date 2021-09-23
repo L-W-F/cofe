@@ -82,14 +82,20 @@ function ensureSet<K extends keyof Db>(scope: K) {
 
 export async function set<K extends keyof Db, T = Db[K]>(
   scope: K,
-  value: ValuesType<T>,
+  value: Partial<ValuesType<T>>,
+  test?: (item: ValuesType<T>) => boolean,
   replace?: boolean,
 ) {
   ensureSet(scope);
 
   const data: any[] = db.data[scope];
 
-  const index = data.findIndex(({ id }) => id === (value as any)?.id);
+  if (typeof test === 'boolean') {
+    replace = test;
+    test = null;
+  }
+
+  const index = data.findIndex(test || (({ id }) => id === (value as any)?.id));
 
   if (index === -1) {
     data.push(value);
