@@ -1925,6 +1925,13 @@
   resolved "https://registry.nlark.com/@types/cookie/download/@types/cookie-0.4.1.tgz?cache=0&sync_timestamp=1629707141196&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fcookie%2Fdownload%2F%40types%2Fcookie-0.4.1.tgz#bfd02c1f2224567676c1545199f87c3a861d878d"
   integrity sha1-v9AsHyIkVnZ2wVRRmfh8OoYdh40=
 
+"@types/debug@^4.1.7":
+  version "4.1.7"
+  resolved "https://registry.nlark.com/@types/debug/download/@types/debug-4.1.7.tgz?cache=0&sync_timestamp=1629707134396&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fdebug%2Fdownload%2F%40types%2Fdebug-4.1.7.tgz#7cc0ea761509124709b8b2d1090d8f6c17aadb82"
+  integrity sha1-fMDqdhUJEkcJuLLRCQ2PbBeq24I=
+  dependencies:
+    "@types/ms" "*"
+
 "@types/json-schema@^7.0.7", "@types/json-schema@^7.0.9":
   version "7.0.9"
   resolved "https://registry.nlark.com/@types/json-schema/download/@types/json-schema-7.0.9.tgz?cache=0&sync_timestamp=1629708116786&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fjson-schema%2Fdownload%2F%40types%2Fjson-schema-7.0.9.tgz#97edc9037ea0c38585320b28964dde3b39e4660d"
@@ -1946,6 +1953,11 @@
   version "4.14.173"
   resolved "https://registry.nlark.com/@types/lodash/download/@types/lodash-4.14.173.tgz#9d3b674c67a26cf673756f6aca7b429f237f91ed"
   integrity sha1-nTtnTGeibPZzdW9qyntCnyN/ke0=
+
+"@types/ms@*":
+  version "0.7.31"
+  resolved "https://registry.nlark.com/@types/ms/download/@types/ms-0.7.31.tgz#31b7ca6407128a3d2bbc27fe2d21b345397f6197"
+  integrity sha1-MbfKZAcSij0rvCf+LSGzRTl/YZc=
 
 "@types/node@*":
   version "16.9.1"
@@ -3026,7 +3038,7 @@ debug@2, debug@^2.6.9:
   dependencies:
     ms "2.0.0"
 
-debug@4.3.2, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1:
+debug@4.3.2, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2:
   version "4.3.2"
   resolved "https://registry.nlark.com/debug/download/debug-4.3.2.tgz?cache=0&sync_timestamp=1625374675284&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fdebug%2Fdownload%2Fdebug-4.3.2.tgz#f0a49c18ac8779e31d4a0c6029dfb76873c7428b"
   integrity sha1-8KScGKyHeeMdSgxgKd+3aHPHQos=
@@ -6385,10 +6397,10 @@ unist-util-visit-parents@^5.0.0:
     "@types/unist" "^2.0.0"
     unist-util-is "^5.0.0"
 
-unist-util-visit@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.nlark.com/unist-util-visit/download/unist-util-visit-4.0.0.tgz?cache=0&sync_timestamp=1627632934388&other_urls=https%3A%2F%2Fregistry.nlark.com%2Funist-util-visit%2Fdownload%2Funist-util-visit-4.0.0.tgz#6e1f7e8e163921d20281354c38bfd3244b64580a"
-  integrity sha1-bh9+jhY5IdICgTVMOL/TJEtkWAo=
+unist-util-visit@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.npmmirror.com/unist-util-visit/download/unist-util-visit-4.1.0.tgz#f41e407a9e94da31594e6b1c9811c51ab0b3d8f5"
+  integrity sha1-9B5Aep6U2jFZTmscmBHFGrCz2PU=
   dependencies:
     "@types/unist" "^2.0.0"
     unist-util-is "^5.0.0"

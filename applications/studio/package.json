@@ -14,12 +14,13 @@
     "@chakra-ui/icons": "^1.0.15",
     "@chakra-ui/react": "^1.6.8",
     "@chakra-ui/theme-tools": "^1.2.1",
-    "@cofe/atoms": "^0.1.0",
     "@cofe/api": "^0.1.0",
+    "@cofe/atoms": "^0.1.0",
     "@cofe/form": "^0.1.0",
     "@cofe/gssp": "^0.1.0",
     "@cofe/hooks": "^0.1.0",
     "@cofe/icons": "^0.1.0",
+    "@cofe/logger": "^0.1.0",
     "@cofe/models": "^0.1.0",
     "@cofe/store": "^0.1.0",
     "@cofe/types": "^0.1.0",
@@ -45,7 +46,7 @@
     "unist-util-parents": "^2.0.0",
     "unist-util-remove": "^3.1.0",
     "unist-util-select": "^4.0.0",
-    "unist-util-visit": "^4.0.0"
+    "unist-util-visit": "^4.1.0"
   },
   "devDependencies": {
     "@types/cookie": "^0.4.1",

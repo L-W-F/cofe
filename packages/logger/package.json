@@ -1,0 +1,16 @@
+{
+  "name": "@cofe/logger",
+  "version": "0.1.0",
+  "type": "module",
+  "sideEffects": false,
+  "main": "index.ts",
+  "module": "index.ts",
+  "license": "MIT",
+  "author": "crossjs <liwenfu@crossjs.com>",
+  "dependencies": {
+    "debug": "^4.3.2"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.7"
+  }
+}
