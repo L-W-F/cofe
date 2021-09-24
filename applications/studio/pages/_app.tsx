@@ -8,12 +8,12 @@ import { theme } from 'theme';
 
 const MyApp = ({
   Component,
-  pageProps,
+  pageProps: { colorModeCookie, ...pageProps },
 }: AppProps<{
   colorModeCookie: string;
   initialStates: any;
 }>) => {
-  const colorModeManager = cookieStorageManager(pageProps.colorModeCookie);
+  const colorModeManager = cookieStorageManager(colorModeCookie);
 
   return (
     <>
