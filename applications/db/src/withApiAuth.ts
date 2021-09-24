@@ -1,6 +1,6 @@
 import { NextApiRequest } from 'next';
 import { createApiAuth } from '@cofe/api';
-import { del, getOne } from './db';
+import { del, getOne } from '@/db';
 
 const auth = async (req: NextApiRequest) => {
   if (!req.headers.authorization) {

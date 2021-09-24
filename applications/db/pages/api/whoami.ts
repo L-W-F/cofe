@@ -1,4 +1,4 @@
-import { getOne } from 'db';
+import { getOne } from '@/db';
 import { withApiAuth } from '@/withApiAuth';
 import { withApiCatch } from '@/withApiCatch';
 
