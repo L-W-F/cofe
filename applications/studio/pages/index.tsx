@@ -30,9 +30,9 @@ import { formatDate } from '@cofe/utils';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Container } from '@/components/layout/Container';
-import { withCurrentTime } from '@/gssp/withCurrentTime';
 import { withGsspCatch } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
+import { withGsspCurrentTime } from '@/gssp/withGsspCurrentTime';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
 import { get, patch, post } from '@/utils/io';
 
@@ -168,7 +168,7 @@ const Index = ({
 };
 
 export const getServerSideProps = compose(
-  [withCurrentTime, withGsspCatch, withGsspWhoami, withGsspColorMode],
+  [withGsspCurrentTime, withGsspCatch, withGsspWhoami, withGsspColorMode],
   async (context: GetServerSidePropsContext) => {
     const apps: CofeApp[] = await get(`${process.env.DB_URL}/api/apps`, {
       headers: {

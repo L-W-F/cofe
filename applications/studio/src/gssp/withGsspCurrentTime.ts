@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { debug } from '@cofe/logger';
 import { formatDate } from '@cofe/utils';
 
-export const withCurrentTime =
+export const withGsspCurrentTime =
   (next?) => async (context: GetServerSidePropsContext) => {
     debug('gssp')('withCurrentTime');
 

@@ -5,9 +5,9 @@ import { compose } from '@cofe/gssp';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Container } from '@/components/layout/Container';
-import { withCurrentTime } from '@/gssp/withCurrentTime';
 import { withGsspCatch } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
+import { withGsspCurrentTime } from '@/gssp/withGsspCurrentTime';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
 
 const Account = ({
@@ -23,7 +23,7 @@ const Account = ({
 };
 
 export const getServerSideProps = compose([
-  withCurrentTime,
+  withGsspCurrentTime,
   withGsspCatch,
   withGsspWhoami,
   withGsspColorMode,
