@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as util from 'util';
 import _debug from 'debug';
 
-const logger = _debug('cofe');
+const logger = _debug('c');
 
 const map = new Map<string, _debug.Debugger>();
 
