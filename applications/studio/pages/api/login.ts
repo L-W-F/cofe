@@ -6,17 +6,17 @@ import { post } from '@/utils/io';
 
 export default compose([withApiCatch], async (req, res) => {
   if (req.method === 'POST') {
-    const token: CofeToken = await post(
+    const { token, expiresAt }: CofeToken = await post(
       `${process.env.DB_URL}/api/tokens`,
       req.body,
     );
 
     res.setHeader(
       'set-cookie',
-      serialize('token', token.token, {
+      serialize('token', token, {
         httpOnly: true,
         path: '/',
-        maxAge: (token.expiresAt - Date.now()) / 1000,
+        maxAge: (expiresAt - Date.now()) / 1000,
       }),
     );
 

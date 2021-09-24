@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   chakra,
+  Divider,
   Flex,
   FormControl,
   FormLabel,
@@ -79,12 +80,16 @@ const Login = (
               </Button>
             </Stack>
           </chakra.form>
-          <Box mt={4}>
+          <Box my={4}>
             还没有账号？
             <NextLink href="/signup" passHref>
               <Link>注册</Link>
             </NextLink>
             一个
+          </Box>
+          <Divider />
+          <Box mt={4}>
+            <Link href="/api/auth/github">Github 登录</Link>
           </Box>
         </Box>
       </Box>
