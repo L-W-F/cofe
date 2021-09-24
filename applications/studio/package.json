@@ -20,6 +20,7 @@
     "@cofe/gssp": "^0.1.0",
     "@cofe/hooks": "^0.1.0",
     "@cofe/icons": "^0.1.0",
+    "@cofe/io": "^0.1.0",
     "@cofe/logger": "^0.1.0",
     "@cofe/models": "^0.1.0",
     "@cofe/store": "^0.1.0",

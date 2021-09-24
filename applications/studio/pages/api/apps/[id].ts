@@ -1,7 +1,7 @@
 import { compose } from '@cofe/api';
+import { del, patch } from '@cofe/io';
 import { withApiAuth } from '@/api/withApiAuth';
 import { withApiCatch } from '@/api/withApiCatch';
-import { del, patch } from '@/utils/io';
 
 export default compose([withApiCatch, withApiAuth], async (req, res) => {
   if (req.method === 'PATCH') {

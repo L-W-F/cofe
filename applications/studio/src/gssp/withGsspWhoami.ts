@@ -1,8 +1,8 @@
 import { GetServerSidePropsContext } from 'next';
+import { get } from '@cofe/io';
 import { debug } from '@cofe/logger';
 import { CofeWhoami } from '@cofe/types';
 import { serialize } from 'cookie';
-import { get } from 'utils/io';
 
 export const withGsspWhoami =
   (next?) => async (context: GetServerSidePropsContext) => {

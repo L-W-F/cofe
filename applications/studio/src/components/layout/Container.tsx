@@ -6,7 +6,7 @@ import {
   useColorMode,
   useToast,
 } from '@chakra-ui/react';
-import { Listener, subscribe } from '@/utils/io';
+import { Listener, subscribe } from '@cofe/io';
 
 const bgColor = { light: 'gray.50', dark: 'gray.900' };
 const color = { light: 'black', dark: 'white' };

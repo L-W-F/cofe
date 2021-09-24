@@ -23,6 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
 import { compose } from '@cofe/gssp';
+import { get, patch, post } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
 import { CofeApp } from '@cofe/types';
 import { Card, CardContent, CardHeader } from '@cofe/ui';
@@ -34,7 +35,6 @@ import { withGsspCatch } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspCurrentTime } from '@/gssp/withGsspCurrentTime';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
-import { get, patch, post } from '@/utils/io';
 
 const Index = ({
   currentTime,

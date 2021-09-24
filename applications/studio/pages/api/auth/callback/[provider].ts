@@ -1,9 +1,9 @@
 import { compose } from '@cofe/api';
+import { get, post, put } from '@cofe/io';
 import { CofeToken, CofeUser } from '@cofe/types';
 import { makeId } from '@cofe/utils';
 import { serialize } from 'cookie';
 import { withApiCatch } from '@/api/withApiCatch';
-import { get, post, put } from '@/utils/io';
 
 export default compose([withApiCatch], async (req, res) => {
   if (req.method === 'GET') {

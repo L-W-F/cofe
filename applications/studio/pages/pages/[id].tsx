@@ -15,15 +15,14 @@ import {
 } from '@chakra-ui/react';
 import { compose } from '@cofe/gssp';
 import { useSplitPane } from '@cofe/hooks';
+import { get, put } from '@cofe/io';
 import { getState, useDispatch } from '@cofe/store';
 import { CofePage, CofeSnapshot } from '@cofe/types';
 import { isMac } from '@cofe/utils';
-import { put } from 'utils/io';
 import { Header } from '@/components/Header';
 import { Container } from '@/components/layout/Container';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
-import { get } from '@/utils/io';
 import { ActionPanel } from '@/views/page/ActionPanel';
 import { AtomPanel } from '@/views/page/AtomPanel';
 import { CanvasPane } from '@/views/page/CanvasPanel';

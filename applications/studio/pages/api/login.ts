@@ -1,8 +1,8 @@
 import { compose } from '@cofe/api';
+import { post } from '@cofe/io';
 import { CofeToken } from '@cofe/types';
 import { serialize } from 'cookie';
 import { withApiCatch } from '@/api/withApiCatch';
-import { post } from '@/utils/io';
 
 export default compose([withApiCatch], async (req, res) => {
   if (req.method === 'POST') {

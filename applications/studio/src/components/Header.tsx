@@ -18,9 +18,9 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { CofeIcon, GithubIcon } from '@cofe/icons';
+import { post } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
 import { CofeWhoami } from '@cofe/types';
-import { post } from 'utils/io';
 
 const Logo = () => {
   return <Icon as={CofeIcon} w="5" h="5" />;

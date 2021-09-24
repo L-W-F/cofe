@@ -1,7 +1,7 @@
 import { compose } from '@cofe/api';
+import { post } from '@cofe/io';
 import { CofeUser } from '@cofe/types';
 import { withApiCatch } from '@/api/withApiCatch';
-import { post } from '@/utils/io';
 
 export default compose([withApiCatch], async (req, res) => {
   if (req.method === 'POST') {
