@@ -1,9 +1,11 @@
+import { compose } from '@cofe/api';
 import { getOne } from '@/db';
 import { withApiAuth } from '@/withApiAuth';
 import { withApiCatch } from '@/withApiCatch';
 
-export default withApiCatch(
-  withApiAuth(async (req, res, userId) => {
+export default compose(
+  [withApiCatch(), withApiAuth()],
+  async (req, res, { auth: { userId } }) => {
     if (req.method === 'GET') {
       const user = await getOne('users', userId);
 
@@ -11,5 +13,5 @@ export default withApiCatch(
     } else {
       res.status(405).end();
     }
-  }),
+  },
 );

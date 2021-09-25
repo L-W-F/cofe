@@ -1,10 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { compose } from '@cofe/api';
 import { getOne } from '@/db';
 import { withApiAuth } from '@/withApiAuth';
 import { withApiCatch } from '@/withApiCatch';
 
-export default withApiCatch(
-  withApiAuth(async (req: NextApiRequest, res: NextApiResponse) => {
+export default compose(
+  [withApiCatch(), withApiAuth()],
+  async (req: NextApiRequest, res: NextApiResponse) => {
     const pageId = req.query.id as string;
     const test = (item) => item.pageId === pageId;
 
@@ -15,5 +17,5 @@ export default withApiCatch(
     } else {
       res.status(405).end();
     }
-  }),
+  },
 );

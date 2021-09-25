@@ -1,10 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { compose } from '@cofe/api';
 import { del, getOne, set } from '@/db';
 import { withApiAuth } from '@/withApiAuth';
 import { withApiCatch } from '@/withApiCatch';
 
-export default withApiCatch(
-  withApiAuth(async (req: NextApiRequest, res: NextApiResponse, userId) => {
+export default compose(
+  [withApiCatch(), withApiAuth()],
+  async (req: NextApiRequest, res: NextApiResponse, { auth: { userId } }) => {
     const id = req.query.id as string;
     const test = (item) => item.id === id && item.userId === userId;
 
@@ -31,5 +33,5 @@ export default withApiCatch(
     } else {
       res.status(405).end();
     }
-  }),
+  },
 );

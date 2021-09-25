@@ -8,6 +8,7 @@
   "license": "MIT",
   "author": "crossjs <liwenfu@crossjs.com>",
   "devDependencies": {
+    "@cofe/logger": "^0.1.0",
     "next": "^11.1.2"
   },
   "peerDependencies": {

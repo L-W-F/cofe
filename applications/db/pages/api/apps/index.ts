@@ -1,11 +1,13 @@
+import { compose } from '@cofe/api';
 import { CofeApp } from '@cofe/types';
 import { makeId } from '@cofe/utils';
 import { get, set } from '@/db';
 import { withApiAuth } from '@/withApiAuth';
 import { withApiCatch } from '@/withApiCatch';
 
-export default withApiCatch(
-  withApiAuth(async (req, res, userId) => {
+export default compose(
+  [withApiCatch(), withApiAuth()],
+  async (req, res, { auth: { userId } }) => {
     if (req.method === 'GET') {
       res.status(200).json(await get('apps', (item) => item.userId === userId));
     } else if (req.method === 'POST') {
@@ -24,5 +26,5 @@ export default withApiCatch(
     } else {
       res.status(405).end();
     }
-  }),
+  },
 );

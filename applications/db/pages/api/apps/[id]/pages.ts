@@ -1,11 +1,13 @@
+import { compose } from '@cofe/api';
 import { CofePage } from '@cofe/types';
 import { makeId } from '@cofe/utils';
 import { get, set } from '@/db';
 import { withApiAuth } from '@/withApiAuth';
 import { withApiCatch } from '@/withApiCatch';
 
-export default withApiCatch(
-  withApiAuth(async (req, res, userId) => {
+export default compose(
+  [withApiCatch(), withApiAuth()],
+  async (req, res, { auth: { userId } }) => {
     const appId = req.query.id as string;
     const test = (item) => item.appId === appId && item.userId === userId;
 
@@ -30,5 +32,5 @@ export default withApiCatch(
     } else {
       res.status(405).end();
     }
-  }),
+  },
 );

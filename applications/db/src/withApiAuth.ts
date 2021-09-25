@@ -30,7 +30,7 @@ const auth = async (req: NextApiRequest) => {
     });
   }
 
-  return token.userId;
+  return token;
 };
 
 export const withApiAuth = createApiAuth({ auth });

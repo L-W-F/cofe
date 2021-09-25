@@ -4,7 +4,7 @@ import { serialize } from 'cookie';
 import { withApiAuth } from '@/api/withApiAuth';
 import { withApiCatch } from '@/api/withApiCatch';
 
-export default compose([withApiCatch, withApiAuth], async (req, res) => {
+export default compose([withApiCatch(), withApiAuth()], async (req, res) => {
   if (req.method === 'POST') {
     await del(`${process.env.DB_URL}/api/tokens`, {
       headers: {
