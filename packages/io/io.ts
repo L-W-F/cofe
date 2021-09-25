@@ -1,3 +1,4 @@
+import { debug } from '@cofe/logger';
 import { merge } from 'lodash';
 
 export type Listener = (
@@ -26,7 +27,7 @@ const wrap = (url: string, init: RequestInit) => {
     })
     .then((v) => {
       if (process.env.NODE_ENV === 'development') {
-        console.log('ℹ️ [io] [%s]%s => %j', init.method, url, v);
+        debug('io')('ℹ️ [%s]%s:\n\t%j', init.method, url, v);
       }
 
       listeners.forEach((listener) => {
@@ -37,7 +38,7 @@ const wrap = (url: string, init: RequestInit) => {
     })
     .catch((e) => {
       if (process.env.NODE_ENV === 'development') {
-        console.log('⚠️ [io] [%s]%s => %j', init.method, url, e);
+        debug('io')('⚠️ [%s]%s:\n\t%j', init.method, url, e);
       }
 
       listeners.forEach((listener) => {
