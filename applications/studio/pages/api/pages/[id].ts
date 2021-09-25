@@ -3,7 +3,7 @@ import { del, patch } from '@cofe/io';
 import { withApiAuth } from '@/api/withApiAuth';
 import { withApiCatch } from '@/api/withApiCatch';
 
-export default compose([withApiCatch, withApiAuth], async (req, res) => {
+export default compose([withApiCatch(), withApiAuth()], async (req, res) => {
   if (req.method === 'PATCH') {
     const page = await patch(
       `${process.env.DB_URL}/api/pages/${req.query.id as string}`,
