@@ -6,12 +6,11 @@ import {
   AccordionPanel,
   Box,
 } from '@chakra-ui/react';
+import { Form, Ui } from '@cofe/form';
 import { Model } from '@cofe/models';
 import { useDispatch } from '@cofe/store';
 import { Empty } from '@cofe/ui';
-import { SchemaForm } from 'components/form/SchemaForm';
-import { Ui } from 'components/form/Ui';
-import { useSelectedNode } from 'hooks/useSelectedNode';
+import { useSelectedNode } from '@/hooks/useSelectedNode';
 
 export const EventPanel = () => {
   const selectedNode = useSelectedNode();
@@ -30,7 +29,7 @@ export const EventPanel = () => {
       </h2>
       <AccordionPanel>
         {schema ? (
-          <SchemaForm
+          <Form
             formData={selectedNode.events}
             schema={schema}
             uiSchema={Ui.get(selectedNode.type)?.schema}

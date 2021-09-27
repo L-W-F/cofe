@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Flex,
-  FlexProps,
-  Progress,
-  useColorMode,
-  useToast,
-} from '@chakra-ui/react';
+import { FlexProps, useToast } from '@chakra-ui/react';
 import { Listener, subscribe } from '@cofe/io';
+import { Container as C } from '@cofe/ui';
 
-const bgColor = { light: 'gray.50', dark: 'gray.900' };
-const color = { light: 'black', dark: 'white' };
+export interface ContainerProps extends FlexProps {
+  loading?: boolean;
+}
 
-export const Container = ({ children, ...props }: FlexProps) => {
-  const { colorMode } = useColorMode();
+export const Container = (props: FlexProps) => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
 
@@ -50,28 +45,5 @@ export const Container = ({ children, ...props }: FlexProps) => {
     };
   }, [toast]);
 
-  return (
-    <Flex
-      minWidth="100vw"
-      minHeight="100vh"
-      direction="column"
-      p={2}
-      gridGap={2}
-      bg={bgColor[colorMode]}
-      color={color[colorMode]}
-      {...props}
-    >
-      {loading ? (
-        <Progress
-          pos="fixed"
-          top={2}
-          left={2}
-          right={2}
-          size="xs"
-          isIndeterminate
-        />
-      ) : null}
-      {children}
-    </Flex>
-  );
+  return <C loading={loading} {...props} />;
 };

@@ -6,7 +6,7 @@ export const createApiCatch =
   () =>
   (next: ApiHandler): ApiHandler =>
   async (req, res, rest?) => {
-    debug('api')('catch', rest);
+    debug('api')('catch %j', rest);
 
     try {
       await next(req, res, rest);

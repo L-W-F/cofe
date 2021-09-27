@@ -1,21 +1,25 @@
 import React from 'react';
+import { Box, BoxProps } from '@chakra-ui/react';
 import { useStore } from '@cofe/store';
-import { Pane, PaneProps } from 'components/layout/Pane';
-import { useSelectedTree } from 'hooks/useSelectedTree';
 import { DesignCanvas } from './design/Canvas';
 import { PreviewCanvas } from './preview/Canvas';
+import { useSelectedTree } from '@/hooks/useSelectedTree';
 
-export const CanvasPane = (props: PaneProps) => {
+export const CanvasPane = (props: BoxProps) => {
   const tree = useSelectedTree();
   const isEditorMode = useStore<boolean>('whoami.config.editMode');
 
-  return !isEditorMode ? (
-    <Pane p={4} {...props}>
-      <PreviewCanvas tree={tree} />
-    </Pane>
-  ) : (
-    <Pane p={4} overflow="visible" {...props}>
-      <DesignCanvas tree={tree} />
-    </Pane>
+  const Canvas = isEditorMode ? DesignCanvas : PreviewCanvas;
+
+  return (
+    <Box
+      p={4}
+      borderWidth={1}
+      borderStyle="solid"
+      borderColor="silver"
+      {...props}
+    >
+      <Canvas tree={tree} />
+    </Box>
   );
 };

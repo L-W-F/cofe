@@ -26,11 +26,10 @@ import { compose } from '@cofe/gssp';
 import { get, patch, post } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
 import { CofePage } from '@cofe/types';
-import { Card, CardContent, CardHeader } from '@cofe/ui';
+import { Card, CardContent, CardHeader, Container } from '@cofe/ui';
 import { formatDate } from '@cofe/utils';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
-import { Container } from '@/components/layout/Container';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
 

@@ -18,6 +18,6 @@
         "@/*": ["*"]
       }
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../../packages/api/api/compose.ts", "../../packages/api/gssp/compose.ts"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
     "exclude": ["node_modules"]
   }

@@ -12,7 +12,7 @@ import {
   ListItem,
 } from '@chakra-ui/react';
 import { useDispatch, useStore } from '@cofe/store';
-import { useSelectedTree } from 'hooks/useSelectedTree';
+import { useSelectedTree } from '@/hooks/useSelectedTree';
 
 interface TreeItemTagProps extends BoxProps {
   isSelected?: boolean;

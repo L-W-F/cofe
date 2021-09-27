@@ -14,10 +14,9 @@ import {
 } from '@chakra-ui/react';
 import { compose } from '@cofe/gssp';
 import { post } from '@cofe/io';
-import { PasswordField } from '@cofe/ui';
+import { Container, PasswordField } from '@cofe/ui';
 import { withGsspColorMode } from 'gssp/withGsspColorMode';
 import { Header } from 'components/Header';
-import { Container } from 'components/layout/Container';
 
 const Signup = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,

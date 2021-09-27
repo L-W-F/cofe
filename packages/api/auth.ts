@@ -12,7 +12,7 @@ export const createApiAuth = (o1?: ApiAuthOptions) => (o2?: ApiAuthOptions) => {
 
   return (next: ApiHandler): ApiHandler =>
     async (req, res, rest?) => {
-      debug('api')('auth', rest);
+      debug('api')('auth %j', rest);
 
       if (await predicate?.(req)) {
         await next(req, res, rest);

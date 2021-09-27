@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { models } from '@cofe/models';
 import { capitalize } from 'lodash';
-import { useDrag } from 'hooks/useDrag';
+import { useDrag } from '@/hooks/useDrag';
 
 interface AtomDragProps extends TagProps {
   type: string;
