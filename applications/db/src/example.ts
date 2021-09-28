@@ -7,10 +7,6 @@ const users: CofeUser[] = [
     level: -1,
     username: 'Admin',
     password: '88888',
-    config: {
-      leftPaneSize: 240,
-      rightPaneSize: 0,
-    },
     enabled: true,
     createdAt: 0,
     updatedAt: 0,

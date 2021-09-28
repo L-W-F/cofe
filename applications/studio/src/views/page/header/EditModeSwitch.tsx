@@ -4,7 +4,7 @@ import { IconButton } from '@chakra-ui/react';
 import { useDispatch, useStore } from '@cofe/store';
 
 export const EditModeSwitch = () => {
-  const isEditorMode = useStore<boolean>('whoami.config.editMode');
+  const isEditorMode = useStore<boolean>('config.editMode');
   const dispatch = useDispatch();
 
   return (
