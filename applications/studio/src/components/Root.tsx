@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { FlexProps, useToast } from '@chakra-ui/react';
+import { Box, BoxProps, Progress, useToast } from '@chakra-ui/react';
 import { Listener, subscribe } from '@cofe/io';
-import { Container as C } from '@cofe/ui';
 
-export interface ContainerProps extends FlexProps {
+export interface RootProps extends BoxProps {
   loading?: boolean;
 }
 
-export const Container = (props: FlexProps) => {
+export const Root = ({ children, ...props }: BoxProps) => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
 
@@ -45,5 +44,19 @@ export const Container = (props: FlexProps) => {
     };
   }, [toast]);
 
-  return <C loading={loading} {...props} />;
+  return (
+    <Box {...props}>
+      {loading ? (
+        <Progress
+          pos="fixed"
+          top={2}
+          left={2}
+          right={2}
+          size="xs"
+          isIndeterminate
+        />
+      ) : null}
+      {children}
+    </Box>
+  );
 };

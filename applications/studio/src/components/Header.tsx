@@ -5,8 +5,6 @@ import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import {
   Avatar,
   Box,
-  Flex,
-  FlexProps,
   Icon,
   IconButton,
   Link,
@@ -15,12 +13,12 @@ import {
   MenuItem,
   MenuList,
   useColorMode,
-  useColorModeValue,
 } from '@chakra-ui/react';
-import { CofeIcon, GithubIcon } from '@cofe/icons';
+import { CofeIcon } from '@cofe/icons';
 import { post } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
 import { CofeWhoami } from '@cofe/types';
+import { AppBar, AppBarProps, Toolbar } from '@cofe/ui';
 
 const Logo = () => {
   return <Icon as={CofeIcon} w="5" h="5" />;
@@ -74,38 +72,22 @@ const Whoami = () => {
   );
 };
 
-export const Header = ({ children = <Box flex={1} /> }: FlexProps) => {
+export const Header = ({
+  children = <Box flex={1} />,
+  ...props
+}: AppBarProps) => {
   return (
-    <Flex
-      px={3}
-      py={1}
-      bg={useColorModeValue('white', 'gray.800')}
-      gridGap={3}
-      alignItems="center"
-      justifyItems="flex-end"
-    >
-      <NextLink aria-label="返回首页" href="/" passHref>
-        <Link>
-          <Logo />
-        </Link>
-      </NextLink>
-      {children}
-      <ColorModeSwitch />
-      <Link
-        isExternal
-        aria-label="查看代码仓库"
-        href="https://github.com/crossjs/cofe"
-      >
-        <Icon
-          as={GithubIcon}
-          display="block"
-          transition="color 0.2s"
-          w="5"
-          h="5"
-          _hover={{ color: 'gray.600' }}
-        />
-      </Link>
-      <Whoami />
-    </Flex>
+    <AppBar mb={4} {...props}>
+      <Toolbar gridGap={2}>
+        <NextLink aria-label="返回首页" href="/" passHref>
+          <Link>
+            <Logo />
+          </Link>
+        </NextLink>
+        {children}
+        <ColorModeSwitch />
+        <Whoami />
+      </Toolbar>
+    </AppBar>
   );
 };

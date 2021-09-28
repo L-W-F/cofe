@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import NextLink from 'next/link';
-import { AddIcon, EditIcon } from '@chakra-ui/icons';
+import { AddIcon, EditIcon, TimeIcon } from '@chakra-ui/icons';
 import {
+  Avatar,
+  Box,
   Button,
   Drawer,
   DrawerBody,
@@ -11,14 +13,11 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Heading,
   IconButton,
-  Link,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
+  LinkBox,
+  LinkOverlay,
+  SimpleGrid,
   useDisclosure,
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
@@ -26,11 +25,11 @@ import { compose } from '@cofe/gssp';
 import { get, patch, post } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
 import { CofeApp } from '@cofe/types';
-import { Card, CardContent, CardHeader } from '@cofe/ui';
+import { Card, CardContent, CardHeader, Toolbar } from '@cofe/ui';
 import { formatDate } from '@cofe/utils';
-import { Container } from '@cofe/ui';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
+import { Root } from '@/components/Root';
 import { withGsspCatch } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspCurrentTime } from '@/gssp/withGsspCurrentTime';
@@ -46,70 +45,63 @@ const Index = ({
 
   return (
     <>
-      <Container>
+      <Root>
         <Header />
-        <Card flex={1}>
-          <CardHeader
-            title="应用"
-            action={
-              <IconButton
-                aria-label="创建新的应用"
-                icon={<AddIcon />}
-                onClick={() => {
-                  setFormData({});
-                  onOpen();
-                }}
-              />
-            }
+        <Toolbar mb={4}>
+          <Heading as="h2" size="xl">
+            应用
+          </Heading>
+          <Box flex={1} />
+          <IconButton
+            aria-label="创建新的应用"
+            icon={<AddIcon />}
+            onClick={() => {
+              setFormData({});
+              onOpen();
+            }}
           />
-          <CardContent>
-            <Table variant="simple">
-              <Thead>
-                <Tr>
-                  <Th>名称</Th>
-                  <Th>描述</Th>
-                  <Th isNumeric>创建于</Th>
-                  <Th isNumeric>更新于</Th>
-                  <Th />
-                </Tr>
-              </Thead>
-              <Tbody>
-                {apps.map(
-                  ({ id, title, description, createdAt, updatedAt }) => (
-                    <Tr key={id}>
-                      <Td>
-                        <NextLink href={`/apps/${id}`} passHref>
-                          <Link>{title}</Link>
-                        </NextLink>
-                      </Td>
-                      <Td>{description}</Td>
-                      <Td isNumeric>{formatDate(createdAt)}</Td>
-                      <Td isNumeric>{formatDate(updatedAt)}</Td>
-                      <Td>
-                        <IconButton
-                          aria-label="编辑"
-                          icon={<EditIcon />}
-                          onClick={() => {
-                            setFormData(apps.find((app) => app.id === id));
+        </Toolbar>
+        <SimpleGrid
+          m={2}
+          gridGap={2}
+          columns={{ base: 1, md: 2, lg: 3, xl: 4 }}
+        >
+          {apps.map(({ id, title, description, createdAt, updatedAt }) => (
+            <LinkBox key={id} as={Card}>
+              <CardHeader
+                avatar={<Avatar size="sm" name="A" />}
+                title={
+                  <NextLink href={`/apps/${id}`} passHref>
+                    <LinkOverlay>{title}</LinkOverlay>
+                  </NextLink>
+                }
+                description={description}
+                action={
+                  <IconButton
+                    aria-label="编辑"
+                    icon={<EditIcon />}
+                    size="xs"
+                    onClick={() => {
+                      setFormData(apps.find((app) => app.id === id));
 
-                            onOpen();
-                          }}
-                        />
-                      </Td>
-                    </Tr>
-                  ),
-                )}
-              </Tbody>
-            </Table>
-          </CardContent>
-        </Card>
+                      onOpen();
+                    }}
+                  />
+                }
+              />
+              <CardContent>
+                <TimeIcon aria-label="最后修改" mr={1} />
+                {formatDate(updatedAt)}
+              </CardContent>
+            </LinkBox>
+          ))}
+        </SimpleGrid>
         <Footer>{currentTime}</Footer>
-      </Container>
+      </Root>
       <Drawer
         isOpen={isOpen}
-        placement="right"
+        placement={formData?.id ? 'right' : 'bottom'}
         onClose={onClose}
-        // finalFocusRef={btnRef}
       >
         <DrawerOverlay />
         <DrawerContent>

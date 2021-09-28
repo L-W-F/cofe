@@ -5,7 +5,7 @@ export * from './createLogger';
 const log2file =
   typeof window === 'undefined' && process.env.LOGGER_ROOT
     ? require('./log2file').log2file
-    : null;
+    : undefined;
 
 export const debug = createLogger('d', log2file);
 export const info = createLogger('i', log2file);

@@ -3,9 +3,9 @@ import { InferGetServerSidePropsType } from 'next';
 import { Box } from '@chakra-ui/react';
 import { compose } from '@cofe/gssp';
 import { useStore } from '@cofe/store';
-import { Container } from '@cofe/ui';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
+import { Root } from '@/components/Root';
 import { withGsspCatch } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspCurrentTime } from '@/gssp/withGsspCurrentTime';
@@ -17,13 +17,13 @@ const Account = ({
   const whoami = useStore('whoami');
 
   return (
-    <Container>
+    <Root>
       <Header />
       <Box p={10}>
         <pre>{JSON.stringify(whoami, null, 4)}</pre>
       </Box>
       <Footer>{currentTime}</Footer>
-    </Container>
+    </Root>
   );
 };
 

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import NextLink from 'next/link';
-import { AddIcon, EditIcon } from '@chakra-ui/icons';
+import { AddIcon, EditIcon, TimeIcon } from '@chakra-ui/icons';
 import {
+  Avatar,
+  Box,
   Button,
   Drawer,
   DrawerBody,
@@ -11,14 +13,11 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Heading,
   IconButton,
-  Link,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
+  LinkBox,
+  LinkOverlay,
+  SimpleGrid,
   useDisclosure,
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
@@ -26,16 +25,18 @@ import { compose } from '@cofe/gssp';
 import { get, patch, post } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
 import { CofePage } from '@cofe/types';
-import { Card, CardContent, CardHeader, Container } from '@cofe/ui';
+import { Card, CardContent, CardHeader, Toolbar } from '@cofe/ui';
 import { formatDate } from '@cofe/utils';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
+import { Root } from '@/components/Root';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
+import { withGsspCurrentTime } from '@/gssp/withGsspCurrentTime';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
 
 const App = ({
   appId,
-  timestamp,
+  currentTime,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const pages = useStore('page');
   const dispatch = useDispatch();
@@ -44,70 +45,63 @@ const App = ({
 
   return (
     <>
-      <Container>
+      <Root>
         <Header />
-        <Card flex={1}>
-          <CardHeader
-            title="页面"
-            action={
-              <IconButton
-                aria-label="创建新的页面"
-                icon={<AddIcon />}
-                onClick={() => {
-                  setFormData({});
-                  onOpen();
-                }}
-              />
-            }
+        <Toolbar mb={4}>
+          <Heading as="h2" size="xl">
+            页面
+          </Heading>
+          <Box flex={1} />
+          <IconButton
+            aria-label="创建新的页面"
+            icon={<AddIcon />}
+            onClick={() => {
+              setFormData({});
+              onOpen();
+            }}
           />
-          <CardContent>
-            <Table variant="simple">
-              <Thead>
-                <Tr>
-                  <Th>名称</Th>
-                  <Th>描述</Th>
-                  <Th isNumeric>创建于</Th>
-                  <Th isNumeric>更新于</Th>
-                  <Th />
-                </Tr>
-              </Thead>
-              <Tbody>
-                {pages.map(
-                  ({ id, title, description, createdAt, updatedAt }) => (
-                    <Tr key={id}>
-                      <Td>
-                        <NextLink href={`/pages/${id}`} passHref>
-                          <Link>{title}</Link>
-                        </NextLink>
-                      </Td>
-                      <Td>{description}</Td>
-                      <Td isNumeric>{formatDate(createdAt)}</Td>
-                      <Td isNumeric>{formatDate(updatedAt)}</Td>
-                      <Td>
-                        <IconButton
-                          aria-label="编辑"
-                          icon={<EditIcon />}
-                          onClick={() => {
-                            setFormData(pages.find((page) => page.id === id));
+        </Toolbar>
+        <SimpleGrid
+          m={2}
+          gridGap={2}
+          columns={{ base: 1, md: 2, lg: 3, xl: 4 }}
+        >
+          {pages.map(({ id, title, description, createdAt, updatedAt }) => (
+            <LinkBox key={id} as={Card}>
+              <CardHeader
+                avatar={<Avatar size="sm" name="A" />}
+                title={
+                  <NextLink href={`/pages/${id}`} passHref>
+                    <LinkOverlay>{title}</LinkOverlay>
+                  </NextLink>
+                }
+                description={description}
+                action={
+                  <IconButton
+                    aria-label="编辑"
+                    icon={<EditIcon />}
+                    size="xs"
+                    onClick={() => {
+                      setFormData(pages.find((page) => page.id === id));
 
-                            onOpen();
-                          }}
-                        />
-                      </Td>
-                    </Tr>
-                  ),
-                )}
-              </Tbody>
-            </Table>
-          </CardContent>
-        </Card>
-        <Footer>{timestamp}</Footer>
-      </Container>
+                      onOpen();
+                    }}
+                  />
+                }
+              />
+              <CardContent>
+                <TimeIcon aria-label="最后修改" mr={1} />
+                {formatDate(updatedAt)}
+              </CardContent>
+            </LinkBox>
+          ))}
+        </SimpleGrid>
+        <Footer>{currentTime}</Footer>
+      </Root>
       <Drawer
         isOpen={isOpen}
-        placement="right"
+        placement={formData?.id ? 'right' : 'bottom'}
         onClose={onClose}
-        // finalFocusRef={btnRef}
       >
         <DrawerOverlay />
         <DrawerContent>
@@ -169,7 +163,7 @@ const App = ({
 };
 
 export const getServerSideProps = compose(
-  [withGsspWhoami, withGsspColorMode],
+  [withGsspCurrentTime, withGsspWhoami, withGsspColorMode],
   async (context: GetServerSidePropsContext) => {
     const pages: CofePage[] = await get(
       `${process.env.DB_URL}/api/apps/${context.params.id}/pages`,
@@ -182,7 +176,6 @@ export const getServerSideProps = compose(
 
     return {
       props: {
-        timestamp: formatDate(Date.now()),
         appId: context.params.id,
         initialStates: {
           page: pages,

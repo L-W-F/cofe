@@ -14,9 +14,10 @@ import {
 } from '@chakra-ui/react';
 import { compose } from '@cofe/gssp';
 import { post } from '@cofe/io';
-import { Container, PasswordField } from '@cofe/ui';
+import { PasswordField } from '@cofe/ui';
 import { withGsspColorMode } from 'gssp/withGsspColorMode';
 import { Header } from 'components/Header';
+import { Root } from '@/components/Root';
 
 const Signup = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
@@ -27,7 +28,7 @@ const Signup = (
   const { replace } = useRouter();
 
   return (
-    <Container>
+    <Root>
       <Header />
       <Box p={10}>
         <Box maxW={80} marginX="auto">
@@ -77,7 +78,7 @@ const Signup = (
           </Box>
         </Box>
       </Box>
-    </Container>
+    </Root>
   );
 };
 

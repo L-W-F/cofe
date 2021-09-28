@@ -7,7 +7,6 @@ import {
   AccordionPanel,
   Box,
   BoxProps,
-  Flex,
   List,
   ListItem,
 } from '@chakra-ui/react';
@@ -50,7 +49,7 @@ const TreeItem = ({ level = 0, type, id, children }) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const dispatch = useDispatch();
 
-  const ToggleCollapsedIcon = isCollapsed ? ChevronRightIcon : ChevronDownIcon;
+  const ChevronIcon = isCollapsed ? ChevronRightIcon : ChevronDownIcon;
   const isSelected = selected?.id === id;
 
   return (
@@ -61,41 +60,23 @@ const TreeItem = ({ level = 0, type, id, children }) => {
       }}
     >
       {children ? (
-        <Flex
-          display={isCollapsed ? 'flex' : 'block'}
-          direction={isCollapsed ? 'row' : 'column'}
-          alignItems={isCollapsed ? 'center' : 'start'}
-        >
+        <>
           <TreeItemTag isSelected={isSelected} indent={level} title={id}>
-            <ToggleCollapsedIcon
-              onClick={() => setIsCollapsed((v) => !v)}
-              mx={'1px'}
-            />
-            {`<${type}>`}
+            <ChevronIcon onClick={() => setIsCollapsed((v) => !v)} mx={'1px'} />
+            {type}
           </TreeItemTag>
-          {isCollapsed ? (
-            <TreeItemTag isSelected={isSelected}>...</TreeItemTag>
-          ) : (
+          {isCollapsed ? null : (
             <List>
               {children.map((props) => (
                 <TreeItem key={props.id} level={level + 1} {...props} />
               ))}
             </List>
           )}
-          <TreeItemTag
-            isSelected={isSelected}
-            indent={isCollapsed ? 0 : level}
-            title={id}
-          >
-            {`</${type}>`}
-          </TreeItemTag>
-        </Flex>
+        </>
       ) : (
-        <TreeItemTag
-          isSelected={isSelected}
-          indent={level}
-          title={id}
-        >{`<${type} />`}</TreeItemTag>
+        <TreeItemTag isSelected={isSelected} indent={level} title={id}>
+          {type}
+        </TreeItemTag>
       )}
     </ListItem>
   );
