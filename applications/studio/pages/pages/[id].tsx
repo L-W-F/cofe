@@ -1,7 +1,13 @@
 import React, { useCallback, useEffect } from 'react';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
-import { ChevronDownIcon } from '@chakra-ui/icons';
+import {
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  EditIcon,
+  ViewIcon,
+} from '@chakra-ui/icons';
 import {
   Accordion,
   Box,
@@ -16,20 +22,18 @@ import {
 import { compose } from '@cofe/gssp';
 import { useSplitPane } from '@cofe/hooks';
 import { get, put } from '@cofe/io';
-import { getState, useDispatch } from '@cofe/store';
+import { getState, useDispatch, useStore } from '@cofe/store';
 import { CofePage, CofeSnapshot } from '@cofe/types';
-import { Container } from '@cofe/ui';
 import { isMac } from '@cofe/utils';
 import { Header } from '@/components/Header';
+import { Root } from '@/components/Root';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
+import { EditorState } from '@/store/editor';
 import { ActionPanel } from '@/views/page/ActionPanel';
 import { AtomPanel } from '@/views/page/AtomPanel';
 import { CanvasPane } from '@/views/page/CanvasPanel';
 import { EventPanel } from '@/views/page/EventPanel';
-import { EditModeSwitch } from '@/views/page/header/EditModeSwitch';
-import { InteractionIndicator } from '@/views/page/header/InteractionIndicator';
-import { UndoRedo } from '@/views/page/header/UndoRedo';
 import { HistoryPanel } from '@/views/page/HistoryPanel';
 import { PropertyPanel } from '@/views/page/PropertyPanel';
 import { TreePanel } from '@/views/page/TreePanel';
@@ -44,13 +48,11 @@ const SplitHandle = (props: ReturnType<typeof useSplitPane>['handleProps']) => {
       flexShrink={0}
       flexBasis={2}
       userSelect="none"
-      _before={{
-        content: '""',
-        display: 'block',
-        height: '100%',
-      }}
       _hover={{
         '&:before': {
+          content: '""',
+          display: 'block',
+          height: '100%',
           bgColor: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
         },
       }}
@@ -111,13 +113,84 @@ const DropMenu = () => {
   );
 };
 
-const PageEditor = (
-  props: InferGetServerSidePropsType<typeof getServerSideProps>,
-) => {
+const UndoRedo = () => {
+  const { stack, cursor } = useStore<EditorState>('editor');
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    const keydown = (e) => {
+      // ctrl+z, ctrl+shift+z, ⌘+z, ⌘+shift+z
+      if ((!isMac && e.ctrlKey) || (isMac && e.metaKey)) {
+        if (e.key.toLowerCase() === 'z') {
+          e.preventDefault();
+          dispatch(e.shiftKey ? 'REDO' : 'UNDO')(null);
+        } else if (e.key.toLowerCase() === 'y') {
+          e.preventDefault();
+          dispatch(!e.shiftKey ? 'REDO' : 'UNDO')(null);
+        }
+      }
+    };
+
+    document.addEventListener('keydown', keydown, true);
+
+    return () => {
+      document.removeEventListener('keydown', keydown, true);
+    };
+  }, [dispatch]);
+
+  return (
+    <>
+      <IconButton
+        aria-label="undo"
+        variant="ghost"
+        icon={<ChevronLeftIcon />}
+        disabled={cursor === 0}
+        onClick={() => {
+          dispatch('UNDO')(null);
+        }}
+      />
+      <IconButton
+        aria-label="redo"
+        variant="ghost"
+        icon={<ChevronRightIcon />}
+        disabled={cursor === stack.length - 1}
+        onClick={() => {
+          dispatch('REDO')(null);
+        }}
+      />
+    </>
+  );
+};
+
+const InteractionIndicator = () => {
+  const dragging = useStore('dnd.dragging');
+  const selected = useStore('editor.selected');
+
+  return <Box>{`<${dragging?.type ?? selected?.type ?? ''} />`}</Box>;
+};
+
+const EditModeSwitch = () => {
+  const isEditorMode = useStore<boolean>('config.editMode');
+  const dispatch = useDispatch();
+
+  return (
+    <IconButton
+      aria-label="Toggle edit mode"
+      variant="ghost"
+      icon={isEditorMode ? <ViewIcon /> : <EditIcon />}
+      onClick={() => {
+        dispatch('TOGGLE_EDIT_MODE')(null);
+      }}
+    />
+  );
+};
+
+const PageEditor = ({
+  leftPaneSize,
+  rightPaneSize,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const sp1 = useSplitPane({
-    initialSize: props.initialStates.whoami.config.leftPaneSize,
+    initialSize: leftPaneSize,
     maxSize: 400,
     onInit: (size, pane) => {
       pane.style.width = `${size}px`;
@@ -128,13 +201,13 @@ const PageEditor = (
       pane.style.display = size ? 'block' : 'none';
     },
     onEnd: (size) => {
-      dispatch('SET_LEFT_PANE_SIZE')(size);
+      document.cookie = `left_pane_size=${size}`;
     },
   });
 
   const sp2 = useSplitPane({
     direction: 'row-reverse',
-    initialSize: props.initialStates.whoami.config.rightPaneSize,
+    initialSize: rightPaneSize,
     maxSize: 400,
     onInit: (size, pane) => {
       pane.style.width = `${size}px`;
@@ -145,12 +218,12 @@ const PageEditor = (
       pane.style.display = size ? 'block' : 'none';
     },
     onEnd: (size) => {
-      dispatch('SET_RIGHT_PANE_SIZE')(size);
+      document.cookie = `right_pane_size=${size}`;
     },
   });
 
   return (
-    <Container>
+    <Root>
       <Header>
         <DropMenu />
         <UndoRedo />
@@ -187,7 +260,7 @@ const PageEditor = (
           </Accordion>
         </Flex>
       </Flex>
-    </Container>
+    </Root>
   );
 };
 
@@ -216,8 +289,12 @@ export const getServerSideProps = compose(
       }),
     ]);
 
+    const { left_pane_size = 240, right_pane_size = 240 } = context.req.cookies;
+
     return {
       props: {
+        leftPaneSize: +left_pane_size,
+        rightPaneSize: +right_pane_size,
         initialStates: {
           editor: {
             stack: [...stack, page.tree],
