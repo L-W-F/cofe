@@ -6,6 +6,11 @@ import { Store } from '@cofe/store';
 import { modules } from 'store';
 import { theme } from 'theme';
 
+// https://github.com/visionmedia/debug#browser-support
+if (process.env.NEXT_PUBLIC_DEBUG && typeof localStorage !== 'undefined') {
+  localStorage.setItem('debug', process.env.NEXT_PUBLIC_DEBUG);
+}
+
 const MyApp = ({
   Component,
   pageProps: { colorModeCookie, ...pageProps },

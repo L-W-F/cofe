@@ -1,3 +1,4 @@
+import { debug } from '@cofe/logger';
 import { createLogger } from './createLogger';
 import { createStore } from './createStore';
 
@@ -13,6 +14,7 @@ export const { Store, getState, useStore, useDispatch } = createStore(
     ? [
         createLogger({
           prefix: 'global',
+          logger: debug('store'),
         }),
       ]
     : [],
