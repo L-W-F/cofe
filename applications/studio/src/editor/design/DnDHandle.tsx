@@ -2,8 +2,8 @@ import React from 'react';
 import { Box, BoxProps, useColorModeValue } from '@chakra-ui/react';
 import { useStore } from '@cofe/store';
 import { CofeAtomIdentity, CofeInsertAdjacent } from '@cofe/types';
-import { useDrag } from '../../../hooks/useDrag';
-import { DndState } from '../../../store/dnd';
+import { useDrag } from '../../hooks/useDrag';
+import { DndState } from '../../store/dnd';
 
 const getAdjacentProps = (
   adjacent?: CofeInsertAdjacent,

@@ -27,16 +27,16 @@ import { CofePage, CofeSnapshot } from '@cofe/types';
 import { isMac } from '@cofe/utils';
 import { Header } from '@/components/Header';
 import { Root } from '@/components/Root';
+import { ActionPanel } from '@/editor/ActionPanel';
+import { AtomPanel } from '@/editor/AtomPanel';
+import { CanvasPane } from '@/editor/CanvasPanel';
+import { EventPanel } from '@/editor/EventPanel';
+import { HistoryPanel } from '@/editor/HistoryPanel';
+import { PropertyPanel } from '@/editor/PropertyPanel';
+import { TreePanel } from '@/editor/TreePanel';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
 import { EditorState } from '@/store/editor';
-import { ActionPanel } from '@/views/page/ActionPanel';
-import { AtomPanel } from '@/views/page/AtomPanel';
-import { CanvasPane } from '@/views/page/CanvasPanel';
-import { EventPanel } from '@/views/page/EventPanel';
-import { HistoryPanel } from '@/views/page/HistoryPanel';
-import { PropertyPanel } from '@/views/page/PropertyPanel';
-import { TreePanel } from '@/views/page/TreePanel';
 
 const SplitHandle = (props: ReturnType<typeof useSplitPane>['handleProps']) => {
   return (

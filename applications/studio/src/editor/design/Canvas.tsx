@@ -4,7 +4,7 @@ import { useDispatch } from '@cofe/store';
 import { CofeTree } from '@cofe/types';
 import { isMac } from '@cofe/utils';
 import { pick } from 'lodash';
-import { useDrop } from '../../../hooks/useDrop';
+import { useDrop } from '../../hooks/useDrop';
 import { DesignNodeRenderer } from './NodeRenderer';
 
 interface DesignCanvasProps extends BoxProps {
