@@ -11,7 +11,7 @@ export const TextAtom = ({
   children = content,
   ...props
 }: TextAtomProps) => {
-  const isEditorMode = useStore<boolean>('whoami.config.editMode');
+  const isEditorMode = useStore<boolean>('config.editMode');
 
   return (
     <Text

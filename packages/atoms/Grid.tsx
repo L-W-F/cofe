@@ -12,7 +12,7 @@ export const GridAtom = ({
   columns = 1,
   ...props
 }: GridAtomProps) => {
-  const isEditorMode = useStore<boolean>('whoami.config.editMode');
+  const isEditorMode = useStore<boolean>('config.editMode');
 
   return (
     <Grid

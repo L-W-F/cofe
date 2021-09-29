@@ -7,7 +7,7 @@ import { useSelectedTree } from '@/hooks/useSelectedTree';
 
 export const CanvasPane = (props: BoxProps) => {
   const tree = useSelectedTree();
-  const isEditorMode = useStore<boolean>('whoami.config.editMode');
+  const isEditorMode = useStore<boolean>('config.editMode');
 
   const Canvas = isEditorMode ? DesignCanvas : PreviewCanvas;
 

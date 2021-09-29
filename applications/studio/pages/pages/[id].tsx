@@ -162,7 +162,7 @@ const UndoRedo = () => {
   );
 };
 
-const InteractionIndicator = () => {
+const CurrentSelected = () => {
   const dragging = useStore('dnd.dragging');
   const selected = useStore('editor.selected');
 
@@ -228,7 +228,7 @@ const PageEditor = ({
         <DropMenu />
         <UndoRedo />
         <Box flex={1} />
-        <InteractionIndicator />
+        <CurrentSelected />
         <Box flex={1} />
         <EditModeSwitch />
       </Header>

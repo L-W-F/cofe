@@ -7,11 +7,6 @@ export const initialState: Partial<CofeConfig> = {
 
 export const reducer = (state = initialState, { type, payload }: AnyAction) => {
   switch (type) {
-    case 'CLEAR_LOGIN':
-      return {
-        config: {},
-      };
-
     case 'TOGGLE_EDIT_MODE':
       return {
         ...state,

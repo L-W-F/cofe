@@ -5,7 +5,7 @@ import { useStore } from '@cofe/store';
 interface RootAtomProps extends BoxProps {}
 
 export const RootAtom = (props: RootAtomProps) => {
-  const isEditorMode = useStore<boolean>('whoami.config.editMode');
+  const isEditorMode = useStore<boolean>('config.editMode');
 
   return (
     <Box
