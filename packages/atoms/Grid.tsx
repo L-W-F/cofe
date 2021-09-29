@@ -1,23 +1,22 @@
 import React from 'react';
 import { Grid, GridProps } from '@chakra-ui/react';
-import { useStore } from '@cofe/store';
+import { AtomProps } from './types';
 
-interface GridAtomProps extends GridProps {
+interface GridAtomProps extends AtomProps, GridProps {
   rows?: number;
   columns?: number;
 }
 
 export const GridAtom = ({
+  isDesign,
   rows = 1,
   columns = 1,
   ...props
 }: GridAtomProps) => {
-  const isEditorMode = useStore<boolean>('config.editMode');
-
   return (
     <Grid
       _empty={
-        isEditorMode
+        isDesign
           ? {
               '&:before': {
                 content: '"Grid"',

@@ -1,6 +1,6 @@
+import { compose } from '@cofe/api';
 import { CofeUser } from '@cofe/types';
 import { makeId } from '@cofe/utils';
-import { compose } from '@/../../../packages/api';
 import { get, getOne, set } from '@/db';
 import { withApiAuth } from '@/withApiAuth';
 import { withApiCatch } from '@/withApiCatch';

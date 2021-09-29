@@ -9,7 +9,6 @@
   "author": "crossjs <liwenfu@crossjs.com>",
   "dependencies": {
     "@chakra-ui/react": "^1.6.8",
-    "@cofe/store": "^0.1.0",
     "react": "^17.0.2"
   },
   "devDependencies": {

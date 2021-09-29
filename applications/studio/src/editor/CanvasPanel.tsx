@@ -1,25 +1,22 @@
 import React from 'react';
-import { Box, BoxProps } from '@chakra-ui/react';
+import { BoxProps } from '@chakra-ui/react';
 import { useStore } from '@cofe/store';
+import { CofeConfig } from '@cofe/types';
+import { Paper } from '@cofe/ui';
 import { DesignCanvas } from './design/Canvas';
 import { PreviewCanvas } from './preview/Canvas';
 import { useSelectedTree } from '@/hooks/useSelectedTree';
+import { EDIT_MODE_DESIGN } from '@/store/config';
 
 export const CanvasPane = (props: BoxProps) => {
   const tree = useSelectedTree();
-  const isEditorMode = useStore<boolean>('config.editMode');
+  const editorMode = useStore<CofeConfig['editorMode']>('config.editorMode');
 
-  const Canvas = isEditorMode ? DesignCanvas : PreviewCanvas;
+  const Canvas = editorMode === EDIT_MODE_DESIGN ? DesignCanvas : PreviewCanvas;
 
   return (
-    <Box
-      p={4}
-      borderWidth={1}
-      borderStyle="solid"
-      borderColor="silver"
-      {...props}
-    >
+    <Paper p={4} {...props}>
       <Canvas tree={tree} />
-    </Box>
+    </Paper>
   );
 };

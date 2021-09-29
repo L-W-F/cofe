@@ -1,8 +1,11 @@
 import { AnyAction } from '@cofe/store';
 import { CofeConfig } from '@cofe/types';
 
+export const EDIT_MODE_DESIGN = 1;
+export const EDIT_MODE_PREVIEW = 2;
+
 export const initialState: Partial<CofeConfig> = {
-  editMode: true,
+  editorMode: EDIT_MODE_DESIGN,
 };
 
 export const reducer = (state = initialState, { type, payload }: AnyAction) => {
@@ -10,7 +13,10 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
     case 'TOGGLE_EDIT_MODE':
       return {
         ...state,
-        editMode: !state.editMode,
+        editorMode:
+          state.editorMode === EDIT_MODE_DESIGN
+            ? EDIT_MODE_PREVIEW
+            : EDIT_MODE_DESIGN,
       };
 
     default:

@@ -1,16 +1,14 @@
 import React from 'react';
 import { Box, BoxProps } from '@chakra-ui/react';
-import { useStore } from '@cofe/store';
+import { AtomProps } from './types';
 
-interface RootAtomProps extends BoxProps {}
+interface RootAtomProps extends AtomProps, BoxProps {}
 
-export const RootAtom = (props: RootAtomProps) => {
-  const isEditorMode = useStore<boolean>('config.editMode');
-
+export const RootAtom = ({ isDesign, ...props }: RootAtomProps) => {
   return (
     <Box
       _empty={
-        isEditorMode
+        isDesign
           ? {
               '&:before': {
                 content: '"Root"',

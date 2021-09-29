@@ -1,3 +1,3 @@
 export interface CofeConfig {
-  editMode?: boolean;
+  editorMode?: 1 | 2;
 }

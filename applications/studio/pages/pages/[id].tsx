@@ -23,7 +23,7 @@ import { compose } from '@cofe/gssp';
 import { useSplitPane } from '@cofe/hooks';
 import { get, put } from '@cofe/io';
 import { getState, useDispatch, useStore } from '@cofe/store';
-import { CofePage, CofeSnapshot } from '@cofe/types';
+import { CofeConfig, CofePage, CofeSnapshot } from '@cofe/types';
 import { isMac } from '@cofe/utils';
 import { Header } from '@/components/Header';
 import { Root } from '@/components/Root';
@@ -36,6 +36,7 @@ import { PropertyPanel } from '@/editor/PropertyPanel';
 import { TreePanel } from '@/editor/TreePanel';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
+import { EDIT_MODE_DESIGN } from '@/store/config';
 import { EditorState } from '@/store/editor';
 
 const SplitHandle = (props: ReturnType<typeof useSplitPane>['handleProps']) => {
@@ -170,14 +171,14 @@ const CurrentSelected = () => {
 };
 
 const EditModeSwitch = () => {
-  const isEditorMode = useStore<boolean>('config.editMode');
+  const editorMode = useStore<CofeConfig['editorMode']>('config.editorMode');
   const dispatch = useDispatch();
 
   return (
     <IconButton
       aria-label="Toggle edit mode"
       variant="ghost"
-      icon={isEditorMode ? <ViewIcon /> : <EditIcon />}
+      icon={editorMode === EDIT_MODE_DESIGN ? <ViewIcon /> : <EditIcon />}
       onClick={() => {
         dispatch('TOGGLE_EDIT_MODE')(null);
       }}

@@ -1,23 +1,22 @@
 import React from 'react';
 import { Button, ButtonProps } from '@chakra-ui/react';
-import { useStore } from '@cofe/store';
+import { AtomProps } from './types';
 
-interface ButtonAtomProps extends ButtonProps {
+interface ButtonAtomProps extends AtomProps, ButtonProps {
   disabled?: boolean;
 }
 
 export const ButtonAtom = ({
+  isDesign,
   autoFocus = false,
   disabled: isDisabled,
   ...props
 }: ButtonAtomProps) => {
-  const isEditorMode = useStore<boolean>('config.editMode');
-
   return (
     <Button
       autoFocus={autoFocus}
       _empty={
-        isEditorMode
+        isDesign
           ? {
               '&:before': {
                 content: '"Button"',

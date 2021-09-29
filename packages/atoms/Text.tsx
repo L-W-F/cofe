@@ -1,22 +1,21 @@
 import React from 'react';
 import { Text, TextProps } from '@chakra-ui/react';
-import { useStore } from '@cofe/store';
+import { AtomProps } from './types';
 
-interface TextAtomProps extends TextProps {
+interface TextAtomProps extends AtomProps, TextProps {
   content?: string;
 }
 
 export const TextAtom = ({
+  isDesign,
   content,
   children = content,
   ...props
 }: TextAtomProps) => {
-  const isEditorMode = useStore<boolean>('config.editMode');
-
   return (
     <Text
       _empty={
-        isEditorMode
+        isDesign
           ? {
               '&:before': {
                 content: '"Text"',
