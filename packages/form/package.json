@@ -15,6 +15,6 @@
   },
   "devDependencies": {
     "@types/json-schema": "^7.0.9",
-    "@types/react": "^17.0.24"
+    "@types/react": "^17.0.25"
   }
 }
