@@ -27,7 +27,7 @@
     "unist-builder": "^3.0.0"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.173",
+    "@types/lodash": "^4.14.175",
     "babel-preset-cofe": "^0.0.1",
     "eslint": "^7.32.0",
     "eslint-config-cofe": "^0.0.2",
