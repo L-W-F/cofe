@@ -8,6 +8,7 @@
   "license": "MIT",
   "author": "crossjs <liwenfu@crossjs.com>",
   "dependencies": {
-    "@cofe/types": "^0.1.0"
+    "@cofe/types": "^0.1.0",
+    "lodash": "^4.17.21"
   }
 }

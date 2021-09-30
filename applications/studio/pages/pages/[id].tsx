@@ -18,6 +18,7 @@ import {
   MenuItem,
   MenuList,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react';
 import { compose } from '@cofe/gssp';
 import { useSplitPane } from '@cofe/hooks';
@@ -69,12 +70,20 @@ const SplitHandle = (props: ReturnType<typeof useSplitPane>['handleProps']) => {
 
 const DropMenu = () => {
   const { query } = useRouter();
+  const toast = useToast();
 
   const save = useCallback(async () => {
     const { stack } = getState().editor;
 
     await put(`/api/pages/${query.id}/tree`, stack[stack.length - 1]);
-  }, [query.id]);
+
+    toast({
+      title: '已保存',
+      status: 'success',
+      duration: 1000,
+      position: 'bottom-left',
+    });
+  }, [toast, query.id]);
 
   const keydown = useCallback(
     async (e) => {

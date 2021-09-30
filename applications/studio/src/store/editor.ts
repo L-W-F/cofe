@@ -156,7 +156,7 @@ function insertOrMoveNodeByDrop(
 
   // 从现有树中拖动
   if (typeof dragging === 'string') {
-    visit(tree, { id: dragging }, (node, index, parent) => {
+    visit(tree, { id: dragging }, (node, index, parent: any) => {
       [child] = parent.children.splice(index, 1) as [CofeTree];
 
       return EXIT;
@@ -167,7 +167,7 @@ function insertOrMoveNodeByDrop(
 
   // 前插或后插
   if (adjacent && reference) {
-    visit(tree, { id: reference }, (node, index, parent) => {
+    visit(tree, { id: reference }, (node, index, parent: any) => {
       parent.children.splice(
         adjacent === 'INSERT_BEFORE' ? index : index + 1,
         0,

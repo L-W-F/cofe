@@ -71,27 +71,14 @@ const getAdjacentProps = (
 interface DnDHandleProps extends BoxProps {
   type: string;
   id: string;
-  isRoot?: boolean;
-  isInline?: boolean;
 }
 
-const DnDHandle = ({
-  children,
-  type,
-  id,
-  isRoot,
-  isInline,
-  ...props
-}: DnDHandleProps) => {
+const outlineColors = ['red.400', 'yellow.400', 'blue.400', 'gray.400'];
+
+const DnDHandle = ({ children, type, id, ...props }: DnDHandleProps) => {
   const selected = useStore<CofeAtomIdentity>('editor.selected');
   const { dragging, reference, container, adjacent } =
     useStore<DndState>('dnd');
-
-  const outlineColors = useColorModeValue(
-    ['red.400', 'yellow.400', 'blue.400', 'gray.400'],
-    ['red.400', 'yellow.400', 'blue.400', 'gray.400'],
-  );
-
   const [{ isDragging }, drag] = useDrag({
     type,
     id,
@@ -102,77 +89,69 @@ const DnDHandle = ({
   const isReference = dragging?.id !== reference?.id && reference?.id === id;
   const isContainer = dragging?.id !== container?.id && container?.id === id;
 
+  const model = Model.get(type);
+
   const adjacentProps = getAdjacentProps(
     isReference ? adjacent : undefined,
-    isInline,
+    model.isInline,
   );
 
   return (
-    <>
-      <Box
-        ref={isRoot ? null : drag}
-        data-id={id}
-        data-type={type}
-        position="relative"
-        pointerEvents="visible"
-        minHeight={isRoot ? '100%' : 'initial'}
-        padding={2}
-        tabIndex={1}
-        cursor="move"
-        opacity={isDragging ? 0.5 : 1}
-        zIndex={isSelected ? 1 : 0}
-        outline="1px dashed"
-        outlineOffset="-1px"
-        outlineColor={
-          isContainer
-            ? outlineColors[0]
-            : isReference
-            ? outlineColors[1]
-            : isSelected
-            ? outlineColors[2]
-            : 'transparent'
-        }
-        _hover={{
-          outlineColor: isContainer
-            ? outlineColors[0]
-            : isReference
-            ? outlineColors[1]
-            : isSelected
-            ? outlineColors[2]
-            : outlineColors[3],
-        }}
-        {...adjacentProps}
-        {...props}
-      >
-        {children}
-      </Box>
-    </>
+    <Box
+      ref={model.isRoot ? null : drag}
+      data-id={id}
+      data-type={type}
+      position="relative"
+      pointerEvents="visible"
+      minHeight={model.isRoot ? '100%' : 'initial'}
+      padding={2}
+      tabIndex={1}
+      cursor="move"
+      opacity={isDragging ? 0.5 : 1}
+      zIndex={isSelected ? 1 : 0}
+      outline="1px dashed"
+      outlineOffset="-1px"
+      outlineColor={
+        isContainer
+          ? outlineColors[0]
+          : isReference
+          ? outlineColors[1]
+          : isSelected
+          ? outlineColors[2]
+          : 'transparent'
+      }
+      _hover={{
+        outlineColor: isContainer
+          ? outlineColors[0]
+          : isReference
+          ? outlineColors[1]
+          : isSelected
+          ? outlineColors[2]
+          : outlineColors[3],
+      }}
+      {...adjacentProps}
+      {...props}
+    >
+      {children}
+    </Box>
   );
 };
 
-interface DesignNodeRendererProps extends CofeTree {}
+interface NodeRendererProps extends CofeTree {}
 
-const DesignNodeRenderer = ({
+const NodeRenderer = ({
   type,
   id,
   properties,
   children,
-}: DesignNodeRendererProps) => {
+}: NodeRendererProps) => {
   const A = Atom.get(type);
 
   if (A) {
-    const { isInline, isRoot } = Model.get(type);
-
     return (
-      <DnDHandle
-        key={id}
-        type={type}
-        id={id}
-        isRoot={isRoot}
-        isInline={isInline}
-      >
+      <DnDHandle key={id} type={type} id={id}>
         <A {...properties} isDesign pointerEvents="none">
-          {children?.map(DesignNodeRenderer)}
+          {children?.map(NodeRenderer)}
         </A>
       </DnDHandle>
     );
@@ -180,7 +159,7 @@ const DesignNodeRenderer = ({
 
   return (
     <Box key={id} id={id}>
-      unknown
+      未知节点
     </Box>
   );
 };
@@ -244,7 +223,11 @@ export const DesignCanvas = ({ tree, ...props }: DesignCanvasProps) => {
       onKeyDown={handleKeyDown}
       {...props}
     >
-      <DesignNodeRenderer {...tree} />
+      <NodeRenderer {...tree} />
     </Box>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  DesignCanvas.displayName = 'DesignCanvas';
+}

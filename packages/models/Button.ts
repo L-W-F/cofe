@@ -2,7 +2,7 @@ import { CofeAtomModel } from '@cofe/types';
 
 export const ButtonModel: CofeAtomModel = {
   type: 'button',
-  accept: ['text'],
+  accept: ['text', 'icon'],
   // isInline: true,
   properties: {
     type: 'object',

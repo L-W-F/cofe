@@ -1,5 +1,6 @@
 import { ButtonAtom } from './Button';
 import { GridAtom } from './Grid';
+import { IconAtom } from './Icon';
 import { RootAtom } from './Root';
 import { TextAtom } from './Text';
 
@@ -8,6 +9,7 @@ export const atoms = {
   grid: GridAtom,
   button: ButtonAtom,
   text: TextAtom,
+  icon: IconAtom,
 };
 
 export const Atom = {

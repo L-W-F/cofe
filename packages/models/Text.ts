@@ -10,6 +10,7 @@ export const TextModel: CofeAtomModel = {
         type: 'string',
         title: 'Content',
         description: 'plain text',
+        default: 'COFE',
       },
     },
     required: ['content'],

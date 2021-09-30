@@ -47,7 +47,12 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
           }
 
           onDrop({
-            dragging: dragging.id ?? u(dragging.type, { id: makeId() }),
+            dragging:
+              dragging.id ??
+              u(dragging.type, {
+                id: makeId(),
+                properties: Model.getPropertiesDefaults(dragging.type),
+              }),
             reference: reference?.id,
             container: container?.id,
             adjacent,
@@ -126,8 +131,18 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
   return [{}, setDropHandle];
 };
 
+function isAccept(pType: string, cType: string) {
+  const accept = Model.get(pType)?.accept;
+
+  if (!accept?.length) {
+    return false;
+  }
+
+  return accept?.includes(cType);
+}
+
 /**
- * @returns [相邻的节点?, 将要插入的父级节点]
+ * @returns [相邻的节点?, 将要插入的父级节点?]
  */
 function getAcceptChain(node: any, type: string) {
   const chain = [null, null];
@@ -135,7 +150,7 @@ function getAcceptChain(node: any, type: string) {
   while (node) {
     chain.push({ type: node.type, id: node.id });
 
-    if (Model.get(node.type)?.accept?.includes(type)) {
+    if (isAccept(node.type, type)) {
       return chain.slice(-2) as [
         {
           type: string;
