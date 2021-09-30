@@ -55,7 +55,7 @@ export const AtomPanel = () => {
       <AccordionPanel>
         <List as={Flex} flexDirection="column" gridGap={2}>
           {Object.keys(models).map((type) => {
-            return <AtomDrag key={type} type={type} />;
+            return type === 'root' ? null : <AtomDrag key={type} type={type} />;
           })}
         </List>
       </AccordionPanel>

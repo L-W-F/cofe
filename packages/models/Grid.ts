@@ -14,6 +14,10 @@ export const GridModel: CofeAtomModel = {
         type: 'number',
         default: 1,
       },
+      placeItems: {
+        type: 'string',
+        default: 'center',
+      },
     },
   },
 };
