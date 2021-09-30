@@ -10,6 +10,7 @@ import {
   List,
   ListIcon,
   ListItem,
+  Select,
 } from '@chakra-ui/react';
 import { ThemeProps } from '@rjsf/core';
 
@@ -63,23 +64,111 @@ export const theme: ThemeProps = {
     );
   },
   widgets: {
-    TextWidget: ({ id, disabled, value = '', onChange }) => {
+    TextWidget: ({
+      id,
+      autofocus,
+      readonly,
+      required,
+      disabled,
+      rawErrors,
+      value,
+      onFocus,
+      onBlur,
+      onChange,
+    }) => {
       return (
         <Input
           id={id}
+          autoFocus={autofocus}
+          isReadOnly={readonly}
+          isRequired={required}
           isDisabled={disabled}
+          isInvalid={!!rawErrors}
           value={value}
+          onFocus={() => {
+            onFocus(id, value);
+          }}
+          onBlur={() => {
+            onBlur(id, value);
+          }}
           onChange={(e) => {
             onChange(e.target.value);
           }}
         />
       );
     },
-    CheckboxWidget: ({ id, disabled, label, value, onChange }) => {
+    SelectWidget: ({
+      id,
+      autofocus,
+      readonly,
+      required,
+      disabled,
+      rawErrors,
+      value,
+      options: { enumOptions, enumDisabled },
+      onFocus,
+      onBlur,
+      onChange,
+    }) => {
+      return (
+        <Select
+          id={id}
+          autoFocus={autofocus}
+          isReadOnly={readonly}
+          isRequired={required}
+          isDisabled={disabled}
+          isInvalid={!!rawErrors}
+          value={value}
+          onFocus={() => {
+            onFocus(id, value);
+          }}
+          onBlur={() => {
+            onBlur(id, value);
+          }}
+          onChange={(e) => {
+            onChange(e.target.value);
+          }}
+        >
+          {(enumOptions as any).map((item) => (
+            <option
+              key={item.value}
+              value={item.value}
+              disabled={(enumDisabled as any)?.includes(item.value) ?? false}
+            >
+              {item.label}
+            </option>
+          ))}
+        </Select>
+      );
+    },
+    CheckboxWidget: ({
+      id,
+      autofocus,
+      readonly,
+      required,
+      disabled,
+      rawErrors,
+      value,
+      label,
+      onFocus,
+      onBlur,
+      onChange,
+    }) => {
       return (
         <Checkbox
           id={id}
+          autoFocus={autofocus}
+          isReadOnly={readonly}
+          isRequired={required}
           isDisabled={disabled}
+          isInvalid={!!rawErrors}
+          value={value}
+          onFocus={() => {
+            onFocus(id, value);
+          }}
+          onBlur={() => {
+            onBlur(id, value);
+          }}
           isChecked={value}
           onChange={(e) => {
             onChange(e.target.checked);
