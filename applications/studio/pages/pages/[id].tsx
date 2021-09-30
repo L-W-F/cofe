@@ -244,8 +244,9 @@ const PageEditor = ({
       </Header>
       <Flex flex={1}>
         <Accordion
-          allowMultiple
           ref={sp1.paneRef}
+          allowMultiple
+          defaultIndex={[0]}
           direction="column"
           gridGap={2}
           overflow="hidden"
@@ -260,6 +261,8 @@ const PageEditor = ({
           <SplitHandle {...sp2.handleProps} />
           <Accordion
             ref={sp2.paneRef}
+            allowMultiple
+            defaultIndex={[0]}
             direction="column"
             gridGap={2}
             overflow="hidden"
