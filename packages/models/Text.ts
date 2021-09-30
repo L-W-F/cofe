@@ -8,8 +8,8 @@ export const TextModel: CofeAtomModel = {
     properties: {
       content: {
         type: 'string',
-        title: 'Content',
-        description: 'plain text',
+        title: '内容',
+        description: '支持 Markdown',
         default: 'COFE',
       },
     },

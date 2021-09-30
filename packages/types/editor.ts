@@ -1,4 +1,4 @@
-import { JSONSchema7 } from 'json-schema';
+import { JSONSchema4, JSONSchema7 } from 'json-schema';
 import { CofeTree } from './tree';
 
 export interface CofeAtomIdentity {
@@ -17,9 +17,9 @@ export interface CofeAtomModel {
   isRoot?: boolean;
   isInline?: boolean;
   accept?: string[];
-  properties?: JSONSchema7;
-  actions?: JSONSchema7;
-  events?: JSONSchema7;
+  properties?: JSONSchema4 & JSONSchema7;
+  actions?: JSONSchema4 & JSONSchema7;
+  events?: JSONSchema4 & JSONSchema7;
 }
 
 export type CofeInsertAdjacent = 'INSERT_BEFORE' | 'INSERT_AFTER';

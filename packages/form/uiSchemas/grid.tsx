@@ -1,9 +1,14 @@
 import React, { Fragment } from 'react';
 import { Flex } from '@chakra-ui/react';
+import { ObjectFieldTemplateProps } from '@rjsf/core';
 
 export const grid = {
-  schema: {
-    'ui:ObjectFieldTemplate': ({ title, description, properties }) => {
+  properties: {
+    'ui:ObjectFieldTemplate': ({
+      title,
+      description,
+      properties,
+    }: ObjectFieldTemplateProps) => {
       return (
         <>
           {title}

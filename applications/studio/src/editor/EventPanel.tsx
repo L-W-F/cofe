@@ -32,7 +32,7 @@ export const EventPanel = () => {
           <Form
             formData={selectedNode.events}
             schema={schema}
-            uiSchema={Ui.get(selectedNode.type)?.schema}
+            uiSchema={Ui.get(selectedNode.type)?.properties}
             idPrefix=" events"
             onChange={(e) => {
               dispatch('UPDATE_NODE_EVENTS')(e.formData);

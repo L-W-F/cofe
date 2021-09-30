@@ -33,7 +33,7 @@ export const ActionPanel = () => {
           <Form
             formData={selectedNode.actions}
             schema={schema}
-            uiSchema={Ui.get(selectedNode.type)?.schema}
+            uiSchema={Ui.get(selectedNode.type)?.properties}
             idPrefix="actions"
             onChange={(e) => {
               dispatch('UPDATE_NODE_ACTIONS')(e.formData);
