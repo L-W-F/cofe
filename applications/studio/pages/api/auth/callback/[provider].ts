@@ -5,7 +5,7 @@ import { makeId } from '@cofe/utils';
 import { serialize } from 'cookie';
 import { withApiCatch } from '@/api/withApiCatch';
 
-export default compose([withApiCatch], async (req, res) => {
+export default compose([withApiCatch()], async (req, res) => {
   if (req.method === 'GET') {
     if (req.query.provider === 'github') {
       if (req.query.code) {

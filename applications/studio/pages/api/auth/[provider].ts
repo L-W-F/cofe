@@ -1,7 +1,7 @@
 import { compose } from '@cofe/api';
 import { withApiCatch } from '@/api/withApiCatch';
 
-export default compose([withApiCatch], async (req, res) => {
+export default compose([withApiCatch()], async (req, res) => {
   if (req.method === 'GET') {
     if (req.query.provider === 'github') {
       res.redirect(

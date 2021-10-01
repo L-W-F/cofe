@@ -3,7 +3,7 @@ import { post } from '@cofe/io';
 import { CofeUser } from '@cofe/types';
 import { withApiCatch } from '@/api/withApiCatch';
 
-export default compose([withApiCatch], async (req, res) => {
+export default compose([withApiCatch()], async (req, res) => {
   if (req.method === 'POST') {
     const user: CofeUser = await post(
       `${process.env.DB_URL}/api/users`,
