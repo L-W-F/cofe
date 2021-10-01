@@ -12,8 +12,6 @@ const users: CofeUser[] = [
     updatedAt: 0,
     lastLogin: 0,
   },
-  token
-  
 ];
 
 const tokens: CofeToken[] = [
