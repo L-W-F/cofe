@@ -19,7 +19,7 @@ export const oembed: CreateMdastPlugin = ({ visit, SKIP, u }) => {
 
           [target] = target.children;
 
-          if (target.type === 'text' && target.value === '!oembed') {
+          if (target.type === 'text' && (target as any).value === '!oembed') {
             parent.children.splice(
               index,
               1,
