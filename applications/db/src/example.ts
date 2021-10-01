@@ -26,7 +26,7 @@ const apps: CofeApp[] = [
   {
     id: '_fXjLwZ8mp',
     userId: '_ZcNY8EZVc',
-    title: 'My first app',
+    title: '第一个应用',
     state: 0,
     createdAt: 0,
     updatedAt: 0,
@@ -37,7 +37,7 @@ const pages: CofePage[] = [
   {
     id: '_X5z4g9HA8',
     appId: '_fXjLwZ8mp',
-    title: 'My first page',
+    title: '第一个页面',
     tree: u(
       'root',
       {
