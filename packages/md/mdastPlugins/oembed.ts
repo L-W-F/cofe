@@ -15,7 +15,7 @@ export const oembed: CreateMdastPlugin = ({ visit, SKIP, u }) => {
             return;
           }
 
-          const { url } = target;
+          const { url } = target as any;
 
           [target] = target.children;
 
