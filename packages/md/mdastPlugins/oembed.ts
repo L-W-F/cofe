@@ -3,7 +3,7 @@ import { CreateMdastPlugin, TreeNode } from '../types';
 export const oembed: CreateMdastPlugin = ({ visit, SKIP, u }) => {
   return function Plugin() {
     return (tree) => {
-      visit<TreeNode, string>(tree, 'paragraph', (node, index, parent) => {
+      visit<TreeNode, string>(tree, 'paragraph', (node, index, parent: any) => {
         if (node.children.length !== 1) {
           return;
         }

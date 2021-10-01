@@ -1,4 +1,4 @@
-import { CofeApp, CofePage, CofeUser } from '@cofe/types';
+import { CofeApp, CofePage, CofeToken, CofeUser } from '@cofe/types';
 import { u } from 'unist-builder';
 
 const users: CofeUser[] = [
@@ -11,6 +11,16 @@ const users: CofeUser[] = [
     createdAt: 0,
     updatedAt: 0,
     lastLogin: 0,
+  },
+  token
+  
+];
+
+const tokens: CofeToken[] = [
+  {
+    userId: '_ZcNY8EZVc',
+    token: '_28NoTusa4j',
+    expiresAt: 9999999999999,
   },
 ];
 
@@ -58,6 +68,7 @@ const pages: CofePage[] = [
 
 export const makeExample = () => ({
   users,
+  tokens,
   apps,
   pages,
 });
