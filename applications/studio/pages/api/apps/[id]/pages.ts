@@ -12,7 +12,7 @@ export default compose([withApiCatch(), withApiAuth()], async (req, res) => {
         headers: {
           Authorization: `Bearer ${req.cookies.token}`,
         },
-      }
+      },
     );
 
     res.status(201).json(page);
