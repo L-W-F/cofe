@@ -50,6 +50,10 @@ const pages: CofePage[] = [
           'grid',
           {
             id: '_HqoZgh82S',
+            properties: {
+              rows: 1,
+              columns: 1,
+            },
           },
           [
             u('text', {
