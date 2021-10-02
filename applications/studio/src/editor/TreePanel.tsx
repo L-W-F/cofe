@@ -30,6 +30,7 @@ const TreeItemTag = ({
       pl={indent * 4}
       fontSize="sm"
       whiteSpace="nowrap"
+      textTransform="capitalize"
       sx={{
         backgroundColor: isSelected ? 'gray.100' : '',
         '&:hover': {

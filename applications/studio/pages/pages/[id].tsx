@@ -176,7 +176,11 @@ const CurrentSelected = () => {
   const dragging = useStore('dnd.dragging');
   const selected = useStore('editor.selected');
 
-  return <Box>{`<${dragging?.type ?? selected?.type ?? ''} />`}</Box>;
+  return (
+    <Box textTransform="capitalize">{`<${
+      dragging?.type ?? selected?.type ?? ''
+    } />`}</Box>
+  );
 };
 
 const EditModeSwitch = () => {

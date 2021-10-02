@@ -14,18 +14,13 @@ import {
   TagProps,
 } from '@chakra-ui/react';
 import { models } from '@cofe/models';
-import { capitalize } from 'lodash';
 import { useDrag } from '@/hooks/useDrag';
 
 interface AtomDragProps extends TagProps {
   type: string;
 }
 
-const AtomDrag = ({
-  type,
-  children = capitalize(type),
-  ...props
-}: AtomDragProps) => {
+const AtomDrag = ({ type, ...props }: AtomDragProps) => {
   const [{ isDragging }, drag] = useDrag({
     type,
     effectAllowed: 'copy',
@@ -34,8 +29,14 @@ const AtomDrag = ({
   return (
     <ListItem>
       <ListIcon as={ArrowForwardIcon} />
-      <Tag ref={drag} cursor="move" opacity={isDragging ? 0.5 : 1} {...props}>
-        {children}
+      <Tag
+        ref={drag}
+        textTransform="capitalize"
+        cursor="move"
+        opacity={isDragging ? 0.5 : 1}
+        {...props}
+      >
+        {type}
       </Tag>
     </ListItem>
   );

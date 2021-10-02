@@ -1,6 +1,10 @@
 import React from 'react';
-import { Input } from '@chakra-ui/react';
+import { Input, InputProps } from '@chakra-ui/react';
 import { WidgetProps } from '@rjsf/core';
+
+export interface TextWidgetProps extends WidgetProps {
+  InputProps?: InputProps;
+}
 
 export const TextWidget = ({
   id,
@@ -13,7 +17,8 @@ export const TextWidget = ({
   onFocus,
   onBlur,
   onChange,
-}: WidgetProps) => {
+  InputProps: props,
+}: TextWidgetProps) => {
   return (
     <Input
       id={id}
@@ -32,6 +37,7 @@ export const TextWidget = ({
       onChange={(e) => {
         onChange(e.target.value);
       }}
+      {...props}
     />
   );
 };

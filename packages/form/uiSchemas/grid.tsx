@@ -1,25 +1,23 @@
-import React, { Fragment } from 'react';
-import { Flex } from '@chakra-ui/react';
-import { ObjectFieldTemplateProps } from '@rjsf/core';
+import { withProps } from '../helpers/withProps';
+import { ObjectFieldTemplate } from '../templates/ObjectFieldTemplate';
+import { UpDownWidget } from '../widgets/UpDownWidget';
 
 export const grid = {
   properties: {
-    'ui:ObjectFieldTemplate': ({
-      title,
-      description,
-      properties,
-    }: ObjectFieldTemplateProps) => {
-      return (
-        <>
-          {title}
-          <Flex>
-            {properties.map(({ name, content }) => (
-              <Fragment key={name}>{content}</Fragment>
-            ))}
-          </Flex>
-          {description}
-        </>
-      );
+    'ui:ObjectFieldTemplate': withProps({
+      gridGap: 2,
+      templateColumns: '1fr 1fr',
+      spanMap: {
+        rows: 1,
+        columns: 1,
+        placeItems: 2,
+      },
+    })(ObjectFieldTemplate),
+    rows: {
+      'ui:widget': UpDownWidget,
+    },
+    columns: {
+      'ui:widget': UpDownWidget,
     },
   },
 };
