@@ -1,19 +1,19 @@
 import React, { Children } from 'react';
 import { Box, Grid, GridProps } from '@chakra-ui/react';
-import { AtomProps } from './types';
+import { CofeRendererProps } from '@cofe/types';
 
-interface GridAtomProps extends AtomProps, GridProps {
+interface GridRendererProps extends CofeRendererProps, GridProps {
   rows?: number;
   columns?: number;
 }
 
-export const GridAtom = ({
+export const GridRenderer = ({
   isDesign,
   rows,
   columns,
   children,
   ...props
-}: GridAtomProps) => {
+}: GridRendererProps) => {
   return (
     <Grid
       gridTemplateRows={`repeat(${rows}, 1fr)`}

@@ -1,5 +1,5 @@
 {
-  "name": "@cofe/images",
+  "name": "@cofe/schemas",
   "version": "0.1.0",
   "type": "module",
   "sideEffects": false,
@@ -7,9 +7,8 @@
   "license": "MIT",
   "author": "crossjs <liwenfu@crossjs.com>",
   "dependencies": {
-    "react": "^17.0.2"
-  },
-  "devDependencies": {
-    "@types/react": "^17.0.24"
+    "@cofe/core": "^0.1.0",
+    "@cofe/types": "^0.1.0",
+    "lodash": "^4.17.21"
   }
 }

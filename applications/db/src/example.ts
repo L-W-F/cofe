@@ -40,7 +40,7 @@ const pages: CofePage[] = [
     appId: '_fXjLwZ8mp',
     title: '第一个页面',
     tree: u(
-      'root',
+      'fragment',
       {
         id: '_CMTfvJfoS',
         createdAt: Date.now(),

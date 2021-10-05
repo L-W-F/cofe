@@ -1,22 +1,22 @@
 import React from 'react';
 import { Icon, IconProps } from '@chakra-ui/react';
-import { AtomProps } from './types';
+import { CofeRendererProps } from '@cofe/types';
 
-interface IconAtomProps extends AtomProps, IconProps {
+interface IconRendererProps extends CofeRendererProps, IconProps {
   width?: number;
   height?: number;
   color?: string;
   path?: string;
 }
 
-export const IconAtom = ({
+export const IconRenderer = ({
   isDesign,
   width,
   height,
   color,
   path,
   ...props
-}: IconAtomProps) => {
+}: IconRendererProps) => {
   return (
     <Icon
       viewBox={`0 0 ${width} ${height}`}

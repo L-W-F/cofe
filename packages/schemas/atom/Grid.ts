@@ -1,8 +1,8 @@
-import { CofeAtomModel } from '@cofe/types';
+import { CofeSchema } from '@cofe/types';
 
-export const GridModel: CofeAtomModel = {
+export const GridSchema: CofeSchema = {
   type: 'grid',
-  accept: ['grid', 'button', 'text', 'icon'],
+  accept: ['!fragment'],
   properties: {
     type: 'object',
     properties: {

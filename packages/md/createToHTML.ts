@@ -51,6 +51,6 @@ export function createToHTML({
     }, toHtmlOptions);
 
   return function toHTML(markdown: string) {
-    return processor.process(markdown);
+    return processor.processSync(markdown).toString();
   };
 }

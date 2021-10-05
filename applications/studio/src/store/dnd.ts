@@ -18,6 +18,9 @@ export const initialState: DndState = {
 
 export const reducer = (state = initialState, { type, payload }: AnyAction) => {
   switch (type) {
+    case 'RESET_DND':
+      return initialState;
+
     case 'DRAGGING':
       if (isEqual(state.dragging, payload)) {
         return state;

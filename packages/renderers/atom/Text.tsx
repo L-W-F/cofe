@@ -1,40 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { Text, TextProps } from '@chakra-ui/react';
-import { AtomProps } from './types';
+import { CofeRendererProps } from '@cofe/types';
 
-interface TextAtomProps extends AtomProps, TextProps {
+interface TextRendererProps extends CofeRendererProps, TextProps {
   content?: string;
 }
 
 let _toHTML;
 
-const toHTML = (content: string) => {
-  return Promise.resolve(
-    _toHTML ||
-      import('@cofe/md').then(({ createToHTML }) => {
-        _toHTML = createToHTML();
+const toHTML = async (content: string) => {
+  if (!_toHTML) {
+    _toHTML = await import('@cofe/md').then(({ createToHTML }) =>
+      createToHTML(),
+    );
+  }
 
-        return _toHTML;
-      }),
-  )
-    .then((fn) => fn(content))
-    .then((vf) => vf.toString());
+  return _toHTML(content);
 };
 
-export const TextAtom = ({
+export const TextRenderer = ({
   isDesign,
   content,
   // dropping children
   children,
   ...props
-}: TextAtomProps) => {
+}: TextRendererProps) => {
   const [hProps, setHProps] = useState(null);
 
   useEffect(() => {
-    toHTML(content).then((vf) => {
+    toHTML(content).then((__html) => {
       setHProps({
         dangerouslySetInnerHTML: {
-          __html: vf.toString(),
+          __html,
         },
       });
     });

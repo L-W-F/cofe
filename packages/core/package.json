@@ -1,14 +1,15 @@
 {
-  "name": "@cofe/models",
+  "name": "@cofe/core",
   "version": "0.1.0",
   "type": "module",
   "sideEffects": false,
   "main": "index.ts",
-  "module": "index.ts",
   "license": "MIT",
   "author": "crossjs <liwenfu@crossjs.com>",
   "dependencies": {
     "@cofe/types": "^0.1.0",
-    "lodash": "^4.17.21"
+    "@cofe/utils": "^0.1.0",
+    "lodash": "^4.17.21",
+    "unist-builder": "^3.0.0"
   }
 }

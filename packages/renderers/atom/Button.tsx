@@ -1,17 +1,17 @@
 import React from 'react';
 import { Button, ButtonProps } from '@chakra-ui/react';
-import { AtomProps } from './types';
+import { CofeRendererProps } from '@cofe/types';
 
-interface ButtonAtomProps extends AtomProps, ButtonProps {
+interface ButtonRendererProps extends CofeRendererProps, ButtonProps {
   disabled?: boolean;
 }
 
-export const ButtonAtom = ({
+export const ButtonRenderer = ({
   isDesign,
   autoFocus = false,
   disabled: isDisabled,
   ...props
-}: ButtonAtomProps) => {
+}: ButtonRendererProps) => {
   return (
     <Button
       autoFocus={autoFocus}

@@ -1,9 +1,7 @@
 import { RefCallback, useEffect, useState } from 'react';
-import { Model } from '@cofe/models';
+import { Schema } from '@cofe/core';
 import { useDispatch, useStore } from '@cofe/store';
 import { CofeTree } from '@cofe/types';
-import { makeId } from '@cofe/utils';
-import { u } from 'unist-builder';
 import { select } from 'unist-util-select';
 import { useCurrentTree } from './useCurrentTree';
 
@@ -47,16 +45,13 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
           }
 
           onDrop({
-            dragging:
-              dragging.id ??
-              u(dragging.type, {
-                id: makeId(),
-                properties: Model.getPropertiesDefaults(dragging.type),
-              }),
+            dragging: dragging.id ?? Schema.createNode(dragging.type),
             reference: reference?.id,
             container: container?.id,
             adjacent,
           });
+
+          dispatch('RESET_DND')(null);
         }
       };
 
@@ -72,7 +67,7 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
               .querySelector(`[data-id=${reference.id}]`)
               .getBoundingClientRect();
 
-            const { isInline } = Model.get(reference.type);
+            const { isInline } = Schema.get(reference.type);
 
             adjacent = (
               isInline ? e.clientX > x + width / 2 : e.clientY > y + height / 2
@@ -132,13 +127,23 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
 };
 
 function isAccept(pType: string, cType: string) {
-  const accept = Model.get(pType)?.accept;
+  const accept = Schema.get(pType)?.accept;
 
   if (!accept?.length) {
     return false;
   }
 
-  return accept?.includes(cType);
+  return accept.some((r) => {
+    if (r === '*') {
+      return true;
+    }
+
+    if (r[0] === '!') {
+      return r.slice(1) !== cType;
+    }
+
+    return r === cType;
+  });
 }
 
 /**

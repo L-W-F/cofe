@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, BoxProps } from '@chakra-ui/react';
-import { Atom } from '@cofe/atoms';
+import { Renderer } from '@cofe/core';
 import { CofeTree } from '@cofe/types';
 
 interface NodeRendererProps extends CofeTree {}
@@ -11,13 +11,13 @@ export const NodeRenderer = ({
   properties,
   children,
 }: NodeRendererProps) => {
-  const A = Atom.get(type);
+  const R = Renderer.get(type);
 
-  if (A) {
+  if (R) {
     return (
-      <A key={id} id={id} {...properties}>
+      <R key={id} id={id} {...properties}>
         {children?.map(NodeRenderer)}
-      </A>
+      </R>
     );
   }
 

@@ -1,9 +1,8 @@
-import { CofeAtomModel } from '@cofe/types';
+import { CofeSchema } from '@cofe/types';
 
-export const ButtonModel: CofeAtomModel = {
+export const ButtonSchema: CofeSchema = {
   type: 'button',
   accept: ['text', 'icon'],
-  // isInline: true,
   properties: {
     type: 'object',
     properties: {

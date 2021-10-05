@@ -19,6 +19,7 @@ import {
   LinkOverlay,
   SimpleGrid,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
 import { compose } from '@cofe/gssp';
@@ -40,6 +41,7 @@ const App = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const pages = useStore('page');
   const dispatch = useDispatch();
+  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [formData, setFormData] = useState(null);
 
@@ -145,11 +147,27 @@ const App = ({
                     formData,
                   );
 
+                  toast({
+                    title: '创建成功',
+                    status: 'success',
+                    duration: 1000,
+                    position: 'bottom-left',
+                  });
+
                   dispatch('UPDATE_PAGE')(page);
+                  onClose();
                 } else {
                   const page = await post(`/api/apps/${appId}/pages`, formData);
 
+                  toast({
+                    title: '保存成功',
+                    status: 'success',
+                    duration: 1000,
+                    position: 'bottom-left',
+                  });
+
                   dispatch('CREATE_PAGE')(page);
+                  onClose();
                 }
               }}
             >

@@ -13,4 +13,6 @@ export * from './user';
 // local
 export * from './config';
 export * from './editor';
+export * from './schema';
+export * from './renderer';
 export * from './whoami';

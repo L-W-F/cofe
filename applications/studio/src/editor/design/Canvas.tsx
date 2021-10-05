@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, BoxProps, useColorModeValue } from '@chakra-ui/react';
-import { Atom } from '@cofe/atoms';
-import { Model } from '@cofe/models';
+import { Renderer, Schema } from '@cofe/core';
 import { useDispatch, useStore } from '@cofe/store';
 import { CofeAtomIdentity, CofeInsertAdjacent, CofeTree } from '@cofe/types';
 import { isMac } from '@cofe/utils';
@@ -69,13 +68,20 @@ const getAdjacentProps = (
 };
 
 interface DnDHandleProps extends BoxProps {
+  isRoot?: boolean;
   type: string;
   id: string;
 }
 
 const outlineColors = ['red.400', 'yellow.400', 'blue.400', 'gray.400'];
 
-const DnDHandle = ({ children, type, id, ...props }: DnDHandleProps) => {
+const DnDHandle = ({
+  children,
+  isRoot,
+  type,
+  id,
+  ...props
+}: DnDHandleProps) => {
   const selected = useStore<CofeAtomIdentity>('editor.selected');
   const { dragging, reference, container, adjacent } =
     useStore<DndState>('dnd');
@@ -89,21 +95,21 @@ const DnDHandle = ({ children, type, id, ...props }: DnDHandleProps) => {
   const isReference = dragging?.id !== reference?.id && reference?.id === id;
   const isContainer = dragging?.id !== container?.id && container?.id === id;
 
-  const model = Model.get(type);
+  const schema = Schema.get(type);
 
   const adjacentProps = getAdjacentProps(
     isReference ? adjacent : undefined,
-    model.isInline,
+    schema.isInline,
   );
 
   return (
     <Box
-      ref={model.isRoot ? null : drag}
+      ref={isRoot ? null : drag}
       data-id={id}
       data-type={type}
       position="relative"
       pointerEvents="visible"
-      minHeight={model.isRoot ? '100%' : 'initial'}
+      minHeight={isRoot ? '100%' : 'initial'}
       padding={2}
       tabIndex={1}
       cursor="move"
@@ -137,22 +143,25 @@ const DnDHandle = ({ children, type, id, ...props }: DnDHandleProps) => {
   );
 };
 
-interface NodeRendererProps extends CofeTree {}
+interface NodeRendererProps extends CofeTree {
+  isRoot?: boolean;
+}
 
 const NodeRenderer = ({
+  isRoot,
   type,
   id,
   properties,
   children,
 }: NodeRendererProps) => {
-  const A = Atom.get(type);
+  const R = Renderer.get(type);
 
-  if (A) {
+  if (R) {
     return (
-      <DnDHandle key={id} type={type} id={id}>
-        <A {...properties} isDesign pointerEvents="none">
+      <DnDHandle key={id} isRoot={isRoot} type={type} id={id}>
+        <R {...properties} isDesign pointerEvents="none">
           {children?.map(NodeRenderer)}
-        </A>
+        </R>
       </DnDHandle>
     );
   }
@@ -219,11 +228,12 @@ export const DesignCanvas = ({ tree, ...props }: DesignCanvasProps) => {
       bgSize="20px 20px"
       bgPosition="0 0, 0 10px, 10px -10px, -10px 0px"
       tabIndex={0}
+      minHeight="100%"
       onFocus={handleFocus}
       onKeyDown={handleKeyDown}
       {...props}
     >
-      <NodeRenderer {...tree} />
+      <NodeRenderer isRoot {...tree} />
     </Box>
   );
 };

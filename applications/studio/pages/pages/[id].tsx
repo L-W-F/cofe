@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -11,6 +11,14 @@ import {
 import {
   Accordion,
   Box,
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
   Flex,
   IconButton,
   Menu,
@@ -18,14 +26,17 @@ import {
   MenuItem,
   MenuList,
   useColorModeValue,
+  useDisclosure,
   useToast,
 } from '@chakra-ui/react';
+import { Form } from '@cofe/form';
 import { compose } from '@cofe/gssp';
 import { useSplitPane } from '@cofe/hooks';
-import { get, put } from '@cofe/io';
+import { get, post, put } from '@cofe/io';
 import { getState, useDispatch, useStore } from '@cofe/store';
 import { CofeConfig, CofePage, CofeSnapshot } from '@cofe/types';
-import { isMac } from '@cofe/utils';
+import { isMac, makeId } from '@cofe/utils';
+import { u } from 'unist-builder';
 import { Header } from '@/components/Header';
 import { Root } from '@/components/Root';
 import { ActionPanel } from '@/editor/ActionPanel';
@@ -34,11 +45,16 @@ import { CanvasPane } from '@/editor/CanvasPanel';
 import { EventPanel } from '@/editor/EventPanel';
 import { HistoryPanel } from '@/editor/HistoryPanel';
 import { PropertyPanel } from '@/editor/PropertyPanel';
+import { TemplatePanel } from '@/editor/TemplatePanel';
 import { TreePanel } from '@/editor/TreePanel';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
 import { EDIT_MODE_DESIGN } from '@/store/config';
 import { EditorState } from '@/store/editor';
+
+// https://github.com/vercel/next.js/discussions/29315
+require('@cofe/renderers');
+require('@cofe/schemas');
 
 const SplitHandle = (props: ReturnType<typeof useSplitPane>['handleProps']) => {
   return (
@@ -71,6 +87,8 @@ const SplitHandle = (props: ReturnType<typeof useSplitPane>['handleProps']) => {
 const DropMenu = () => {
   const { query } = useRouter();
   const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [formData, setFormData] = useState(null);
 
   const save = useCallback(async () => {
     const { stack } = getState().editor;
@@ -86,16 +104,21 @@ const DropMenu = () => {
   }, [toast, query.id]);
 
   const keydown = useCallback(
-    async (e) => {
-      // ctrl+s, ⌘+s
+    async (e: KeyboardEvent) => {
+      // ctrl+⇧?+s, ⌘+⇧?+s
       if ((!isMac && e.ctrlKey) || (isMac && e.metaKey)) {
         if (e.key.toLowerCase() === 's') {
           e.preventDefault();
-          await save();
+
+          if (e.shiftKey) {
+            onOpen();
+          } else {
+            save();
+          }
         }
       }
     },
-    [save],
+    [onOpen, save],
   );
 
   useEffect(() => {
@@ -107,19 +130,75 @@ const DropMenu = () => {
   }, [keydown]);
 
   return (
-    <Menu matchWidth size="small">
-      <MenuButton
-        as={IconButton}
-        aria-label="Options"
-        icon={<ChevronDownIcon />}
-        variant="ghost"
-      />
-      <MenuList minW="initial">
-        <MenuItem command="⌘S" onClick={save}>
-          保存
-        </MenuItem>
-      </MenuList>
-    </Menu>
+    <>
+      <Menu matchWidth size="small">
+        <MenuButton
+          as={IconButton}
+          aria-label="Options"
+          icon={<ChevronDownIcon />}
+          variant="ghost"
+        />
+        <MenuList minW="initial">
+          <MenuItem command="⌘S" onClick={save}>
+            保存
+          </MenuItem>
+          <MenuItem command="⌘⇧S" onClick={onOpen}>
+            保存为模板
+          </MenuItem>
+        </MenuList>
+      </Menu>
+      <Drawer isOpen={isOpen} onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>保存为模板</DrawerHeader>
+          <DrawerBody>
+            <Form
+              formData={formData}
+              schema={{
+                type: 'object',
+                properties: {
+                  type: {
+                    type: 'string',
+                    title: '类型',
+                  },
+                  description: {
+                    type: 'string',
+                    title: '描述',
+                  },
+                },
+                required: ['type'],
+              }}
+              onChange={(e) => {
+                setFormData(e.formData);
+              }}
+            />
+          </DrawerBody>
+          <DrawerFooter>
+            <Button
+              colorScheme="teal"
+              onClick={async () => {
+                const { stack, cursor } = getState().editor;
+
+                await post('/api/templates', {
+                  ...formData,
+                  template: stack[cursor],
+                });
+
+                toast({
+                  title: '已保存',
+                  status: 'success',
+                  duration: 1000,
+                  position: 'bottom-left',
+                });
+              }}
+            >
+              保存
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </>
   );
 };
 
@@ -256,6 +335,7 @@ const PageEditor = ({
           overflow="hidden"
         >
           <AtomPanel />
+          <TemplatePanel />
           <TreePanel />
           <HistoryPanel />
         </Accordion>
@@ -314,7 +394,13 @@ export const getServerSideProps = compose(
         rightPaneSize: +right_pane_size,
         initialStates: {
           editor: {
-            stack: [...stack, page.tree],
+            stack: [
+              ...stack,
+              page.tree ??
+                u('fragment', {
+                  id: makeId(),
+                }),
+            ],
             cursor: stack.length ?? 0,
           },
         },
