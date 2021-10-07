@@ -1,7 +1,5 @@
 import { compose } from '@cofe/api';
-import { CofeUser } from '@cofe/types';
-import { makeId } from '@cofe/utils';
-import { get, getOne, set } from '@/db';
+import { add, get } from '@/db';
 import { withApiAuth } from '@/withApiAuth';
 import { withApiCatch } from '@/withApiCatch';
 
@@ -14,37 +12,27 @@ export default compose(
   ],
   async (req, res) => {
     if (req.method === 'GET') {
-      const test = req.query.username
-        ? ({ username }) => req.query.username === username
-        : undefined;
-
-      const users = await get('users', test);
+      const users = await get(
+        'users',
+        req.query.username
+          ? ({ username }) => req.query.username === username
+          : undefined,
+      );
 
       res.status(200).json(users);
     } else if (req.method === 'POST') {
-      const found = await getOne(
+      const user = await add(
         'users',
-        (item) => item.username === req.body.username,
-      ).catch(() => null);
-
-      if (found) {
-        res.status(409).end('账号已存在！');
-      } else {
-        const user: CofeUser = {
-          id: makeId(),
+        {
           level: 0,
-          config: {},
           enabled: true,
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
           lastLogin: 0,
           ...req.body,
-        };
+        },
+        (item) => item.username === req.body.username,
+      );
 
-        await set('users', user);
-
-        res.status(201).json(user);
-      }
+      res.status(201).json(user);
     } else {
       res.status(405).end();
     }

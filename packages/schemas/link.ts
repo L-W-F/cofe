@@ -1,6 +1,6 @@
 import { CofeSchema } from '@cofe/types';
 
-export const LinkSchema: CofeSchema = {
+export const link: CofeSchema = {
   type: 'link',
   accept: ['text', 'icon'],
   isInline: true,

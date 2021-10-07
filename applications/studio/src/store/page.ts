@@ -1,7 +1,7 @@
 import { AnyAction } from '@cofe/store';
-import { CofePage } from '@cofe/types';
+import { CofeDbPage } from '@cofe/types';
 
-export type PageState = CofePage[];
+export type PageState = CofeDbPage[];
 
 export const initialState: PageState = [];
 

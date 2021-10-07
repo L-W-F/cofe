@@ -1,7 +1,7 @@
 import { useStore } from '@cofe/store';
 import { parents } from 'unist-util-parents';
-import { EditorState } from 'store/editor';
-import { treeCache } from 'utils/cache';
+import { EditorState } from '@/store/editor';
+import { treeCache } from '@/utils/cache';
 
 export const useSelectedTree = () => {
   const { stack, cursor } = useStore<EditorState>('editor');

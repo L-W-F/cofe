@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { compose } from '@cofe/api';
-import { getOne, set } from '@/db';
+import { CofeDbExternal } from '@cofe/types';
+import { add, getOne } from '@/db';
 import { withApiCatch } from '@/withApiCatch';
 
 export default compose(
@@ -8,7 +9,7 @@ export default compose(
   async (req: NextApiRequest, res: NextApiResponse) => {
     const provider = req.query.provider as string;
     const externalId = req.query.externalId as string;
-    const test = (item) =>
+    const test = (item: CofeDbExternal) =>
       item.provider === provider && item.externalId === externalId;
 
     if (req.method === 'GET') {
@@ -16,13 +17,17 @@ export default compose(
 
       res.status(200).json(await getOne('users', userId));
     } else if (req.method === 'PUT') {
-      await set('externals', {
-        userId: req.body.userId,
-        provider: 'github',
-        externalId,
-      });
+      const external = await add(
+        'externals',
+        {
+          userId: req.body.userId,
+          provider: 'github',
+          externalId,
+        },
+        test,
+      );
 
-      res.status(201).json(await getOne('externals', test));
+      res.status(201).json(external);
     } else {
       res.status(405).end();
     }

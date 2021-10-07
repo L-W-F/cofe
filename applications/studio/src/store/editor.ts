@@ -1,6 +1,8 @@
 import { AnyAction } from '@cofe/store';
-import { CofeEditor, CofeInsertAdjacent, CofeTree } from '@cofe/types';
+import { CofeDndPayload, CofeEditor, CofeTree } from '@cofe/types';
+import { makeId } from '@cofe/utils';
 import { cloneDeep } from 'lodash';
+import { u } from 'unist-builder';
 import { filter } from 'unist-util-filter';
 import { EXIT, visit } from 'unist-util-visit';
 
@@ -132,23 +134,16 @@ function assignCreatedAt(tree: CofeTree) {
 
 function removeNodeById(tree: CofeTree, nodeId: string) {
   return assignCreatedAt(
-    filter(tree, { cascade: false }, ({ id }: any) => id !== nodeId),
+    filter(tree, { cascade: false }, ({ id }: any) => id !== nodeId) ??
+      u('fragment', {
+        id: makeId(),
+      }),
   );
 }
 
 function insertOrMoveNodeByDrop(
   tree: CofeTree,
-  {
-    dragging,
-    container,
-    reference,
-    adjacent,
-  }: {
-    dragging: string | CofeTree;
-    container?: string;
-    reference?: string;
-    adjacent?: CofeInsertAdjacent;
-  },
+  { dragging, container, reference, adjacent }: CofeDndPayload,
 ) {
   tree = cloneDeep(tree);
 

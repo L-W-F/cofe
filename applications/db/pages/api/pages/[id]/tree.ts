@@ -1,25 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { compose } from '@cofe/api';
-import { getOne, set } from '@/db';
+import { set } from '@/db';
 import { withApiAuth } from '@/withApiAuth';
 import { withApiCatch } from '@/withApiCatch';
 
 export default compose(
   [withApiCatch(), withApiAuth()],
   async (req: NextApiRequest, res: NextApiResponse, { auth: { userId } }) => {
-    const id = req.query.id as string;
-    const test = (item) => item.id === id && item.userId === userId;
-
     if (req.method === 'PUT') {
-      await set(
+      const id = req.query.id as string;
+
+      const page = await set(
         'pages',
         {
           tree: req.body,
         },
-        test,
+        (item) => item.id === id && item.userId === userId,
       );
 
-      res.status(200).json(await getOne('pages', test));
+      res.status(200).json(page);
     } else {
       res.status(405).end();
     }

@@ -1,6 +1,6 @@
 import { CofeSchema } from '@cofe/types';
 
-export const ButtonSchema: CofeSchema = {
+export const button: CofeSchema = {
   type: 'button',
   accept: ['text', 'icon'],
   properties: {

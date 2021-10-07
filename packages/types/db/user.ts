@@ -1,10 +1,10 @@
-export interface CofeUser {
+import { CofeDbBase } from './_base';
+
+export interface CofeDbUser extends CofeDbBase {
   id: string;
   level: number;
   username: string;
   password?: string;
   enabled: boolean;
-  createdAt: number;
-  updatedAt: number;
   lastLogin: number;
 }

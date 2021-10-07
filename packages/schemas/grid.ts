@@ -1,6 +1,6 @@
 import { CofeSchema } from '@cofe/types';
 
-export const GridSchema: CofeSchema = {
+export const grid: CofeSchema = {
   type: 'grid',
   accept: ['!fragment'],
   properties: {

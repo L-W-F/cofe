@@ -8,4 +8,5 @@ export interface CofeSchema {
   actions?: JSONSchema4 & JSONSchema7;
   events?: JSONSchema4 & JSONSchema7;
   children?: CofeSchema[];
+  template?: CofeSchema;
 }

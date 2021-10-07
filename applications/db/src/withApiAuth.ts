@@ -1,6 +1,6 @@
 import { NextApiRequest } from 'next';
 import { createApiAuth } from '@cofe/api';
-import { del, getOne } from '@/db';
+import { delOne, getOne } from '@/db';
 
 const auth = async (req: NextApiRequest) => {
   if (!req.headers.authorization) {
@@ -22,7 +22,7 @@ const auth = async (req: NextApiRequest) => {
   }
 
   if (token.expiresAt < Date.now()) {
-    del('tokens', filter);
+    delOne('tokens', filter);
 
     return Promise.reject({
       code: 403,

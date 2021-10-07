@@ -24,7 +24,7 @@ import { Form } from '@cofe/form';
 import { compose } from '@cofe/gssp';
 import { get, patch, post } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
-import { CofeApp } from '@cofe/types';
+import { CofeDbApp } from '@cofe/types';
 import { Card, CardContent, CardHeader, Toolbar } from '@cofe/ui';
 import { formatDate } from '@cofe/utils';
 import { Footer } from '@/components/Footer';
@@ -162,7 +162,7 @@ const Index = ({
 export const getServerSideProps = compose(
   [withGsspCurrentTime, withGsspCatch, withGsspWhoami, withGsspColorMode],
   async (context: GetServerSidePropsContext) => {
-    const apps: CofeApp[] = await get(`${process.env.DB_URL}/api/apps`, {
+    const apps: CofeDbApp[] = await get(`${process.env.DB_URL}/api/apps`, {
       headers: {
         Authorization: `Bearer ${context.req.cookies.token}`,
       },

@@ -1,6 +1,6 @@
 import { CofeSchema } from '@cofe/types';
 
-export const TextSchema: CofeSchema = {
+export const text: CofeSchema = {
   type: 'text',
   isInline: true,
   properties: {

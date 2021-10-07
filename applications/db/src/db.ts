@@ -1,5 +1,6 @@
 import { join } from 'path';
 import { Db } from '@cofe/types';
+import { makeId } from '@cofe/utils';
 import { JSONFile, Low, Memory } from 'lowdb';
 import { ValuesType } from 'utility-types';
 import { makeExample } from './example';
@@ -9,6 +10,14 @@ const adapter = process.env.VERCEL
   : new JSONFile<Db>(join(process.cwd(), 'data/db.json'));
 
 const db = new Low<Db>(adapter);
+
+type ItemTest<T> = (item: ValuesType<T>) => boolean;
+
+function find(items: any[], test: any) {
+  return items.find(
+    typeof test === 'string' ? (item: any) => item.id === test : test,
+  );
+}
 
 async function ensureGet<K extends keyof Db>(scope: K) {
   await db.read();
@@ -34,37 +43,34 @@ async function ensureGet<K extends keyof Db>(scope: K) {
 
 export async function get<K extends keyof Db, T = Db[K]>(
   scope: K,
-  filter?: string | ((item: ValuesType<T>) => boolean),
+  test?: string | ItemTest<T>,
 ): Promise<T> {
   await ensureGet(scope);
 
   const data: any = db.data[scope];
 
-  return filter
+  return test
     ? data.filter(
-        typeof filter === 'string' ? (item: any) => item.id === filter : filter,
+        typeof test === 'string' ? (item: any) => item.id === test : test,
       )
     : data;
 }
 
 export async function getOne<K extends keyof Db, T = Db[K]>(
   scope: K,
-  filter: string | ((item: ValuesType<T>) => boolean),
+  test: string | ItemTest<T>,
 ): Promise<ValuesType<T>> {
   await ensureGet(scope);
 
   const data: any[] = db.data[scope];
 
-  const found = data.find(
-    typeof filter === 'string' ? (item: any) => item.id === filter : filter,
-  );
+  const found = find(data, test);
 
-  if (typeof found === 'undefined') {
-    const error: any = Error('数据不存在，或无法访问');
-
-    error.code = 404;
-
-    throw error;
+  if (!found) {
+    return Promise.reject({
+      code: 404,
+      message: '数据不存在，或无法访问',
+    });
   }
 
   return found;
@@ -80,48 +86,92 @@ function ensureSet<K extends keyof Db>(scope: K) {
   }
 }
 
-export async function set<K extends keyof Db, T = Db[K]>(
+export async function add<K extends keyof Db, T = Db[K]>(
   scope: K,
   value: Partial<ValuesType<T>>,
-  test?: (item: ValuesType<T>) => boolean,
-  replace?: boolean,
+  test: ItemTest<T>,
 ) {
   ensureSet(scope);
 
   const data: any[] = db.data[scope];
 
-  if (typeof test === 'boolean') {
-    replace = test;
-    test = null;
+  const found = find(data, test);
+
+  if (found) {
+    return Promise.reject({
+      code: 409,
+      message: '数据已存在',
+    });
   }
 
-  const index = data.findIndex(test || (({ id }) => id === (value as any)?.id));
+  Object.assign(value, {
+    id: makeId(),
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  });
 
-  if (index === -1) {
-    data.push(value);
-  } else {
-    data[index] = replace
-      ? value
-      : {
-          ...data[index],
-          ...value,
-        };
+  data.push(value);
+
+  await db.write();
+
+  return value;
+}
+
+export async function set<K extends keyof Db, T = Db[K]>(
+  scope: K,
+  value: Partial<ValuesType<T>>,
+  test?: string | ItemTest<T>,
+) {
+  ensureSet(scope);
+
+  const data: any[] = db.data[scope];
+
+  const found = find(data, test ?? (value as any).id);
+
+  if (!found) {
+    return Promise.reject({
+      code: 404,
+      message: '数据不存在，或无法访问',
+    });
   }
 
-  return db.write();
+  Object.assign(found, value, {
+    updatedAt: Date.now(),
+  });
+
+  await db.write();
+
+  return found;
 }
 
 export async function del<K extends keyof Db, T = Db[K]>(
   scope: K,
-  filter: string | ((item: ValuesType<T>) => boolean),
+  test: string | ItemTest<T>,
 ) {
   ensureSet(scope);
 
   const data: any[] = db.data[scope];
 
   db.data[scope] = data.filter((item: any) =>
-    typeof filter === 'string' ? item.id !== filter : !filter(item),
+    typeof test === 'string' ? item.id !== test : !test(item),
   );
 
   return db.write();
+}
+
+export async function delOne<K extends keyof Db, T = Db[K]>(
+  scope: K,
+  test: string | ItemTest<T>,
+) {
+  ensureSet(scope);
+
+  const data: any[] = db.data[scope];
+
+  const found = find(data, test);
+
+  db.data[scope] = data.filter((item: any) => item !== found);
+
+  await db.write();
+
+  return found;
 }

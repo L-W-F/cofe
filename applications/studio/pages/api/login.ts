@@ -1,12 +1,12 @@
 import { compose } from '@cofe/api';
 import { post } from '@cofe/io';
-import { CofeToken } from '@cofe/types';
+import { CofeDbToken } from '@cofe/types';
 import { serialize } from 'cookie';
 import { withApiCatch } from '@/api/withApiCatch';
 
 export default compose([withApiCatch()], async (req, res) => {
   if (req.method === 'POST') {
-    const { token, expiresAt }: CofeToken = await post(
+    const { token, expiresAt }: CofeDbToken = await post(
       `${process.env.DB_URL}/api/tokens`,
       req.body,
     );

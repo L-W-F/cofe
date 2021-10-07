@@ -1,6 +1,7 @@
-import { CofeTree } from './tree';
+import { CofeTree } from '../tree';
+import { CofeDbBase } from './_base';
 
-export interface CofePage {
+export interface CofeDbPage extends CofeDbBase {
   id: string;
   userId: string;
   appId: string;
@@ -10,6 +11,4 @@ export interface CofePage {
   parentId?: string;
   tree: CofeTree;
   state: number;
-  createdAt: number;
-  updatedAt: number;
 }

@@ -1,18 +1,16 @@
 import React from 'react';
 import { Box, BoxProps, useColorModeValue } from '@chakra-ui/react';
-import { Renderer, Schema } from '@cofe/core';
+import { Renderer } from '@cofe/core';
 import { useDispatch, useStore } from '@cofe/store';
-import { CofeAtomIdentity, CofeInsertAdjacent, CofeTree } from '@cofe/types';
+import { CofeDndAdjacent, CofeTree, CofeTreeNodeIdentity } from '@cofe/types';
 import { isMac } from '@cofe/utils';
 import { pick } from 'lodash';
 import { useDrag } from '@/hooks/useDrag';
 import { useDrop } from '@/hooks/useDrop';
+import { useSchema } from '@/hooks/useSchema';
 import { DndState } from '@/store/dnd';
 
-const getAdjacentProps = (
-  adjacent?: CofeInsertAdjacent,
-  isInline?: boolean,
-) => {
+const getAdjacentProps = (adjacent?: CofeDndAdjacent, isInline?: boolean) => {
   return {
     display: isInline ? 'inline-flex' : 'flex',
     flexDirection: isInline ? 'row' : 'column',
@@ -82,7 +80,7 @@ const DnDHandle = ({
   id,
   ...props
 }: DnDHandleProps) => {
-  const selected = useStore<CofeAtomIdentity>('editor.selected');
+  const selected = useStore<CofeTreeNodeIdentity>('editor.selected');
   const { dragging, reference, container, adjacent } =
     useStore<DndState>('dnd');
   const [{ isDragging }, drag] = useDrag({
@@ -95,7 +93,7 @@ const DnDHandle = ({
   const isReference = dragging?.id !== reference?.id && reference?.id === id;
   const isContainer = dragging?.id !== container?.id && container?.id === id;
 
-  const schema = Schema.get(type);
+  const schema = useSchema(type);
 
   const adjacentProps = getAdjacentProps(
     isReference ? adjacent : undefined,

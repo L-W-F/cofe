@@ -1,7 +1,7 @@
 import { AnyAction } from '@cofe/store';
-import { CofeApp } from '@cofe/types';
+import { CofeDbApp } from '@cofe/types';
 
-export type AppState = CofeApp[];
+export type AppState = CofeDbApp[];
 
 export const initialState: AppState = [];
 

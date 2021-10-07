@@ -1,5 +1,5 @@
 import { compose } from '@cofe/api';
-import { del, getOne, set } from '@/db';
+import { delOne, getOne, set } from '@/db';
 import { withApiAuth } from '@/withApiAuth';
 import { withApiCatch } from '@/withApiCatch';
 
@@ -11,17 +11,13 @@ export default compose([withApiCatch(), withApiAuth()], async (req, res) => {
 
     res.status(200).json(user);
   } else if (req.method === 'PATCH') {
-    await set('users', {
-      id,
-      updatedAt: Date.now(),
-      ...req.body,
-    });
+    const user = await set('users', req.body, id);
 
-    res.status(200).end();
+    res.status(200).json(user);
   } else if (req.method === 'DELETE') {
-    await del('users', id);
+    const user = await delOne('users', id);
 
-    res.status(200).end();
+    res.status(200).json(user);
   } else {
     res.status(405).end();
   }

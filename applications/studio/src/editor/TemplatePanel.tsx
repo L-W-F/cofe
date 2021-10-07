@@ -8,10 +8,13 @@ import {
   Flex,
   List,
 } from '@chakra-ui/react';
-import { Schema } from '@cofe/core';
+import { useStore } from '@cofe/store';
 import { DragItem } from './DragItem';
+import { SchemaState } from '@/store/schema';
 
 export const TemplatePanel = () => {
+  const schemas = useStore<SchemaState>('schema');
+
   return (
     <AccordionItem>
       <h2>
@@ -24,7 +27,11 @@ export const TemplatePanel = () => {
       </h2>
       <AccordionPanel>
         <List as={Flex} flexDirection="column" gridGap={2}>
-          {Schema.keys('template').map((type) => {
+          {Object.keys(schemas).map((type) => {
+            if (type.indexOf('template:') === -1) {
+              return null;
+            }
+
             return <DragItem key={type} type={type} />;
           })}
         </List>

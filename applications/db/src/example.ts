@@ -1,7 +1,7 @@
-import { CofeApp, CofePage, CofeToken, CofeUser } from '@cofe/types';
+import { CofeDbApp, CofeDbPage, CofeDbToken, CofeDbUser } from '@cofe/types';
 import { u } from 'unist-builder';
 
-const users: CofeUser[] = [
+const users: CofeDbUser[] = [
   {
     id: '_ZcNY8EZVc',
     level: -1,
@@ -14,7 +14,7 @@ const users: CofeUser[] = [
   },
 ];
 
-const tokens: CofeToken[] = [
+const tokens: CofeDbToken[] = [
   {
     userId: '_ZcNY8EZVc',
     token: '_28NoTusa4j',
@@ -22,7 +22,7 @@ const tokens: CofeToken[] = [
   },
 ];
 
-const apps: CofeApp[] = [
+const apps: CofeDbApp[] = [
   {
     id: '_fXjLwZ8mp',
     userId: '_ZcNY8EZVc',
@@ -33,7 +33,7 @@ const apps: CofeApp[] = [
   },
 ];
 
-const pages: CofePage[] = [
+const pages: CofeDbPage[] = [
   {
     id: '_X5z4g9HA8',
     userId: '_ZcNY8EZVc',

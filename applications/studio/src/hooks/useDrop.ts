@@ -1,32 +1,32 @@
 import { RefCallback, useEffect, useState } from 'react';
 import { Schema } from '@cofe/core';
 import { useDispatch, useStore } from '@cofe/store';
-import { CofeTree } from '@cofe/types';
+import {
+  CofeDndAdjacent,
+  CofeDndPayload,
+  CofeTreeNodeIdentity,
+} from '@cofe/types';
 import { select } from 'unist-util-select';
 import { useCurrentTree } from './useCurrentTree';
 
 interface DropOptions {
-  onDrop: (payload: {
-    dragging: string | CofeTree;
-    reference?: string;
-    container?: string;
-    adjacent: 'INSERT_AFTER' | 'INSERT_BEFORE';
-  }) => void;
+  onDrop: (payload: CofeDndPayload) => void;
 }
 
 type DropReturns = [{}, RefCallback<HTMLElement>];
 
 export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
   const currentTree = useCurrentTree();
+  const schemas = useStore('schema');
   const dragging = useStore('dnd.dragging');
   const dispatch = useDispatch();
   const [dropHandle, setDropHandle] = useState<HTMLElement>(null);
 
   useEffect(() => {
     if (dropHandle && dragging) {
-      let reference: CofeTree = null;
-      let container: CofeTree = null;
-      let adjacent: 'INSERT_AFTER' | 'INSERT_BEFORE' = null;
+      let reference: CofeTreeNodeIdentity = null;
+      let container: CofeTreeNodeIdentity = null;
+      let adjacent: CofeDndAdjacent = null;
 
       const drop = (e: DragEvent & { target: HTMLElement }) => {
         e.preventDefault();
@@ -45,7 +45,7 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
           }
 
           onDrop({
-            dragging: dragging.id ?? Schema.createNode(dragging.type),
+            dragging: dragging.id ?? Schema.createNode(schemas[dragging.type]),
             reference: reference?.id,
             container: container?.id,
             adjacent,
@@ -67,7 +67,7 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
               .querySelector(`[data-id=${reference.id}]`)
               .getBoundingClientRect();
 
-            const { isInline } = Schema.get(reference.type);
+            const { isInline } = schemas[reference.type];
 
             adjacent = (
               isInline ? e.clientX > x + width / 2 : e.clientY > y + height / 2
@@ -92,6 +92,7 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
           [reference, container] = getAcceptChain(
             select(`[id=${e.target.dataset?.id}]`, currentTree),
             dragging.type,
+            schemas,
           );
 
           dispatch('REFERENCE')(reference);
@@ -121,41 +122,21 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
 
       return removeListeners;
     }
-  }, [currentTree, dispatch, dragging, dropHandle, onDrop]);
+  }, [currentTree, dispatch, dragging, dropHandle, onDrop, schemas]);
 
   return [{}, setDropHandle];
 };
 
-function isAccept(pType: string, cType: string) {
-  const accept = Schema.get(pType)?.accept;
-
-  if (!accept?.length) {
-    return false;
-  }
-
-  return accept.some((r) => {
-    if (r === '*') {
-      return true;
-    }
-
-    if (r[0] === '!') {
-      return r.slice(1) !== cType;
-    }
-
-    return r === cType;
-  });
-}
-
 /**
  * @returns [相邻的节点?, 将要插入的父级节点?]
  */
-function getAcceptChain(node: any, type: string) {
+function getAcceptChain(node: any, type: string, map: any) {
   const chain = [null, null];
 
   while (node) {
     chain.push({ type: node.type, id: node.id });
 
-    if (isAccept(node.type, type)) {
+    if (Schema.isAccepted(map[node.type].accept, type)) {
       return chain.slice(-2) as [
         {
           type: string;

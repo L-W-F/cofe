@@ -1,6 +1,6 @@
-import { CofeRenderer, CofeSchema } from '@cofe/types';
+import { CofeRenderer } from '@cofe/types';
 
-const renderers = new Map<CofeSchema['type'], CofeRenderer>();
+const renderers = new Map<string, CofeRenderer>();
 
 export class Renderer {
   static add(type: string, renderer: CofeRenderer) {

@@ -1,6 +1,6 @@
 import { compose } from '@cofe/api';
 import { get, post, put } from '@cofe/io';
-import { CofeToken, CofeUser } from '@cofe/types';
+import { CofeDbToken, CofeDbUser } from '@cofe/types';
 import { makeId } from '@cofe/utils';
 import { serialize } from 'cookie';
 import { withApiCatch } from '@/api/withApiCatch';
@@ -32,7 +32,7 @@ export default compose([withApiCatch()], async (req, res) => {
         }).catch(() => ({}));
 
         if (login) {
-          let user: CofeUser = await get(
+          let user: CofeDbUser = await get(
             `${process.env.DB_URL}/api/externals/github/${node_id}`,
             {
               headers: {
@@ -63,7 +63,7 @@ export default compose([withApiCatch()], async (req, res) => {
             res.status(201).json(user);
           }
 
-          const { token, expiresAt }: CofeToken = await post(
+          const { token, expiresAt }: CofeDbToken = await post(
             `${process.env.DB_URL}/api/tokens`,
             { username: user.username, password: user.password },
           );

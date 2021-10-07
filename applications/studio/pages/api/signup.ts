@@ -1,11 +1,11 @@
 import { compose } from '@cofe/api';
 import { post } from '@cofe/io';
-import { CofeUser } from '@cofe/types';
+import { CofeDbUser } from '@cofe/types';
 import { withApiCatch } from '@/api/withApiCatch';
 
 export default compose([withApiCatch()], async (req, res) => {
   if (req.method === 'POST') {
-    const user: CofeUser = await post(
+    const user: CofeDbUser = await post(
       `${process.env.DB_URL}/api/users`,
       req.body,
     );

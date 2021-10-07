@@ -1,14 +1,7 @@
-import { CofeTree } from './tree';
-
-export interface CofeAtomIdentity {
-  type: string;
-  id?: string;
-}
+import { CofeTree, CofeTreeNodeIdentity } from './tree';
 
 export interface CofeEditor {
   stack?: CofeTree[];
   cursor?: number;
-  selected?: CofeAtomIdentity;
+  selected?: CofeTreeNodeIdentity;
 }
-
-export type CofeInsertAdjacent = 'INSERT_BEFORE' | 'INSERT_AFTER';

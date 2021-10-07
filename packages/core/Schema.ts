@@ -1,108 +1,68 @@
 import { CofeSchema } from '@cofe/types';
-import { makeId } from '@cofe/utils';
-import { clone, merge } from 'lodash';
+import { extractDefaults, makeId } from '@cofe/utils';
 import { u } from 'unist-builder';
 
-type SchemaType = CofeSchema['type'];
-
-const schemas = new Map<SchemaType, CofeSchema>();
-
 export class Schema {
-  static add(type: SchemaType, model: CofeSchema) {
-    schemas.set(type, model);
+  static isTemplate(schema: CofeSchema) {
+    return schema.hasOwnProperty('template');
   }
 
-  static get(type: SchemaType) {
-    return schemas.get(type);
-  }
+  static isAccepted(accept: string[], type: string) {
+    if (!accept?.length) {
+      return false;
+    }
 
-  static del(type: SchemaType) {
-    schemas.delete(type);
-  }
+    return accept.some((r) => {
+      if (r === '*') {
+        return true;
+      }
 
-  static keys(ns?: string) {
-    return Array.from(schemas.keys()).filter((type) =>
-      ns
-        ? ns[0] === '!'
-          ? type.indexOf(`${ns.slice(1)}:`) === -1
-          : type.indexOf(`${ns}:`) === 0
-        : true,
-    );
-  }
+      if (r[0] === '!') {
+        return r.slice(1) !== type;
+      }
 
-  static getPropertiesDefaults(type: SchemaType) {
-    return extractDefaults(schemas.get(type)?.properties);
-  }
-
-  static isTemplate(type: SchemaType) {
-    return type.indexOf('template:') === 0;
-  }
-
-  static createCompositeNode({
-    type,
-    children,
-    properties,
-    actions,
-    events,
-  }: CofeSchema) {
-    const props = {
-      id: makeId(),
-      properties: Schema.getPropertiesDefaults(type),
-      // @todo actions and events
-    };
-
-    return u(
-      type,
-      merge(props, {
-        properties,
-        actions,
-        events,
-      }),
-      children?.map((m) => Schema.createCompositeNode(m)),
-    );
-  }
-
-  static createAtomicNode(type: SchemaType) {
-    return u(type, {
-      id: makeId(),
-      properties: Schema.getPropertiesDefaults(type),
-      // @todo actions and events
+      return r === type;
     });
   }
 
-  static createNode(type: SchemaType) {
-    if (Schema.isTemplate(type)) {
-      return Schema.createCompositeNode(Schema.get(type));
+  static createCompositeNode(
+    { type, properties, children }: CofeSchema,
+    dry?: boolean,
+  ) {
+    const props = {
+      id: makeId(),
+    };
+
+    // @todo actions and events
+    if (properties) {
+      Object.assign(props, { properties: extractDefaults(properties) });
     }
 
-    return Schema.createAtomicNode(type);
-  }
-}
-
-function extractDefaults(
-  { default: dft, type, properties = {} } = {} as any,
-): any {
-  if (typeof dft !== 'undefined') {
-    return clone(dft);
+    return u(
+      type,
+      props,
+      children?.map((m) => Schema.createCompositeNode(m, dry)),
+    );
   }
 
-  switch (type) {
-    case 'string':
-      return '';
-    case 'number':
-      return 0;
-    case 'boolean':
-      return false;
-    case 'array':
-      return [];
-    case 'object':
-      return Object.entries(properties).reduce(
-        (o, [k, v]) => ({
-          ...o,
-          [k]: extractDefaults(v),
-        }),
-        {},
-      );
-    default:
+  static createAtomicNode({ type, properties }: CofeSchema) {
+    const props = {
+      id: makeId(),
+    };
+
+    // @todo actions and events
+    if (properties) {
+      Object.assign(props, { properties: extractDefaults(properties) });
+    }
+
+    return u(type, props);
+  }
+
+  static createNode(schema: CofeSchema) {
+    if (Schema.isTemplate(schema)) {
+      return Schema.createCompositeNode(schema.template);
+    }
+
+    return Schema.createAtomicNode(schema);
   }
 }

@@ -1,6 +1,6 @@
 import { CofeSchema } from '@cofe/types';
 
-export const IconSchema: CofeSchema = {
+export const icon: CofeSchema = {
   type: 'icon',
   isInline: true,
   properties: {

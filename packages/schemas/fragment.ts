@@ -1,6 +1,6 @@
 import { CofeSchema } from '@cofe/types';
 
-export const FragmentSchema: CofeSchema = {
+export const fragment: CofeSchema = {
   type: 'fragment',
   accept: ['*'],
 };

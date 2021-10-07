@@ -33,10 +33,19 @@ import { Form } from '@cofe/form';
 import { compose } from '@cofe/gssp';
 import { useSplitPane } from '@cofe/hooks';
 import { get, post, put } from '@cofe/io';
+import { registerRenderers } from '@cofe/renderers';
+import { schemas } from '@cofe/schemas';
 import { getState, useDispatch, useStore } from '@cofe/store';
-import { CofeConfig, CofePage, CofeSnapshot } from '@cofe/types';
+import {
+  CofeConfig,
+  CofeDbPage,
+  CofeDbSnapshot,
+  CofeDbTemplate,
+  CofeTree,
+} from '@cofe/types';
 import { isMac, makeId } from '@cofe/utils';
 import { u } from 'unist-builder';
+import { map } from 'unist-util-map';
 import { Header } from '@/components/Header';
 import { Root } from '@/components/Root';
 import { ActionPanel } from '@/editor/ActionPanel';
@@ -52,9 +61,7 @@ import { withGsspWhoami } from '@/gssp/withGsspWhoami';
 import { EDIT_MODE_DESIGN } from '@/store/config';
 import { EditorState } from '@/store/editor';
 
-// https://github.com/vercel/next.js/discussions/29315
-require('@cofe/renderers');
-require('@cofe/schemas');
+registerRenderers();
 
 const SplitHandle = (props: ReturnType<typeof useSplitPane>['handleProps']) => {
   return (
@@ -182,15 +189,22 @@ const DropMenu = () => {
 
                 await post('/api/templates', {
                   ...formData,
-                  template: stack[cursor],
+                  template: map(
+                    stack[cursor],
+                    ({ type, properties }: CofeTree) => {
+                      return u(type, { properties });
+                    },
+                  ),
                 });
 
                 toast({
-                  title: '已保存',
+                  title: '已保存为模板',
                   status: 'success',
                   duration: 1000,
                   position: 'bottom-left',
                 });
+
+                onClose();
               }}
             >
               保存
@@ -373,13 +387,20 @@ export const getServerSideProps = compose(
       };
     }
 
-    const [page, stack]: [CofePage, CofeSnapshot['stack']] = await Promise.all([
+    type R = [CofeDbPage, CofeDbSnapshot['stack'], CofeDbTemplate[]];
+
+    const [page, stack, templates]: R = await Promise.all([
       get(`${process.env.DB_URL}/api/pages/${context.params.id}`, {
         headers: {
           Authorization: `Bearer ${context.req.cookies.token}`,
         },
       }),
       get(`${process.env.DB_URL}/api/pages/${context.params.id}/snapshots`, {
+        headers: {
+          Authorization: `Bearer ${context.req.cookies.token}`,
+        },
+      }),
+      get(`${process.env.DB_URL}/api/templates`, {
         headers: {
           Authorization: `Bearer ${context.req.cookies.token}`,
         },
@@ -403,6 +424,15 @@ export const getServerSideProps = compose(
             ],
             cursor: stack.length ?? 0,
           },
+          schema: templates.reduce((o, { type, template }) => {
+            return {
+              ...o,
+              [`template:${type}`]: {
+                type: `template:${type}`,
+                template,
+              },
+            };
+          }, schemas),
         },
       },
     };

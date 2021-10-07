@@ -1,8 +1,6 @@
 import { compose } from '@cofe/api';
-import { CofeToken } from '@cofe/types';
 import { makeId } from '@cofe/utils';
-import { pick } from 'lodash';
-import { del, getOne, set } from '@/db';
+import { add, del, delOne, getOne, set } from '@/db';
 import { withApiAuth } from '@/withApiAuth';
 import { withApiCatch } from '@/withApiCatch';
 
@@ -22,27 +20,26 @@ export default compose(
           item.password === req.body.password,
       );
 
-      if (user) {
-        user.lastLogin = Date.now();
+      user.lastLogin = Date.now();
 
-        await set('users', user);
+      await set('users', user);
 
-        await del('tokens', (item) => item.userId === user.id);
+      // 清除当前用户旧的 token
+      await del('tokens', (item) => item.userId === user.id);
 
-        const token: CofeToken = {
+      const token = await add(
+        'tokens',
+        {
           userId: user.id,
           token: makeId(),
           expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        };
+        },
+        (item) => item.userId === user.id,
+      );
 
-        await set('tokens', token);
-
-        res.status(201).json(pick(token, ['token', 'expiresAt']));
-      } else {
-        res.status(404).end('用户名或密码不正确！');
-      }
+      res.status(201).json(token);
     } else if (req.method === 'DELETE') {
-      await del(
+      await delOne(
         'tokens',
         (item) => `Bearer ${item.token}` === req.headers.authorization,
       );

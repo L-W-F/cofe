@@ -1,14 +1,21 @@
 import { Renderer } from '@cofe/core';
-import { ButtonRenderer } from './atom/Button';
-import { FragmentRenderer } from './atom/Fragment';
-import { GridRenderer } from './atom/Grid';
-import { IconRenderer } from './atom/Icon';
-import { LinkRenderer } from './atom/Link';
-import { TextRenderer } from './atom/Text';
+import { debug } from '@cofe/logger';
+import { ButtonRenderer } from './Button';
+import { FragmentRenderer } from './Fragment';
+import { GridRenderer } from './Grid';
+import { IconRenderer } from './Icon';
+import { LinkRenderer } from './Link';
+import { TextRenderer } from './Text';
 
-Renderer.add('fragment', FragmentRenderer);
-Renderer.add('grid', GridRenderer);
-Renderer.add('button', ButtonRenderer);
-Renderer.add('link', LinkRenderer);
-Renderer.add('text', TextRenderer);
-Renderer.add('icon', IconRenderer);
+export const registerRenderers = () => {
+  if (process.env.NODE_ENV === 'development') {
+    debug('renderers')('registering');
+  }
+
+  Renderer.add('fragment', FragmentRenderer);
+  Renderer.add('grid', GridRenderer);
+  Renderer.add('button', ButtonRenderer);
+  Renderer.add('link', LinkRenderer);
+  Renderer.add('text', TextRenderer);
+  Renderer.add('icon', IconRenderer);
+};
