@@ -4,17 +4,14 @@ import { CofeRendererProps } from '@cofe/types';
 
 interface FragmentRendererProps extends CofeRendererProps {
   children?: ReactNode;
-  pointerEvents?: any;
 }
 
 export const FragmentRenderer = ({
   isDesign,
   children,
-  pointerEvents,
-  ...props
 }: FragmentRendererProps) => {
   return (
-    <Fragment {...props}>
+    <Fragment>
       {isDesign ? (
         Children.count(children) ? (
           children
