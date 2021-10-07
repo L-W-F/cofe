@@ -1,17 +1,23 @@
 import { CofeRenderer } from '@cofe/types';
 
-const renderers = new Map<string, CofeRenderer>();
+const map = new Map<string, CofeRenderer>();
 
 export class Renderer {
+  static register(renderers: Record<string, CofeRenderer>) {
+    Object.entries(renderers).forEach(([type, renderer]) => {
+      map.set(type, renderer);
+    });
+  }
+
   static add(type: string, renderer: CofeRenderer) {
-    renderers.set(type, renderer);
+    map.set(type, renderer);
   }
 
   static get(type: string) {
-    return renderers.get(type);
+    return map.get(type);
   }
 
   static del(type: string) {
-    renderers.delete(type);
+    map.delete(type);
   }
 }

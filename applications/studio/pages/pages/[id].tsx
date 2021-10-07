@@ -29,11 +29,12 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
+import { Renderer } from '@cofe/core';
 import { Form } from '@cofe/form';
 import { compose } from '@cofe/gssp';
 import { useSplitPane } from '@cofe/hooks';
 import { get, post, put } from '@cofe/io';
-import { registerRenderers } from '@cofe/renderers';
+import { renderers } from '@cofe/renderers';
 import { schemas } from '@cofe/schemas';
 import { getState, useDispatch, useStore } from '@cofe/store';
 import {
@@ -61,7 +62,7 @@ import { withGsspWhoami } from '@/gssp/withGsspWhoami';
 import { EDIT_MODE_DESIGN } from '@/store/config';
 import { EditorState } from '@/store/editor';
 
-registerRenderers();
+Renderer.register(renderers);
 
 const SplitHandle = (props: ReturnType<typeof useSplitPane>['handleProps']) => {
   return (

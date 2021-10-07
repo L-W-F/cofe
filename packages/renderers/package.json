@@ -8,8 +8,6 @@
   "author": "crossjs <liwenfu@crossjs.com>",
   "dependencies": {
     "@chakra-ui/react": "^1.6.8",
-    "@cofe/core": "^0.1.0",
-    "@cofe/logger": "^0.1.0",
     "@cofe/md": "^0.1.0",
     "@cofe/types": "^0.1.0",
     "react": "^17.0.2"
