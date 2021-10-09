@@ -5,6 +5,9 @@ import { AddIcon, EditIcon, TimeIcon } from '@chakra-ui/icons';
 import {
   Avatar,
   Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
   Button,
   Drawer,
   DrawerBody,
@@ -13,19 +16,22 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Flex,
   Heading,
   IconButton,
   LinkBox,
   LinkOverlay,
   SimpleGrid,
+  Text,
   useDisclosure,
+  useToast,
+  VStack,
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
 import { compose } from '@cofe/gssp';
 import { get, patch, post } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
-import { CofeDbApp } from '@cofe/types';
-import { Card, CardContent, CardHeader, Toolbar } from '@cofe/ui';
+import { Card, Toolbar } from '@cofe/ui';
 import { formatDate } from '@cofe/utils';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
@@ -34,12 +40,20 @@ import { withGsspCatch } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspCurrentTime } from '@/gssp/withGsspCurrentTime';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
+import { AppState } from '@/store/app';
+import { WhoamiState } from '@/store/whoami';
 
 const Index = ({
   currentTime,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const apps = useStore('app');
+  const apps = useStore<AppState>('app');
+  const lastLogin = useStore<WhoamiState['lastLogin']>('whoami.lastLogin');
   const dispatch = useDispatch();
+  const toast = useToast({
+    status: 'success',
+    duration: 1000,
+    position: 'bottom-left',
+  });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [formData, setFormData] = useState(null);
 
@@ -47,55 +61,79 @@ const Index = ({
     <>
       <Root>
         <Header />
-        <Toolbar mb={4}>
-          <Heading as="h2" size="xl">
-            应用
-          </Heading>
-          <Box flex={1} />
-          <IconButton
-            aria-label="创建新的应用"
-            icon={<AddIcon />}
-            onClick={() => {
-              setFormData({});
-              onOpen();
-            }}
-          />
+        <Toolbar size="sm">
+          <Breadcrumb>
+            <BreadcrumbItem isCurrentPage>
+              <NextLink href="/" passHref>
+                <BreadcrumbLink>首页</BreadcrumbLink>
+              </NextLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
         </Toolbar>
-        <SimpleGrid
-          m={2}
-          gridGap={2}
-          columns={{ base: 1, md: 2, lg: 3, xl: 4 }}
-        >
-          {apps.map(({ id, title, description, createdAt, updatedAt }) => (
-            <LinkBox key={id} as={Card}>
-              <CardHeader
-                avatar={<Avatar size="sm" name="A" />}
-                title={
-                  <NextLink href={`/apps/${id}`} passHref>
-                    <LinkOverlay>{title}</LinkOverlay>
-                  </NextLink>
-                }
-                description={description}
-                action={
-                  <IconButton
-                    aria-label="编辑"
-                    icon={<EditIcon />}
-                    size="xs"
-                    onClick={() => {
-                      setFormData(apps.find((app) => app.id === id));
-
-                      onOpen();
-                    }}
-                  />
-                }
+        <SimpleGrid m={2} gridGap={2} columns={{ base: 1, md: 2 }}>
+          <Card>
+            <Toolbar>
+              <Heading as="h3" size="md" flex={1}>
+                应用
+              </Heading>
+              <IconButton
+                aria-label="创建新的应用"
+                icon={<AddIcon />}
+                size="sm"
+                onClick={() => {
+                  setFormData({});
+                  onOpen();
+                }}
               />
-              <CardContent>
-                <TimeIcon aria-label="最后修改" mr={1} />
-                {formatDate(updatedAt)}
-              </CardContent>
-            </LinkBox>
-          ))}
+            </Toolbar>
+            <VStack m={4} gridGap={2} align="stretch">
+              {apps.map(({ id, title, description, updatedAt }) => (
+                <LinkBox key={id} as={Card}>
+                  <Toolbar>
+                    <Avatar size="sm" name="A" />
+                    <NextLink href={`/apps/${id}`} passHref>
+                      <LinkOverlay flex={1}>{title}</LinkOverlay>
+                    </NextLink>
+                    <IconButton
+                      aria-label="编辑"
+                      icon={<EditIcon />}
+                      size="xs"
+                      onClick={() => {
+                        setFormData(apps.find((app) => app.id === id));
+
+                        onOpen();
+                      }}
+                    />
+                  </Toolbar>
+                  <Flex m={4}>
+                    <Text flex={1}>{description}</Text>
+                    <Text>
+                      <TimeIcon aria-label="最后修改" mr={1} />
+                      {formatDate(updatedAt)}
+                    </Text>
+                  </Flex>
+                </LinkBox>
+              ))}
+            </VStack>
+          </Card>
+          <Card>
+            <Toolbar>
+              <Heading as="h3" size="md">
+                上一次登录
+              </Heading>
+            </Toolbar>
+            <Box p={4}>{formatDate(lastLogin)}</Box>
+          </Card>
+          <Card>
+            <Toolbar>
+              <Heading as="h3" size="md">
+                关于
+              </Heading>
+            </Toolbar>
+            <Box m={4}>我们</Box>
+          </Card>
         </SimpleGrid>
+
         <Footer>{currentTime}</Footer>
       </Root>
       <Drawer
@@ -142,12 +180,22 @@ const Index = ({
                 if (formData?.id) {
                   const app = await patch(`/api/apps/${formData.id}`, formData);
 
+                  toast({
+                    title: '保存成功',
+                  });
+
                   dispatch('UPDATE_APP')(app);
                 } else {
                   const app = await post('/api/apps', formData);
 
+                  toast({
+                    title: '创建成功',
+                  });
+
                   dispatch('CREATE_APP')(app);
                 }
+
+                onClose();
               }}
             >
               保存
@@ -162,7 +210,7 @@ const Index = ({
 export const getServerSideProps = compose(
   [withGsspCurrentTime, withGsspCatch, withGsspWhoami, withGsspColorMode],
   async (context: GetServerSidePropsContext) => {
-    const apps: CofeDbApp[] = await get(`${process.env.DB_URL}/api/apps`, {
+    const apps = await get(`${process.env.DB_URL}/api/apps`, {
       headers: {
         Authorization: `Bearer ${context.req.cookies.token}`,
       },

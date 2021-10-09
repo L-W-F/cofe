@@ -15,7 +15,7 @@ export default compose([withApiCatch()], async (req, res) => {
             client_id: process.env.GITHUB_CLIENT_ID,
             client_secret: process.env.GITHUB_CLIENT_SECRET,
             code: req.query.code,
-            redirect_uri: 'http://localhost:3000/api/auth/callback/github',
+            redirect_uri: `${process.env.ORIGIN}/api/auth/callback/github`,
           },
           {
             headers: {
@@ -32,16 +32,18 @@ export default compose([withApiCatch()], async (req, res) => {
         }).catch(() => ({}));
 
         if (login) {
+          // 获取对应的已注册的用户
           let user: CofeDbUser = await get(
             `${process.env.DB_URL}/api/externals/github/${node_id}`,
             {
               headers: {
-                Authorization: `token ${process.env.DB_SUPER_TOKEN}`,
+                Authorization: `Bearer ${process.env.DB_SUPER_TOKEN}`,
               },
             },
           ).catch(() => null);
 
           if (!user) {
+            // 获取已注册的同名用户
             const users = await get(
               `${process.env.DB_URL}/api/users?username=${login}`,
               {
@@ -79,7 +81,7 @@ export default compose([withApiCatch()], async (req, res) => {
 
           res.redirect('/');
         } else {
-          res.status(500).end('远程调用失败');
+          res.status(500).end('远程调用 Github 接口失败！');
         }
       } else {
         res.status(400).end('缺少 code 参数！');

@@ -1,21 +1,29 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { compose } from '@cofe/api';
-import { CofeDbExternal } from '@cofe/types';
 import { add, getOne } from '@/db';
+import { withApiAuth } from '@/withApiAuth';
+import { withApiCan } from '@/withApiCan';
 import { withApiCatch } from '@/withApiCatch';
 
 export default compose(
-  [withApiCatch()],
-  async (req: NextApiRequest, res: NextApiResponse) => {
+  [withApiCatch(), withApiCan(), withApiAuth()],
+  async (
+    req: NextApiRequest,
+    res: NextApiResponse,
+    // { auth: { userId } }
+  ) => {
     const provider = req.query.provider as string;
     const externalId = req.query.externalId as string;
-    const test = (item: CofeDbExternal) =>
-      item.provider === provider && item.externalId === externalId;
 
     if (req.method === 'GET') {
-      const { userId } = await getOne('externals', test);
+      const { userId } = await getOne(
+        'externals',
+        (item) => item.provider === provider && item.externalId === externalId,
+      );
 
-      res.status(200).json(await getOne('users', userId));
+      const user = await getOne('users', userId);
+
+      res.status(200).json(user);
     } else if (req.method === 'PUT') {
       const external = await add(
         'externals',
@@ -24,7 +32,7 @@ export default compose(
           provider: 'github',
           externalId,
         },
-        test,
+        (item) => item.provider === provider && item.externalId === externalId,
       );
 
       res.status(201).json(external);

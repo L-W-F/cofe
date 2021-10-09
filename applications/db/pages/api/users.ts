@@ -1,13 +1,17 @@
 import { compose } from '@cofe/api';
 import { add, get } from '@/db';
 import { withApiAuth } from '@/withApiAuth';
+import { withApiCan } from '@/withApiCan';
 import { withApiCatch } from '@/withApiCatch';
 
 export default compose(
   [
     withApiCatch(),
+    withApiCan({
+      skip: ({ method }) => method === 'POST',
+    }),
     withApiAuth({
-      predicate: (req) => req.method === 'POST',
+      skip: ({ method }) => method === 'POST',
     }),
   ],
   async (req, res) => {
@@ -21,6 +25,9 @@ export default compose(
 
       res.status(200).json(users);
     } else if (req.method === 'POST') {
+      /**
+       * 注册，不判断登录与权限
+       */
       const user = await add(
         'users',
         {

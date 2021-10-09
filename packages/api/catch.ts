@@ -1,4 +1,4 @@
-import { debug } from '@cofe/logger';
+import { warn } from '@cofe/logger';
 import { ApiHandler } from './compose';
 
 export const createApiCatch =
@@ -6,11 +6,11 @@ export const createApiCatch =
   () =>
   (next: ApiHandler): ApiHandler =>
   async (req, res, rest?) => {
-    debug('api')('catch %j', rest);
-
     try {
       await next(req, res, rest);
     } catch (error) {
+      warn('api')('catch %s\n%s', error.message, error.stack);
+
       res.status(error.code ?? 500).end(error.message ?? '服务错误');
     }
   };

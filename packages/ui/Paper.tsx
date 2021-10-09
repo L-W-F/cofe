@@ -7,6 +7,7 @@ export const Paper = ({
   rounded = 'md',
   shadow = 'xs',
   overflow = 'hidden',
+  sx,
   ...props
 }: PaperProps) => {
   const styles = useStyleConfig('Paper', props);
@@ -16,7 +17,7 @@ export const Paper = ({
       rounded={rounded}
       shadow={shadow}
       overflow={overflow}
-      sx={styles}
+      sx={{ ...sx, ...styles }}
       {...props}
     />
   );

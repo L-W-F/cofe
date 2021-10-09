@@ -1,7 +1,9 @@
 import { AnyAction } from '@cofe/store';
 import { CofeWhoami } from '@cofe/types';
 
-export const initialState: Partial<CofeWhoami> = {};
+export type WhoamiState = Partial<CofeWhoami>;
+
+export const initialState: WhoamiState = {};
 
 export const reducer = (state = initialState, { type, payload }: AnyAction) => {
   switch (type) {

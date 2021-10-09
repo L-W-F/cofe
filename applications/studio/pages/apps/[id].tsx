@@ -5,6 +5,9 @@ import { AddIcon, EditIcon, TimeIcon } from '@chakra-ui/icons';
 import {
   Avatar,
   Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
   Button,
   Drawer,
   DrawerBody,
@@ -13,11 +16,13 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Flex,
   Heading,
   IconButton,
   LinkBox,
   LinkOverlay,
   SimpleGrid,
+  Text,
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
@@ -26,7 +31,7 @@ import { compose } from '@cofe/gssp';
 import { get, patch, post } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
 import { CofeDbPage } from '@cofe/types';
-import { Card, CardContent, CardHeader, Toolbar } from '@cofe/ui';
+import { Card, Toolbar } from '@cofe/ui';
 import { formatDate } from '@cofe/utils';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
@@ -49,6 +54,25 @@ const App = ({
     <>
       <Root>
         <Header />
+        <Toolbar size="sm">
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <NextLink href="/" passHref>
+                <BreadcrumbLink>首页</BreadcrumbLink>
+              </NextLink>
+            </BreadcrumbItem>
+
+            <BreadcrumbItem>
+              <NextLink href={`/apps/${appId}`} passHref>
+                <BreadcrumbLink>应用</BreadcrumbLink>
+              </NextLink>
+            </BreadcrumbItem>
+
+            <BreadcrumbItem isCurrentPage>
+              <span>页面</span>
+            </BreadcrumbItem>
+          </Breadcrumb>
+        </Toolbar>
         <Toolbar mb={4}>
           <Heading as="h2" size="xl">
             页面
@@ -70,31 +94,29 @@ const App = ({
         >
           {pages.map(({ id, title, description, createdAt, updatedAt }) => (
             <LinkBox key={id} as={Card}>
-              <CardHeader
-                avatar={<Avatar size="sm" name="A" />}
-                title={
-                  <NextLink href={`/pages/${id}`} passHref>
-                    <LinkOverlay>{title}</LinkOverlay>
-                  </NextLink>
-                }
-                description={description}
-                action={
-                  <IconButton
-                    aria-label="编辑"
-                    icon={<EditIcon />}
-                    size="xs"
-                    onClick={() => {
-                      setFormData(pages.find((page) => page.id === id));
+              <Toolbar>
+                <Avatar size="sm" name="A" />
+                <NextLink href={`/pages/${id}`} passHref>
+                  <LinkOverlay flex={1}>{title}</LinkOverlay>
+                </NextLink>
+                <IconButton
+                  aria-label="编辑"
+                  icon={<EditIcon />}
+                  size="xs"
+                  onClick={() => {
+                    setFormData(pages.find((page) => page.id === id));
 
-                      onOpen();
-                    }}
-                  />
-                }
-              />
-              <CardContent>
-                <TimeIcon aria-label="最后修改" mr={1} />
-                {formatDate(updatedAt)}
-              </CardContent>
+                    onOpen();
+                  }}
+                />
+              </Toolbar>
+              <Flex m={4}>
+                <Text flex={1}>{description}</Text>
+                <Text>
+                  <TimeIcon aria-label="最后修改" mr={1} />
+                  {formatDate(updatedAt)}
+                </Text>
+              </Flex>
             </LinkBox>
           ))}
         </SimpleGrid>
@@ -148,27 +170,27 @@ const App = ({
                   );
 
                   toast({
-                    title: '创建成功',
-                    status: 'success',
-                    duration: 1000,
-                    position: 'bottom-left',
-                  });
-
-                  dispatch('UPDATE_PAGE')(page);
-                  onClose();
-                } else {
-                  const page = await post(`/api/apps/${appId}/pages`, formData);
-
-                  toast({
                     title: '保存成功',
                     status: 'success',
                     duration: 1000,
                     position: 'bottom-left',
                   });
 
+                  dispatch('UPDATE_PAGE')(page);
+                } else {
+                  const page = await post(`/api/apps/${appId}/pages`, formData);
+
+                  toast({
+                    title: '创建成功',
+                    status: 'success',
+                    duration: 1000,
+                    position: 'bottom-left',
+                  });
+
                   dispatch('CREATE_PAGE')(page);
-                  onClose();
                 }
+
+                onClose();
               }}
             >
               保存

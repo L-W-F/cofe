@@ -14,9 +14,11 @@ const db = new Low<Db>(adapter);
 type ItemTest<T> = (item: ValuesType<T>) => boolean;
 
 function find(items: any[], test: any) {
-  return items.find(
-    typeof test === 'string' ? (item: any) => item.id === test : test,
-  );
+  return test
+    ? items.find(
+        typeof test === 'string' ? (item: any) => item.id === test : test,
+      )
+    : items;
 }
 
 async function ensureGet<K extends keyof Db>(scope: K) {

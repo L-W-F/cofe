@@ -1,7 +1,5 @@
 export * from './AppBar';
 export * from './Card';
-export * from './CardHeader';
-export * from './CardContent';
 export * from './Empty';
 export * from './Paper';
 export * from './PageHeader';

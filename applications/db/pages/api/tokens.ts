@@ -8,7 +8,7 @@ export default compose(
   [
     withApiCatch(),
     withApiAuth({
-      predicate: (req) => req.method === 'POST',
+      skip: (req) => req.method === 'POST',
     }),
   ],
   async (req, res) => {

@@ -1,7 +1,12 @@
 import React from 'react';
-import { Flex, FlexProps, useStyleConfig } from '@chakra-ui/react';
+import {
+  Flex,
+  FlexProps,
+  ThemingProps,
+  useStyleConfig,
+} from '@chakra-ui/react';
 
-interface ToolbarProps extends FlexProps {}
+export interface ToolbarProps extends FlexProps, ThemingProps {}
 
 export const Toolbar = (props: ToolbarProps) => {
   const styles = useStyleConfig('Toolbar', props);

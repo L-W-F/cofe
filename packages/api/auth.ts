@@ -4,17 +4,15 @@ import { ApiHandler } from './compose';
 
 interface ApiAuthOptions {
   auth?: (req: NextApiRequest) => any | Promise<any>;
-  predicate?: (req: NextApiRequest) => boolean | Promise<boolean>;
+  skip?: (req: NextApiRequest) => boolean | Promise<boolean>;
 }
 
 export const createApiAuth = (o1?: ApiAuthOptions) => (o2?: ApiAuthOptions) => {
-  const { auth, predicate } = { ...o1, ...o2 };
+  const { auth, skip } = { ...o1, ...o2 };
 
   return (next: ApiHandler): ApiHandler =>
     async (req, res, rest?) => {
-      debug('api')('auth %j', rest);
-
-      if (await predicate?.(req)) {
+      if (await skip?.(req)) {
         await next(req, res, rest);
       } else {
         try {
@@ -23,6 +21,8 @@ export const createApiAuth = (o1?: ApiAuthOptions) => (o2?: ApiAuthOptions) => {
             auth: await auth?.(req),
           });
         } catch (error) {
+          debug('api')('auth %s\n%s', error.message, error.stack);
+
           res.status(error.code ?? 401).end(error.message ?? '请先登录');
         }
       }

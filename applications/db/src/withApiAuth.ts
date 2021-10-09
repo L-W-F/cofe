@@ -17,7 +17,7 @@ const auth = async (req: NextApiRequest) => {
   if (!token) {
     return Promise.reject({
       code: 404,
-      message: 'Token 不存在',
+      message: '令牌不存在',
     });
   }
 
@@ -25,12 +25,23 @@ const auth = async (req: NextApiRequest) => {
     delOne('tokens', filter);
 
     return Promise.reject({
-      code: 403,
-      message: 'Token 已过期',
+      code: 401,
+      message: '令牌已过期',
     });
   }
 
-  return token;
+  const user = await getOne('users', token.userId);
+
+  if (!user.enabled) {
+    delOne('tokens', filter);
+
+    return Promise.reject({
+      code: 403,
+      message: '账号已禁用',
+    });
+  }
+
+  return { ...token, ...user };
 };
 
 export const withApiAuth = createApiAuth({ auth });

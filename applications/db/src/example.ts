@@ -19,6 +19,8 @@ const tokens: CofeDbToken[] = [
     userId: '_ZcNY8EZVc',
     token: '_28NoTusa4j',
     expiresAt: 9999999999999,
+    createdAt: 0,
+    updatedAt: 0,
   },
 ];
 

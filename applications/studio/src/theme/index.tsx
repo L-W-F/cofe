@@ -36,12 +36,23 @@ export const theme = extendTheme({
         bg: mode('gray.50', 'gray.900')(props),
       }),
     },
+    Card: {
+      baseStyle: {
+        py: 2,
+      },
+    },
     Toolbar: {
-      baseStyle: (props) => ({
-        minH: 16,
+      baseStyle: {
+        minH: 12,
         px: 4,
+        gridGap: 2,
         alignItems: 'center',
-      }),
+      },
+      sizes: {
+        sm: {
+          minH: 8,
+        },
+      },
     },
   },
   styles: {
