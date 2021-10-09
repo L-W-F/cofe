@@ -21,7 +21,7 @@ import { CofeWhoami } from '@cofe/types';
 import { AppBar, AppBarProps, Toolbar } from '@cofe/ui';
 
 const Logo = () => {
-  return <Icon as={CofeIcon} w="5" h="5" />;
+  return <Icon as={CofeIcon} w="6" h="6" />;
 };
 
 const ColorModeSwitch = () => {

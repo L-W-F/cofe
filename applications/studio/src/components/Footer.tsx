@@ -24,8 +24,8 @@ export const Footer = ({ children = formatDate(Date.now()) }: StackProps) => {
           as={GithubIcon}
           display="block"
           transition="color 0.2s"
-          w="5"
-          h="5"
+          w="6"
+          h="6"
           _hover={{ color: 'gray.600' }}
         />
       </Link>

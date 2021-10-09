@@ -49,6 +49,9 @@ export const theme = extendTheme({
         alignItems: 'center',
       },
       sizes: {
+        xs: {
+          minH: 4,
+        },
         sm: {
           minH: 8,
         },
