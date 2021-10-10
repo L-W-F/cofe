@@ -20,8 +20,9 @@
   "repository": "git@github.com:crossjs/cofe.git",
   "scripts": {
     "commit": "cz",
-    "dev": "concurrently \"yarn workspace db dev\" \"yarn workspace studio dev\"",
-    "start": "concurrently \"yarn workspace db start\" \"yarn workspace page start\""
+    "build": "yarn workspace studio build",
+    "dev": "yarn workspace studio dev",
+    "start": "yarn workspace studio start"
   },
   "devDependencies": {
     "commitizen": "^4.2.4",

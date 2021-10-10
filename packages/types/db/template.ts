@@ -1,11 +1,11 @@
 import { CofeTree } from '../tree';
-import { CofeDbBase } from './_base';
 
-export interface CofeDbTemplate extends CofeDbBase {
+export interface CofeDbTemplate {
   id: string;
-  userId: string;
-  description?: string;
+  user_id: string;
   type: string;
   template: CofeTree;
-  state: number;
+  description?: string;
+  created_at: string;
+  updated_at: string;
 }

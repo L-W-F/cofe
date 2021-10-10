@@ -33,8 +33,8 @@ import { getState, useDispatch, useStore } from '@cofe/store';
 import { CofeConfig, CofeTree } from '@cofe/types';
 import { Paper, Toolbar } from '@cofe/ui';
 import { isMac } from '@cofe/utils';
-import { map } from 'lodash';
 import { u } from 'unist-builder';
+import { map } from 'unist-util-map';
 import { DesignCanvas } from './design/Canvas';
 import { PreviewCanvas } from './preview/Canvas';
 import { useSelectedTree } from '@/hooks/useSelectedTree';
@@ -42,6 +42,7 @@ import { EDIT_MODE_DESIGN } from '@/store/config';
 import { EditorState } from '@/store/editor';
 
 const DropMenu = () => {
+  const dispatch = useDispatch();
   const { query } = useRouter();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -137,24 +138,34 @@ const DropMenu = () => {
               onClick={async () => {
                 const { stack, cursor } = getState().editor;
 
-                await post('/api/templates', {
-                  ...formData,
-                  template: map(
-                    stack[cursor],
-                    ({ type, properties }: CofeTree) => {
-                      return u(type, { properties });
+                try {
+                  const template = await post('/api/templates', {
+                    ...formData,
+                    template: map(
+                      stack[cursor],
+                      ({ type, properties }: CofeTree) => {
+                        return u(type, { properties });
+                      },
+                    ),
+                  });
+
+                  toast({
+                    title: '已保存为模板',
+                    status: 'success',
+                    duration: 1000,
+                    position: 'bottom-left',
+                  });
+
+                  dispatch('CREATE_SCHEMA')({
+                    type: `template:${template.type}`,
+                    schema: {
+                      type: `template:${template.type}`,
+                      template: template.template,
                     },
-                  ),
-                });
+                  });
 
-                toast({
-                  title: '已保存为模板',
-                  status: 'success',
-                  duration: 1000,
-                  position: 'bottom-left',
-                });
-
-                onClose();
+                  onClose();
+                } catch (error) {}
               }}
             >
               保存

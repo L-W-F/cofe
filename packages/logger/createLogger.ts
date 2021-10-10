@@ -1,15 +1,20 @@
-import _debug from 'debug';
+import debug from 'debug';
+
+export interface CreateLoggerOptions {
+  output?: (...args: any[]) => void;
+  enhancer?: (_: debug.Debugger & { useColors?: boolean }) => void;
+}
 
 export const createLogger = (
   level: string,
-  output: (...args: any[]) => void = _debug.log,
+  { output = debug.log, enhancer }: CreateLoggerOptions = {},
 ) => {
-  const logger = _debug('c').extend(level);
+  const logger = debug('c').extend(level);
 
-  const cache = new Map<string, _debug.Debugger>();
+  const cache = new Map<string, debug.Debugger>();
 
   return (service: string) => {
-    let instance: _debug.Debugger;
+    let instance: debug.Debugger;
 
     if (cache.has(service)) {
       instance = cache.get(service);
@@ -28,6 +33,8 @@ export const createLogger = (
         output(formatter, ...args);
       };
 
+      enhancer?.(instance);
+
       cache.set(service, instance);
     }
 
@@ -35,4 +42,4 @@ export const createLogger = (
   };
 };
 
-export const { enable, disable } = _debug;
+export const { enable, disable } = debug;

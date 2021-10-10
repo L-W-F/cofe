@@ -1,4 +1,4 @@
-import { RefCallback, useEffect, useState } from 'react';
+import { RefCallback, useEffect, useRef, useState } from 'react';
 import { Schema } from '@cofe/core';
 import { useDispatch, useStore } from '@cofe/store';
 import {
@@ -6,8 +6,11 @@ import {
   CofeDndPayload,
   CofeTreeNodeIdentity,
 } from '@cofe/types';
+import { isEqual } from 'lodash';
 import { select } from 'unist-util-select';
 import { useCurrentTree } from './useCurrentTree';
+import { DndState } from '@/store/dnd';
+import { SchemaState } from '@/store/schema';
 
 interface DropOptions {
   onDrop: (payload: CofeDndPayload) => void;
@@ -17,10 +20,13 @@ type DropReturns = [{}, RefCallback<HTMLElement>];
 
 export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
   const currentTree = useCurrentTree();
-  const schemas = useStore('schema');
-  const dragging = useStore('dnd.dragging');
+  const schemas = useStore<SchemaState>('schema');
+  const dragging = useStore<DndState['dragging']>('dnd.dragging');
   const dispatch = useDispatch();
   const [dropHandle, setDropHandle] = useState<HTMLElement>(null);
+  const referenceRef = useRef<CofeTreeNodeIdentity>();
+  const containerRef = useRef<CofeTreeNodeIdentity>();
+  const adjacentRef = useRef<CofeDndAdjacent>();
 
   useEffect(() => {
     if (dropHandle && dragging) {
@@ -45,7 +51,8 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
           }
 
           onDrop({
-            dragging: dragging.id ?? Schema.createNode(schemas[dragging.type]),
+            dragging:
+              dragging.id ?? Schema.createNode(schemas[dragging.type], schemas),
             reference: reference?.id,
             container: container?.id,
             adjacent,
@@ -75,9 +82,15 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
               ? 'INSERT_AFTER'
               : 'INSERT_BEFORE';
 
-            dispatch('ADJACENT')(adjacent);
+            if (adjacentRef.current !== adjacent) {
+              adjacentRef.current = adjacent;
+              dispatch('ADJACENT')(adjacent);
+            }
           } else {
-            dispatch('ADJACENT')(null);
+            if (adjacentRef.current !== null) {
+              adjacentRef.current = null;
+              dispatch('ADJACENT')(null);
+            }
           }
         } else {
           e.dataTransfer.dropEffect = 'none';
@@ -95,8 +108,15 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
             schemas,
           );
 
-          dispatch('REFERENCE')(reference);
-          dispatch('CONTAINER')(container);
+          if (!isEqual(referenceRef.current, reference)) {
+            referenceRef.current = reference;
+            dispatch('REFERENCE')(reference);
+          }
+
+          if (!isEqual(containerRef.current, container)) {
+            containerRef.current = container;
+            dispatch('CONTAINER')(container);
+          }
         }
       };
 

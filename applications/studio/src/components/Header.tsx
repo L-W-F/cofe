@@ -38,18 +38,23 @@ const ColorModeSwitch = () => {
 };
 
 const Whoami = () => {
-  const whoami = useStore<CofeWhoami>('whoami');
+  const user_metadata = useStore<CofeWhoami['user_metadata']>(
+    'whoami.user_metadata',
+  );
   const dispatch = useDispatch();
   const { push } = useRouter();
 
-  if (!whoami?.username) {
+  if (!user_metadata?.user_name) {
     return null;
   }
 
   return (
     <Menu matchWidth size="small">
-      <MenuButton aria-label={whoami.username}>
-        <Avatar size="xs" name={whoami.username} />
+      <MenuButton
+        aria-label={user_metadata.user_name}
+        title={user_metadata.user_name}
+      >
+        <Avatar size="xs" name={user_metadata.user_name} />
       </MenuButton>
       <MenuList minW="initial">
         <NextLink href="/account" passHref>

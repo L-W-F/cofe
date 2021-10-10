@@ -25,9 +25,14 @@ export const useDrag = ({
 
   useEffect(() => {
     if (dragHandle) {
-      const drag = (e: DragEvent) => {
+      const start = (e: DragEvent) => {
+        e.stopPropagation();
+        e.dataTransfer.effectAllowed = effectAllowed;
+
         dispatch('DRAGGING')({ type, id });
         setIsDragging(true);
+
+        document.addEventListener('dragend', end);
       };
 
       const end = () => {
@@ -38,16 +43,7 @@ export const useDrag = ({
         dispatch('REFERENCE')(null);
         dispatch('CONTAINER')(null);
 
-        document.removeEventListener('drag', drag);
         document.removeEventListener('dragend', end);
-      };
-
-      const start = (e: DragEvent) => {
-        e.stopPropagation();
-        e.dataTransfer.effectAllowed = effectAllowed;
-
-        document.addEventListener('drag', drag);
-        document.addEventListener('dragend', end);
       };
 
       dragHandle.setAttribute('draggable', 'true');

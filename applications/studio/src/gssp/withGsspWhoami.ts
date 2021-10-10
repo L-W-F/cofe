@@ -1,14 +1,14 @@
 import { GetServerSidePropsContext } from 'next';
-import { get } from '@cofe/io';
 import { debug } from '@cofe/logger';
-import { CofeWhoami } from '@cofe/types';
-import { serialize } from 'cookie';
+import { supabase } from '@/utils/supabase';
 
 export const withGsspWhoami =
   (next?) => async (context: GetServerSidePropsContext) => {
     debug('gssp')('withGsspWhoami');
 
-    if (!context.req.cookies.token) {
+    const { user } = await supabase.auth.api.getUserByCookie(context.req);
+
+    if (!user) {
       return {
         redirect: {
           destination: '/login',
@@ -17,29 +17,8 @@ export const withGsspWhoami =
       };
     }
 
-    const whoami: CofeWhoami = await get(`${process.env.DB_URL}/api/whoami`, {
-      headers: {
-        Authorization: `Bearer ${context.req.cookies.token}`,
-      },
-    }).catch(() => null);
-
-    if (!whoami) {
-      context.res.setHeader(
-        'set-cookie',
-        serialize('token', '', {
-          httpOnly: true,
-          path: '/',
-          maxAge: -1,
-        }),
-      );
-
-      return {
-        redirect: {
-          destination: '/login',
-          permanent: false,
-        },
-      };
-    }
+    // 设置 token，用于后续接口调用
+    supabase.auth.setAuth(context.req.cookies['sb:token']);
 
     if (next) {
       const { props, ...rest } = await next(context);
@@ -50,13 +29,13 @@ export const withGsspWhoami =
           ...props,
           initialStates: {
             ...props.initialStates,
-            whoami,
+            whoami: user,
           },
         },
       };
     }
 
     return {
-      props: { initialStates: { whoami } },
+      props: { initialStates: { whoami: user } },
     };
   };

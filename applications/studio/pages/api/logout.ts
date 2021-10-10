@@ -1,20 +1,16 @@
 import { compose } from '@cofe/api';
-import { del } from '@cofe/io';
 import { serialize } from 'cookie';
 import { withApiAuth } from '@/api/withApiAuth';
 import { withApiCatch } from '@/api/withApiCatch';
+import { supabase } from '@/utils/supabase';
 
 export default compose([withApiCatch(), withApiAuth()], async (req, res) => {
   if (req.method === 'POST') {
-    await del(`${process.env.DB_URL}/api/tokens`, {
-      headers: {
-        Authorization: `Bearer ${req.cookies.token}`,
-      },
-    });
+    await supabase.auth.api.signOut(req.cookies['sb:token']);
 
     res.setHeader(
       'set-cookie',
-      serialize('token', '', {
+      serialize('sb:token', '', {
         httpOnly: true,
         path: '/',
         maxAge: -1,

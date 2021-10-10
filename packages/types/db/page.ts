@@ -1,14 +1,15 @@
 import { CofeTree } from '../tree';
-import { CofeDbBase } from './_base';
 
-export interface CofeDbPage extends CofeDbBase {
+export interface CofeDbPage {
   id: string;
-  userId: string;
-  appId: string;
+  user_id: string;
+  app_id: string;
   title: string;
   description?: string;
   keywords?: string[];
-  parentId?: string;
+  parent_id?: string;
   tree: CofeTree;
   state: number;
+  created_at: string;
+  updated_at: string;
 }

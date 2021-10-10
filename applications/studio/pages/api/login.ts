@@ -1,27 +1,7 @@
 import { compose } from '@cofe/api';
-import { post } from '@cofe/io';
-import { CofeDbToken } from '@cofe/types';
-import { serialize } from 'cookie';
 import { withApiCatch } from '@/api/withApiCatch';
+import { supabase } from '@/utils/supabase';
 
 export default compose([withApiCatch()], async (req, res) => {
-  if (req.method === 'POST') {
-    const { token, expiresAt }: CofeDbToken = await post(
-      `${process.env.DB_URL}/api/tokens`,
-      req.body,
-    );
-
-    res.setHeader(
-      'set-cookie',
-      serialize('token', token, {
-        httpOnly: true,
-        path: '/',
-        maxAge: (expiresAt - Date.now()) / 1000,
-      }),
-    );
-
-    res.status(201).end();
-  } else {
-    res.status(405).end();
-  }
+  supabase.auth.api.setAuthCookie(req, res);
 });

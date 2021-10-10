@@ -1,8 +1,10 @@
 import { CofeTree } from '../tree';
-import { CofeDbBase } from './_base';
 
-export interface CofeDbSnapshot extends CofeDbBase {
+export interface CofeDbSnapshot {
   id: string;
-  pageId: string;
+  user_id: string;
+  page_id: string;
   stack: CofeTree[];
+  created_at: string;
+  updated_at: string;
 }
