@@ -8,7 +8,11 @@ export interface RootProps extends BoxProps {
 
 export const Root = ({ children, ...props }: BoxProps) => {
   const [loading, setLoading] = useState(false);
-  const toast = useToast();
+  const toast = useToast({
+    status: 'error',
+    isClosable: true,
+    position: 'bottom-left',
+  });
 
   useEffect(() => {
     let count = 0;
@@ -28,8 +32,6 @@ export const Root = ({ children, ...props }: BoxProps) => {
           if (payload instanceof Error) {
             toast({
               title: payload.message,
-              status: 'error',
-              isClosable: true,
             });
           }
         }

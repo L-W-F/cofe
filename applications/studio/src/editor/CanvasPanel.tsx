@@ -44,7 +44,11 @@ import { EditorState } from '@/store/editor';
 const DropMenu = () => {
   const dispatch = useDispatch();
   const { query } = useRouter();
-  const toast = useToast();
+  const toast = useToast({
+    status: 'success',
+    duration: 1000,
+    position: 'bottom-left',
+  });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [formData, setFormData] = useState(null);
 
@@ -55,9 +59,6 @@ const DropMenu = () => {
 
     toast({
       title: '已保存',
-      status: 'success',
-      duration: 1000,
-      position: 'bottom-left',
     });
   }, [toast, query.id]);
 
@@ -151,9 +152,6 @@ const DropMenu = () => {
 
                   toast({
                     title: '已保存为模板',
-                    status: 'success',
-                    duration: 1000,
-                    position: 'bottom-left',
                   });
 
                   dispatch('CREATE_SCHEMA')({

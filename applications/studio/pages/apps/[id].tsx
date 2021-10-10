@@ -45,7 +45,11 @@ const App = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const pages = useStore('page');
   const dispatch = useDispatch();
-  const toast = useToast();
+  const toast = useToast({
+    status: 'success',
+    duration: 1000,
+    position: 'bottom-left',
+  });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [formData, setFormData] = useState(null);
 

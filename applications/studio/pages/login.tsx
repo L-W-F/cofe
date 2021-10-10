@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
-import { Box, Button, SimpleGrid } from '@chakra-ui/react';
+import { Box, Button, SimpleGrid, useToast } from '@chakra-ui/react';
 import { compose } from '@cofe/gssp';
 import { post } from '@cofe/io';
 import { withGsspColorMode } from 'gssp/withGsspColorMode';
@@ -13,6 +13,11 @@ const Login = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => {
   const { push } = useRouter();
+  const toast = useToast({
+    status: 'error',
+    duration: 1000,
+    position: 'bottom-left',
+  });
 
   useEffect(() => {
     const callback = async (event, session) => {
@@ -46,8 +51,9 @@ const Login = (
         throw error;
       }
     } catch (error) {
-      alert(error.error_description || error.message);
-    } finally {
+      toast({
+        title: error.error_description || error.message,
+      });
     }
   };
 
