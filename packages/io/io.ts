@@ -10,10 +10,28 @@ export type Listener = (
 
 let listeners: Listener[] = [];
 
-const wrap = (url: string, init: RequestInit) => {
+const fireStart = (url, init) => {
   listeners.forEach((listener) => {
     listener('start', url, init);
   });
+};
+
+const fileEnd = (url, init, resp) => {
+  listeners.forEach((listener) => {
+    listener('end', url, init, resp);
+  });
+};
+
+const createError = (json) => {
+  const error = new Error(json.message);
+
+  Object.assign(error, json);
+
+  return error;
+};
+
+const wrap = (url: string, init: RequestInit) => {
+  fireStart(url, init);
 
   return fetch(url, init)
     .then(async (response) => {
@@ -22,28 +40,28 @@ const wrap = (url: string, init: RequestInit) => {
           return await response.json();
         } catch (error) {}
       } else {
-        throw Error(await response.text());
+        try {
+          return Promise.reject(createError(await response.json()));
+        } catch (error) {
+          throw Error(await response.text());
+        }
       }
     })
     .then((v) => {
       if (process.env.NODE_ENV === 'development') {
-        debug('io')('ℹ️ [%s]%s:\n\t%j', init.method, url, v);
+        debug('io')('ℹ️ [%s]%s: %j', init.method, url, v);
       }
 
-      listeners.forEach((listener) => {
-        listener('end', url, init, v);
-      });
+      fileEnd(url, init, v);
 
       return v;
     })
     .catch((e) => {
       if (process.env.NODE_ENV === 'development') {
-        debug('io')('⚠️ [%s]%s:\n\t%j', init.method, url, e);
+        debug('io')('⚠️ [%s]%s: %j', init.method, url, e);
       }
 
-      listeners.forEach((listener) => {
-        listener('end', url, init, e);
-      });
+      fileEnd(url, init, e);
 
       throw e;
     });

@@ -127,7 +127,7 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
 };
 
 function assignCreatedAt(tree: CofeTree) {
-  tree.createdAt = Date.now();
+  tree.created_at = Date.now();
 
   return tree;
 }

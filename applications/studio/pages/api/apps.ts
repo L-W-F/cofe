@@ -1,17 +1,17 @@
 import { compose } from '@cofe/api';
-import { post } from '@cofe/io';
 import { withApiAuth } from '@/api/withApiAuth';
 import { withApiCatch } from '@/api/withApiCatch';
+import { supabase } from '@/utils/supabase';
 
 export default compose([withApiCatch(), withApiAuth()], async (req, res) => {
   if (req.method === 'POST') {
-    const app = await post(`${process.env.DB_URL}/api/apps`, req.body, {
-      headers: {
-        Authorization: `Bearer ${req.cookies.token}`,
-      },
-    });
+    const { data, error } = await supabase.from('apps').insert(req.body);
 
-    res.status(201).json(app);
+    if (error) {
+      res.status(500).json(error);
+    } else {
+      res.status(201).json(data[0]);
+    }
   } else {
     res.status(405).end();
   }

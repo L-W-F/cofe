@@ -29,10 +29,10 @@ export const HistoryPanel = () => {
       </h2>
       <AccordionPanel>
         <List display="flex" flexDirection="column-reverse">
-          {stack.map(({ createdAt }, index) => {
+          {stack.map(({ created_at }, index) => {
             return (
               <ListItem
-                key={createdAt ?? index}
+                key={created_at ?? index}
                 onClick={() => {
                   dispatch('JUMP')(index);
                 }}
@@ -50,13 +50,13 @@ export const HistoryPanel = () => {
                     }}
                   />
                 )}
-                {createdAt
+                {created_at
                   ? new Intl.DateTimeFormat('zh-CN', {
                       hourCycle: 'h24',
                       hour: '2-digit',
                       minute: '2-digit',
                       second: '2-digit',
-                    }).format(createdAt)
+                    }).format(created_at)
                   : 'Unknown'}
               </ListItem>
             );

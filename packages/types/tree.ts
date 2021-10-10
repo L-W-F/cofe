@@ -12,8 +12,8 @@ export interface CofeTree {
   type: string;
   title?: string;
   description?: string;
-  createdAt?: number;
-  updatedAt?: number;
+  created_at?: number;
+  updated_at?: number;
   properties?: CofeTreeNodeProperties;
   actions?: CofeTreeNodeActions;
   events?: CofeTreeNodeEvents;

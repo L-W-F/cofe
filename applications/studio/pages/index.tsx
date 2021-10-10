@@ -29,10 +29,9 @@ import {
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
 import { compose } from '@cofe/gssp';
-import { get, patch, post } from '@cofe/io';
+import { patch, post } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
 import { Card, Toolbar } from '@cofe/ui';
-import { formatDate } from '@cofe/utils';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Root } from '@/components/Root';
@@ -42,12 +41,15 @@ import { withGsspCurrentTime } from '@/gssp/withGsspCurrentTime';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
 import { AppState } from '@/store/app';
 import { WhoamiState } from '@/store/whoami';
+import { supabase } from '@/utils/supabase';
 
 const Index = ({
   currentTime,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const apps = useStore<AppState>('app');
-  const lastLogin = useStore<WhoamiState['lastLogin']>('whoami.lastLogin');
+  const last_sign_in_at = useStore<WhoamiState['last_sign_in_at']>(
+    'whoami.last_sign_in_at',
+  );
   const dispatch = useDispatch();
   const toast = useToast({
     status: 'success',
@@ -81,13 +83,13 @@ const Index = ({
                 icon={<AddIcon />}
                 size="sm"
                 onClick={() => {
-                  setFormData({});
+                  setFormData(null);
                   onOpen();
                 }}
               />
             </Toolbar>
             <VStack m={4} gridGap={2} align="stretch">
-              {apps.map(({ id, title, description, updatedAt }) => (
+              {apps.map(({ id, title, description, updated_at }) => (
                 <LinkBox key={id} as={Card}>
                   <Toolbar>
                     <Avatar size="sm" name="A" />
@@ -109,7 +111,7 @@ const Index = ({
                     <Text flex={1}>{description}</Text>
                     <Text>
                       <TimeIcon aria-label="最后修改" mr={1} />
-                      {formatDate(updatedAt)}
+                      {updated_at}
                     </Text>
                   </Flex>
                 </LinkBox>
@@ -122,7 +124,7 @@ const Index = ({
                 上一次登录
               </Heading>
             </Toolbar>
-            <Box p={4}>{formatDate(lastLogin)}</Box>
+            <Box p={4}>{last_sign_in_at}</Box>
           </Card>
           <Card>
             <Toolbar>
@@ -210,16 +212,15 @@ const Index = ({
 export const getServerSideProps = compose(
   [withGsspCurrentTime, withGsspCatch, withGsspWhoami, withGsspColorMode],
   async (context: GetServerSidePropsContext) => {
-    const apps = await get(`${process.env.DB_URL}/api/apps`, {
-      headers: {
-        Authorization: `Bearer ${context.req.cookies.token}`,
-      },
-    });
+    const { data: apps } = await supabase
+      .from('apps')
+      .select('id,title,description,updated_at')
+      .order('updated_at', { ascending: false });
 
     return {
       props: {
         initialStates: {
-          app: apps,
+          app: apps ?? [],
         },
       },
     };

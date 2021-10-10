@@ -1,29 +1,31 @@
 import { compose } from '@cofe/api';
-import { del, patch } from '@cofe/io';
 import { withApiAuth } from '@/api/withApiAuth';
 import { withApiCatch } from '@/api/withApiCatch';
+import { supabase } from '@/utils/supabase';
 
 export default compose([withApiCatch(), withApiAuth()], async (req, res) => {
   if (req.method === 'PATCH') {
-    const app = await patch(
-      `${process.env.DB_URL}/api/apps/${req.query.id as string}`,
-      req.body,
-      {
-        headers: {
-          Authorization: `Bearer ${req.cookies.token}`,
-        },
-      },
-    );
+    const { data, error } = await supabase
+      .from('apps')
+      .update(req.body)
+      .eq('id', req.query.id);
 
-    res.status(200).json(app);
+    if (error) {
+      res.status(500).json(error);
+    } else {
+      res.status(200).json(data[0]);
+    }
   } else if (req.method === 'DELETE') {
-    await del(`${process.env.DB_URL}/api/apps/${req.query.id as string}`, {
-      headers: {
-        Authorization: `Bearer ${req.cookies.token}`,
-      },
-    });
+    const { data, error } = await supabase
+      .from('apps')
+      .delete()
+      .eq('id', req.query.id);
 
-    res.status(200).end();
+    if (error) {
+      res.status(500).json(error);
+    } else {
+      res.status(200).end(data[0]);
+    }
   } else {
     res.status(405).end();
   }

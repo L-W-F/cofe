@@ -1,9 +1,9 @@
-import { CofeDbBase } from './_base';
-
-export interface CofeDbApp extends CofeDbBase {
+export interface CofeDbApp {
   id: string;
-  userId: string;
+  user_id: string;
   title: string;
   description?: string;
   state: number;
+  created_at: string;
+  updated_at: string;
 }

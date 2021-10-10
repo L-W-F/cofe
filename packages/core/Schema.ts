@@ -1,4 +1,4 @@
-import { CofeSchema } from '@cofe/types';
+import { CofeSchema, CofeTree } from '@cofe/types';
 import { extractDefaults, makeId } from '@cofe/utils';
 import { u } from 'unist-builder';
 
@@ -27,25 +27,25 @@ export class Schema {
 
   static createCompositeNode(
     { type, properties, children }: CofeSchema,
-    dry?: boolean,
-  ) {
-    const props = {
-      id: makeId(),
-    };
+    schemas?: Record<string, CofeSchema>,
+  ): CofeTree {
+    const atomicNode = Schema.createAtomicNode(schemas[type]);
 
     // @todo actions and events
     if (properties) {
-      Object.assign(props, { properties: extractDefaults(properties) });
+      Object.assign(atomicNode.properties, properties);
     }
 
-    return u(
-      type,
-      props,
-      children?.map((m) => Schema.createCompositeNode(m, dry)),
-    );
+    if (children) {
+      atomicNode.children = children?.map((c) =>
+        Schema.createCompositeNode(c, schemas),
+      );
+    }
+
+    return atomicNode;
   }
 
-  static createAtomicNode({ type, properties }: CofeSchema) {
+  static createAtomicNode({ type, properties }: CofeSchema): CofeTree {
     const props = {
       id: makeId(),
     };
@@ -58,9 +58,9 @@ export class Schema {
     return u(type, props);
   }
 
-  static createNode(schema: CofeSchema) {
+  static createNode(schema: CofeSchema, schemas?: Record<string, CofeSchema>) {
     if (Schema.isTemplate(schema)) {
-      return Schema.createCompositeNode(schema.template);
+      return Schema.createCompositeNode(schema.template, schemas);
     }
 
     return Schema.createAtomicNode(schema);

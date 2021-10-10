@@ -28,17 +28,16 @@ import {
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
 import { compose } from '@cofe/gssp';
-import { get, patch, post } from '@cofe/io';
+import { patch, post } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
-import { CofeDbPage } from '@cofe/types';
 import { Card, Toolbar } from '@cofe/ui';
-import { formatDate } from '@cofe/utils';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Root } from '@/components/Root';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspCurrentTime } from '@/gssp/withGsspCurrentTime';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
+import { supabase } from '@/utils/supabase';
 
 const App = ({
   appId,
@@ -92,7 +91,7 @@ const App = ({
           gridGap={2}
           columns={{ base: 1, md: 2, lg: 3, xl: 4 }}
         >
-          {pages.map(({ id, title, description, createdAt, updatedAt }) => (
+          {pages.map(({ id, title, description, updated_at }) => (
             <LinkBox key={id} as={Card}>
               <Toolbar>
                 <Avatar size="sm" name="A" />
@@ -114,7 +113,7 @@ const App = ({
                 <Text flex={1}>{description}</Text>
                 <Text>
                   <TimeIcon aria-label="最后修改" mr={1} />
-                  {formatDate(updatedAt)}
+                  {updated_at}
                 </Text>
               </Flex>
             </LinkBox>
@@ -205,20 +204,17 @@ const App = ({
 export const getServerSideProps = compose(
   [withGsspCurrentTime, withGsspWhoami, withGsspColorMode],
   async (context: GetServerSidePropsContext) => {
-    const pages: CofeDbPage[] = await get(
-      `${process.env.DB_URL}/api/apps/${context.params.id}/pages`,
-      {
-        headers: {
-          Authorization: `Bearer ${context.req.cookies.token}`,
-        },
-      },
-    );
+    const { data: pages } = await supabase
+      .from('pages')
+      .select('id,title,description,updated_at')
+      .eq('app_id', context.params.id)
+      .order('updated_at', { ascending: false });
 
     return {
       props: {
         appId: context.params.id,
         initialStates: {
-          page: pages,
+          page: pages ?? [],
         },
       },
     };

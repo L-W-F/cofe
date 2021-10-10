@@ -1,9 +1,8 @@
 {
   "cSpell.words": [
-    "Chakra",
-    "codefree",
-    "COFE",
-    "Coord",
+    "chakra",
+    "cofe",
+    "coord",
     "gssp",
     "hocs",
     "Menlo",
@@ -12,8 +11,9 @@
     "rjsf",
     "shallowequal",
     "signup",
+    "supabase",
     "unist",
-    "VERCEL"
+    "vercel"
   ],
   "editor.renderWhitespace": "all",
   "eslint.format.enable": true,

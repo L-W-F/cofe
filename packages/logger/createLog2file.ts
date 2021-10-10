@@ -1,14 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as util from 'util';
-import stripAnsi from 'strip-ansi';
 
 let logFilename: string;
 let writeStream: fs.WriteStream;
-
-const useColors =
-  process.env.DEBUG_COLORS &&
-  /^(yes|on|true|enabled)$/i.test(process.env.DEBUG_COLORS);
 
 export const createLog2file =
   (root: string) =>
@@ -16,18 +11,9 @@ export const createLog2file =
     try {
       const folder = path.join(process.cwd(), root);
 
-      let time: string;
-      let message = util.format(formatter, ...args);
+      const message = util.format(formatter, ...args);
 
-      if (useColors) {
-        time = new Date().toISOString();
-        message = stripAnsi(message);
-      } else {
-        time = message.slice(0, 24);
-        message = message.slice(24);
-      }
-
-      const filename = time.slice(0, 10);
+      const filename = message.slice(0, 10);
 
       if (logFilename !== filename) {
         logFilename = filename;
@@ -46,7 +32,7 @@ export const createLog2file =
           writeStream = fs.createWriteStream(filepath, { flags: 'a' });
         }
 
-        writeStream.write(`${time} ${message}\n`);
+        writeStream.write(`${message}\n`);
       };
 
       if (!writeStream) {

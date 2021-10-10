@@ -49,9 +49,9 @@ export const Root = ({ children, ...props }: BoxProps) => {
       {loading ? (
         <Progress
           pos="fixed"
-          top={2}
-          left={2}
-          right={2}
+          top={0}
+          left={0}
+          right={0}
           size="xs"
           isIndeterminate
         />

@@ -4,10 +4,8 @@ import { Accordion, Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import { Renderer } from '@cofe/core';
 import { compose } from '@cofe/gssp';
 import { useSplitPane } from '@cofe/hooks';
-import { get } from '@cofe/io';
 import { renderers } from '@cofe/renderers';
 import { schemas } from '@cofe/schemas';
-import { CofeDbPage, CofeDbSnapshot, CofeDbTemplate } from '@cofe/types';
 import { makeId } from '@cofe/utils';
 import { u } from 'unist-builder';
 import { Header } from '@/components/Header';
@@ -22,6 +20,7 @@ import { TemplatePanel } from '@/editor/TemplatePanel';
 import { TreePanel } from '@/editor/TreePanel';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
+import { supabase } from '@/utils/supabase';
 
 Renderer.register(renderers);
 
@@ -132,33 +131,24 @@ const PageEditor = ({
 export const getServerSideProps = compose(
   [withGsspWhoami, withGsspColorMode],
   async (context: GetServerSidePropsContext<{ id: string }>) => {
-    if (!context.req.cookies.token) {
-      return {
-        redirect: {
-          destination: '/401',
-          permanent: false,
-        },
-      };
-    }
-
-    type R = [CofeDbPage, CofeDbSnapshot['stack'], CofeDbTemplate[]];
-
-    const [page, stack, templates]: R = await Promise.all([
-      get(`${process.env.DB_URL}/api/pages/${context.params.id}`, {
-        headers: {
-          Authorization: `Bearer ${context.req.cookies.token}`,
-        },
-      }),
-      get(`${process.env.DB_URL}/api/pages/${context.params.id}/snapshots`, {
-        headers: {
-          Authorization: `Bearer ${context.req.cookies.token}`,
-        },
-      }),
-      get(`${process.env.DB_URL}/api/templates`, {
-        headers: {
-          Authorization: `Bearer ${context.req.cookies.token}`,
-        },
-      }),
+    const [
+      {
+        data: [page],
+      },
+      {
+        data: [snapshot],
+      },
+      { data: templates },
+    ] = await Promise.all([
+      supabase
+        .from('pages')
+        .select('title,description,tree')
+        .eq('id', context.params.id),
+      supabase
+        .from('snapshots')
+        .select('stack')
+        .eq('page_id', context.params.id),
+      supabase.from('templates').select('type,template,description'),
     ]);
 
     const { left_pane_size = 240, right_pane_size = 240 } = context.req.cookies;
@@ -170,13 +160,13 @@ export const getServerSideProps = compose(
         initialStates: {
           editor: {
             stack: [
-              ...stack,
+              ...(snapshot?.stack ?? []),
               page.tree ??
                 u('fragment', {
                   id: makeId(),
                 }),
             ],
-            cursor: stack.length ?? 0,
+            cursor: snapshot?.stack.length ?? 0,
           },
           schema: templates.reduce((o, { type, template }) => {
             return {
