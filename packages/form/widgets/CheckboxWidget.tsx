@@ -9,7 +9,7 @@ export const CheckboxWidget = ({
   required,
   disabled,
   rawErrors,
-  value,
+  value = '',
   label,
   onFocus,
   onBlur,

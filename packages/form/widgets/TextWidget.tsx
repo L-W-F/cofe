@@ -13,7 +13,7 @@ export const TextWidget = ({
   required,
   disabled,
   rawErrors,
-  value,
+  value = '',
   onFocus,
   onBlur,
   onChange,

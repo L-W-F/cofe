@@ -9,7 +9,7 @@ export const TextareaWidget = ({
   required,
   disabled,
   rawErrors,
-  value,
+  value = '',
   onFocus,
   onBlur,
   onChange,

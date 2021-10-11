@@ -9,7 +9,7 @@ export const SelectWidget = ({
   required,
   disabled,
   rawErrors,
-  value,
+  value = '',
   options: { enumOptions, enumDisabled },
   onFocus,
   onBlur,
