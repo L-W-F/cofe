@@ -1,18 +1,19 @@
 import React from 'react';
-import { Icon, Link, StackProps, Text, VStack } from '@chakra-ui/react';
+import { HStack, Icon, Link, StackProps, Text } from '@chakra-ui/react';
 import { GithubIcon } from '@cofe/icons';
 import { Paper } from '@cofe/ui';
-import { formatDate } from '@cofe/utils';
 
-export const Footer = ({ children = formatDate(Date.now()) }: StackProps) => {
+export const Footer = ({ children, ...props }: StackProps) => {
   return (
     <Paper
-      as={VStack}
+      as={HStack}
       rounded={0}
       mt={4}
-      p={8}
+      py={3}
+      px={4}
       alignItems="center"
-      justifyContent="space-between"
+      justifyContent="center"
+      {...props}
     >
       <Text>&copy; {new Date().getFullYear()}</Text>
       <Link
@@ -24,12 +25,12 @@ export const Footer = ({ children = formatDate(Date.now()) }: StackProps) => {
           as={GithubIcon}
           display="block"
           transition="color 0.2s"
-          w="6"
-          h="6"
+          w="5"
+          h="5"
           _hover={{ color: 'gray.600' }}
         />
       </Link>
-      <Text fontSize="xs">{children}</Text>
+      {children}
     </Paper>
   );
 };

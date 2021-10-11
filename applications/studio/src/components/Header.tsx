@@ -19,6 +19,7 @@ import { post } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
 import { CofeWhoami } from '@cofe/types';
 import { AppBar, AppBarProps, Toolbar } from '@cofe/ui';
+import { supabase } from '@/utils/supabase';
 
 const Logo = () => {
   return <Icon as={CofeIcon} w="6" h="6" />;
@@ -64,6 +65,8 @@ const Whoami = () => {
           onClick={async (e) => {
             try {
               await post('/api/logout', null);
+              await supabase.auth.signOut();
+
               dispatch('CLEAR_LOGIN')(null);
 
               push('/login');

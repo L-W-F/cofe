@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Box, BoxProps, Progress, useToast } from '@chakra-ui/react';
+import { Flex, FlexProps, Progress, useToast } from '@chakra-ui/react';
 import { Listener, subscribe } from '@cofe/io';
 
-export interface RootProps extends BoxProps {
+export interface RootProps extends FlexProps {
   loading?: boolean;
 }
 
-export const Root = ({ children, ...props }: BoxProps) => {
+export const Root = ({
+  children,
+  direction = 'column',
+  minH = '100vh',
+  ...props
+}: FlexProps) => {
   const [loading, setLoading] = useState(false);
   const toast = useToast({
     status: 'error',
@@ -47,7 +52,7 @@ export const Root = ({ children, ...props }: BoxProps) => {
   }, [toast]);
 
   return (
-    <Box {...props}>
+    <Flex direction={direction} minH={minH} {...props}>
       {loading ? (
         <Progress
           pos="fixed"
@@ -59,6 +64,6 @@ export const Root = ({ children, ...props }: BoxProps) => {
         />
       ) : null}
       {children}
-    </Box>
+    </Flex>
   );
 };
