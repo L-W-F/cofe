@@ -52,8 +52,6 @@ const Login = (
 
   const handleSignIn = async (provider) => {
     try {
-      setLoading(true);
-
       const { error } = await supabase.auth.signIn({
         provider,
       });
@@ -65,8 +63,6 @@ const Login = (
       toast({
         title: error.error_description || error.message,
       });
-    } finally {
-      setLoading(false);
     }
   };
 
