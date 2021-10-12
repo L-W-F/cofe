@@ -2003,10 +2003,10 @@
   resolved "https://registry.nlark.com/@types/prop-types/download/@types/prop-types-15.7.4.tgz?cache=0&sync_timestamp=1629708789374&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fprop-types%2Fdownload%2F%40types%2Fprop-types-15.7.4.tgz#fcf7205c25dff795ee79af1e30da2c9790808f11"
   integrity sha1-/PcgXCXf95Xuea8eMNosl5CAjxE=
 
-"@types/react@^17.0.0", "@types/react@^17.0.24":
-  version "17.0.24"
-  resolved "https://registry.nlark.com/@types/react/download/@types/react-17.0.24.tgz#7e1b3f78d0fc53782543f9bce6d949959a5880bd"
-  integrity sha1-fhs/eND8U3glQ/m85tlJlZpYgL0=
+"@types/react@^17.0.0", "@types/react@^17.0.29":
+  version "17.0.29"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.29.tgz#9535f3fc01a4981ce9cadcf0daa2593c0c2f2251"
+  integrity sha512-HSenIfBEBZ70BLrrVhtEtHpqaP79waauPtA8XKlczTxL3hXrW/ElGNLTpD1TmqkykgGlOAK55+D3SmUHEirpFw==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -2167,11 +2167,6 @@ ansi-regex@^5.0.0:
   version "5.0.0"
   resolved "https://registry.nlark.com/ansi-regex/download/ansi-regex-5.0.0.tgz#388539f55179bf39339c81af30a654d69f87cb75"
   integrity sha1-OIU59VF5vzkznIGvMKZU1p+Hy3U=
-
-ansi-regex@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.nlark.com/ansi-regex/download/ansi-regex-6.0.1.tgz?cache=0&sync_timestamp=1631634988487&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fansi-regex%2Fdownload%2Fansi-regex-6.0.1.tgz#3183e38fae9a65d7cb5e53945cd5897d0260a06a"
-  integrity sha1-MYPjj66aZdfLXlOUXNWJfQJgoGo=
 
 ansi-styles@^3.2.1:
   version "3.2.1"
@@ -6414,13 +6409,6 @@ strip-ansi@^5.1.0:
   integrity sha1-jJpTb+tq/JYr36WxBKUJHBrZwK4=
   dependencies:
     ansi-regex "^4.1.0"
-
-strip-ansi@^7.0.1:
-  version "7.0.1"
-  resolved "https://registry.npmmirror.com/strip-ansi/download/strip-ansi-7.0.1.tgz#61740a08ce36b61e50e65653f07060d000975fb2"
-  integrity sha1-YXQKCM42th5Q5lZT8HBg0ACXX7I=
-  dependencies:
-    ansi-regex "^6.0.1"
 
 strip-bom@4.0.0:
   version "4.0.0"
