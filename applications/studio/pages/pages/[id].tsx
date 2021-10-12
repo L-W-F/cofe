@@ -8,6 +8,7 @@ import { renderers } from '@cofe/renderers';
 import { schemas } from '@cofe/schemas';
 import { makeId } from '@cofe/utils';
 import { u } from 'unist-builder';
+import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Root } from '@/components/Root';
 import { ActionPanel } from '@/editor/ActionPanel';
@@ -124,6 +125,7 @@ const PageEditor = ({
           </Accordion>
         </Flex>
       </Flex>
+      <Footer />
     </Root>
   );
 };
@@ -131,25 +133,12 @@ const PageEditor = ({
 export const getServerSideProps = compose(
   [withGsspWhoami, withGsspColorMode],
   async (context: GetServerSidePropsContext<{ id: string }>) => {
-    const [
-      {
-        data: [page],
-      },
-      {
-        data: [snapshot],
-      },
-      { data: templates },
-    ] = await Promise.all([
-      supabase
-        .from('pages')
-        .select('title,description,tree')
-        .eq('id', context.params.id),
-      supabase
-        .from('snapshots')
-        .select('stack')
-        .eq('page_id', context.params.id),
-      supabase.from('templates').select('type,template,description'),
-    ]);
+    const [{ data: trees }, { data: snapshots }, { data: templates }] =
+      await Promise.all([
+        supabase.from('trees').select('tree').eq('id', context.params.id),
+        supabase.from('snapshots').select('stack').eq('id', context.params.id),
+        supabase.from('templates').select('type,template,description'),
+      ]);
 
     const { left_pane_size = 240, right_pane_size = 240 } = context.req.cookies;
 
@@ -160,13 +149,13 @@ export const getServerSideProps = compose(
         initialStates: {
           editor: {
             stack: [
-              ...(snapshot?.stack ?? []),
-              page.tree ??
+              ...(snapshots?.[0]?.stack ?? []),
+              trees?.[0]?.tree ??
                 u('fragment', {
                   id: makeId(),
                 }),
             ],
-            cursor: snapshot?.stack.length ?? 0,
+            cursor: snapshots?.[0]?.stack.length ?? 0,
           },
           schema: templates.reduce((o, { type, template }) => {
             return {

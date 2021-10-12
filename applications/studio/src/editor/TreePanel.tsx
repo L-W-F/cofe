@@ -104,3 +104,7 @@ export const TreePanel = () => {
     </AccordionItem>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  TreePanel.displayName = 'TreePanel';
+}

@@ -39,3 +39,7 @@ export const TemplatePanel = () => {
     </AccordionItem>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  TemplatePanel.displayName = 'TemplatePanel';
+}

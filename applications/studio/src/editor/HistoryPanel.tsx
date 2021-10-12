@@ -66,3 +66,7 @@ export const HistoryPanel = () => {
     </AccordionItem>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  HistoryPanel.displayName = 'HistoryPanel';
+}

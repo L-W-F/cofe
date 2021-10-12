@@ -47,3 +47,7 @@ export const ActionPanel = () => {
     </AccordionItem>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  ActionPanel.displayName = 'ActionPanel';
+}

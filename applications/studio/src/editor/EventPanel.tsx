@@ -47,3 +47,7 @@ export const EventPanel = () => {
     </AccordionItem>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  EventPanel.displayName = 'EventPanel';
+}

@@ -51,9 +51,11 @@ export const theme = extendTheme({
       sizes: {
         xs: {
           minH: 4,
+          gridGap: 0.5,
         },
         sm: {
           minH: 8,
+          gridGap: 1,
         },
       },
     },

@@ -28,3 +28,7 @@ export const DragItem = ({ type, ...props }: DragItemProps) => {
     </ListItem>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  DragItem.displayName = 'DragItem';
+}

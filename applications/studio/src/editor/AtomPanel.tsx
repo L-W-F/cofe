@@ -39,3 +39,7 @@ export const AtomPanel = () => {
     </AccordionItem>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  AtomPanel.displayName = 'AtomPanel';
+}

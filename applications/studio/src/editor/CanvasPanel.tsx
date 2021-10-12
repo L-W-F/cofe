@@ -35,8 +35,8 @@ import { Paper, Toolbar } from '@cofe/ui';
 import { isMac } from '@cofe/utils';
 import { u } from 'unist-builder';
 import { map } from 'unist-util-map';
-import { DesignCanvas } from './design/Canvas';
-import { PreviewCanvas } from './preview/Canvas';
+import { DesignCanvas } from './DesignCanvas';
+import { PreviewCanvas } from './PreviewCanvas';
 import { useSelectedTree } from '@/hooks/useSelectedTree';
 import { EDIT_MODE_DESIGN } from '@/store/config';
 import { EditorState } from '@/store/editor';
@@ -55,7 +55,7 @@ const DropMenu = () => {
   const save = useCallback(async () => {
     const { stack } = getState().editor;
 
-    await put(`/api/pages/${query.id}/tree`, stack[stack.length - 1]);
+    await put(`/api/pages/${query.id}/stack`, stack);
 
     toast({
       title: '已保存',

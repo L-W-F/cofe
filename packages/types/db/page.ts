@@ -1,5 +1,3 @@
-import { CofeTree } from '../tree';
-
 export interface CofeDbPage {
   id: string;
   user_id: string;
@@ -8,7 +6,6 @@ export interface CofeDbPage {
   description?: string;
   keywords?: string[];
   parent_id?: string;
-  tree: CofeTree;
   state: number;
   created_at: string;
   updated_at: string;

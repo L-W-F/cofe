@@ -47,3 +47,7 @@ export const PropertyPanel = () => {
     </AccordionItem>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  PropertyPanel.displayName = 'PropertyPanel';
+}

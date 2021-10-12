@@ -13,6 +13,7 @@
     "signup",
     "supabase",
     "unist",
+    "upsert",
     "vercel"
   ],
   "editor.renderWhitespace": "all",

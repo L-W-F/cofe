@@ -5,15 +5,17 @@ import { supabase } from '@/utils/supabase';
 
 export default compose([withApiCatch(), withApiAuth()], async (req, res) => {
   if (req.method === 'PUT') {
-    const { data, error } = await supabase
-      .from('pages')
-      .update({ tree: req.body })
-      .eq('id', req.query.id);
+    const [tree, ...stack] = req.body;
 
-    if (error) {
-      res.status(500).json(error);
+    const [{ error }, { error: e }] = await Promise.all([
+      supabase.from('trees').upsert({ tree, id: req.query.id }),
+      supabase.from('snapshots').upsert({ stack, id: req.query.id }),
+    ]);
+
+    if (error || e) {
+      res.status(500).json(error || e);
     } else {
-      res.status(200).json(data[0]);
+      res.status(200).json(null);
     }
   } else {
     res.status(405).end();

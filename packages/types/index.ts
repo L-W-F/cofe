@@ -3,6 +3,7 @@ export * from './db/app';
 export * from './db/page';
 export * from './db/snapshot';
 export * from './db/template';
+export * from './db/tree';
 export * from './db/user';
 
 // local
