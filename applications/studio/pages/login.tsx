@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import NextImage from 'next/image';
 import { useRouter } from 'next/router';
-import { Button, Icon, Spinner, useToast, VStack } from '@chakra-ui/react';
+import { Box, Button, Icon, Spinner, useToast, VStack } from '@chakra-ui/react';
 import { compose } from '@cofe/gssp';
 import { GithubIcon, GitlabIcon } from '@cofe/icons';
 import { post } from '@cofe/io';
 import { withGsspColorMode } from 'gssp/withGsspColorMode';
 import { Header } from 'components/Header';
+import banner from '../public/cofe.png';
 import { Footer } from '@/components/Footer';
 import { Root } from '@/components/Root';
 import { supabase } from '@/utils/supabase';
@@ -72,12 +74,12 @@ const Login = (
       <VStack
         flex={1}
         p={8}
-        maxW={80}
         marginX="auto"
         alignItems="stretch"
         justifyContent="center"
         gridGap={2}
       >
+        <Box as={NextImage} src={banner} borderRadius="md" />
         {loading ? (
           <Spinner />
         ) : (
