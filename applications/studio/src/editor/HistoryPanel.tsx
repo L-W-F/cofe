@@ -5,10 +5,10 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Box,
   List,
   ListIcon,
   ListItem,
+  Text,
 } from '@chakra-ui/react';
 import { useDispatch, useStore } from '@cofe/store';
 import { EditorState } from 'store/editor';
@@ -19,14 +19,10 @@ export const HistoryPanel = () => {
 
   return (
     <AccordionItem>
-      <h2>
-        <AccordionButton>
-          <Box flex="1" textAlign="left">
-            历史记录
-          </Box>
-          <AccordionIcon />
-        </AccordionButton>
-      </h2>
+      <AccordionButton>
+        <AccordionIcon />
+        <Text as="h2">历史记录</Text>
+      </AccordionButton>
       <AccordionPanel>
         <List display="flex" flexDirection="column-reverse">
           {stack.map(({ created_at }, index) => {

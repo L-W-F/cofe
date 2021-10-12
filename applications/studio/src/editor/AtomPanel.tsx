@@ -4,9 +4,9 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Box,
   Flex,
   List,
+  Text,
 } from '@chakra-ui/react';
 import { useStore } from '@cofe/store';
 import { DragItem } from './DragItem';
@@ -16,15 +16,11 @@ export const AtomPanel = () => {
   const schemas = useStore<SchemaState>('schema');
 
   return (
-    <AccordionItem>
-      <h2>
-        <AccordionButton>
-          <Box flex="1" textAlign="left">
-            组件
-          </Box>
-          <AccordionIcon />
-        </AccordionButton>
-      </h2>
+    <AccordionItem isFocusable={false}>
+      <AccordionButton>
+        <AccordionIcon />
+        <Text as="h2">组件</Text>
+      </AccordionButton>
       <AccordionPanel>
         <List as={Flex} flexDirection="column" gridGap={2}>
           {Object.keys(schemas).map((type) => {

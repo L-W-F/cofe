@@ -9,6 +9,7 @@ import {
   BoxProps,
   List,
   ListItem,
+  Text,
 } from '@chakra-ui/react';
 import { useDispatch, useStore } from '@cofe/store';
 import { useSelectedTree } from '@/hooks/useSelectedTree';
@@ -88,14 +89,10 @@ export const TreePanel = () => {
 
   return (
     <AccordionItem>
-      <h2>
-        <AccordionButton>
-          <Box flex="1" textAlign="left">
-            组件树
-          </Box>
-          <AccordionIcon />
-        </AccordionButton>
-      </h2>
+      <AccordionButton>
+        <AccordionIcon />
+        <Text as="h2">组件树</Text>
+      </AccordionButton>
       <AccordionPanel>
         <List>
           <TreeItem {...tree} />

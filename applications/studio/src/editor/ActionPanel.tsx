@@ -4,7 +4,7 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Box,
+  Text,
 } from '@chakra-ui/react';
 import { Form, Ui } from '@cofe/form';
 import { useDispatch } from '@cofe/store';
@@ -21,14 +21,10 @@ export const ActionPanel = () => {
 
   return (
     <AccordionItem>
-      <h2>
-        <AccordionButton>
-          <Box flex="1" textAlign="left">
-            方法
-          </Box>
-          <AccordionIcon />
-        </AccordionButton>
-      </h2>
+      <AccordionButton>
+        <AccordionIcon />
+        <Text as="h2">方法</Text>
+      </AccordionButton>
       <AccordionPanel>
         {aSchema ? (
           <Form
