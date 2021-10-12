@@ -46,14 +46,12 @@ export const HistoryPanel = () => {
                     }}
                   />
                 )}
-                {created_at
-                  ? new Intl.DateTimeFormat('zh-CN', {
-                      hourCycle: 'h24',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      second: '2-digit',
-                    }).format(created_at)
-                  : '当前版本'}
+                {new Intl.DateTimeFormat('zh-CN', {
+                  hourCycle: 'h24',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit',
+                }).format(created_at)}
               </ListItem>
             );
           })}

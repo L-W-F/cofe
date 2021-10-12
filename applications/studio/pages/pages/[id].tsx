@@ -153,6 +153,7 @@ export const getServerSideProps = compose(
               trees?.[0]?.tree ??
                 u('fragment', {
                   id: makeId(),
+                  created_at: Date.now(),
                 }),
             ],
             cursor: snapshots?.[0]?.stack.length ?? 0,

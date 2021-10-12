@@ -79,11 +79,11 @@ const Login = (
         justifyContent="center"
         gridGap={2}
       >
-        <Box as={NextImage} src={banner} borderRadius="md" />
         {loading ? (
           <Spinner />
         ) : (
           <>
+            <Box as={NextImage} src={banner} borderRadius="md" />
             <Button
               variant="solid"
               colorScheme="teal"
