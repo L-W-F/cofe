@@ -53,7 +53,7 @@ export const HistoryPanel = () => {
                       minute: '2-digit',
                       second: '2-digit',
                     }).format(created_at)
-                  : 'Unknown'}
+                  : '当前版本'}
               </ListItem>
             );
           })}
