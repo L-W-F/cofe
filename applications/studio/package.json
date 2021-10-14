@@ -57,7 +57,7 @@
     "@types/react": "^17.0.29",
     "@types/shallowequal": "^1.1.1",
     "babel-preset-cofe": "^0.0.1",
-    "eslint": "^8.0.0",
+    "eslint": "^8.0.1",
     "eslint-config-cofe": "^0.0.2",
     "prettier": "^2.4.1",
     "typescript": "^4.4.4"
