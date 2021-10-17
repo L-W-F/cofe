@@ -38,6 +38,7 @@ import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspCurrentTime } from '@/gssp/withGsspCurrentTime';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
 import { supabase } from '@/utils/supabase';
+import { withGsspCatch } from '@/gssp/withGsspCatch';
 
 const App = ({
   appId,
@@ -206,7 +207,7 @@ const App = ({
 };
 
 export const getServerSideProps = compose(
-  [withGsspCurrentTime, withGsspWhoami, withGsspColorMode],
+  [withGsspCatch, withGsspCurrentTime, withGsspWhoami, withGsspColorMode],
   async (context: GetServerSidePropsContext) => {
     const { data: pages } = await supabase
       .from('pages')

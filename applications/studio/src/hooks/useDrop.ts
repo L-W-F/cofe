@@ -8,7 +8,7 @@ import {
 } from '@cofe/types';
 import { isEqual } from 'lodash';
 import { select } from 'unist-util-select';
-import { useCurrentTree } from './useCurrentTree';
+import { useSelectedTree } from './useSelectedTree';
 import { DndState } from '@/store/dnd';
 import { SchemaState } from '@/store/schema';
 
@@ -19,7 +19,7 @@ interface DropOptions {
 type DropReturns = [{}, RefCallback<HTMLElement>];
 
 export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
-  const currentTree = useCurrentTree();
+  const selectedTree = useSelectedTree();
   const schemas = useStore<SchemaState>('schema');
   const dragging = useStore<DndState['dragging']>('dnd.dragging');
   const dispatch = useDispatch();
@@ -103,7 +103,7 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
 
         if (e.target.dataset?.type) {
           [reference, container] = getAcceptChain(
-            select(`[id=${e.target.dataset?.id}]`, currentTree),
+            select(`[id=${e.target.dataset?.id}]`, selectedTree as any),
             dragging.type,
             schemas,
           );
@@ -142,7 +142,7 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
 
       return removeListeners;
     }
-  }, [currentTree, dispatch, dragging, dropHandle, onDrop, schemas]);
+  }, [selectedTree, dispatch, dragging, dropHandle, onDrop, schemas]);
 
   return [{}, setDropHandle];
 };

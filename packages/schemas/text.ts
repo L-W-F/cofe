@@ -10,7 +10,6 @@ export const text: CofeSchema = {
         type: 'string',
         title: '内容',
         description: '支持 Markdown',
-        default: 'COFE',
       },
     },
     required: ['content'],

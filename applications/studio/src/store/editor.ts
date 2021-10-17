@@ -1,8 +1,7 @@
+import { Tree } from '@cofe/core';
 import { AnyAction } from '@cofe/store';
 import { CofeDndPayload, CofeEditor, CofeTree } from '@cofe/types';
-import { makeId } from '@cofe/utils';
 import { cloneDeep } from 'lodash';
-import { u } from 'unist-builder';
 import { filter } from 'unist-util-filter';
 import { EXIT, visit } from 'unist-util-visit';
 
@@ -11,22 +10,11 @@ export interface EditorState extends CofeEditor {}
 export const initialState: EditorState = {
   stack: [],
   cursor: 0,
-  selected: null,
 };
 
 export const reducer = (state = initialState, { type, payload }: AnyAction) => {
   switch (type) {
     case 'UNDO':
-      if (state.cursor <= 0) {
-        return state;
-      }
-
-      return {
-        ...state,
-        cursor: state.cursor - 1,
-      };
-
-    case 'REDO':
       if (state.cursor >= state.stack.length - 1) {
         return state;
       }
@@ -36,89 +24,41 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
         cursor: state.cursor + 1,
       };
 
-    case 'JUMP':
-      if (state.cursor === payload) {
+    case 'REDO':
+      if (state.cursor <= 0) {
         return state;
       }
 
       return {
         ...state,
-        cursor: payload,
-      };
-
-    case 'DELETE':
-      return {
-        ...state,
-        stack: state.stack.filter((_, index) => index !== payload),
-        cursor:
-          payload === state.cursor
-            ? Math.max(0, payload - 1)
-            : payload < state.cursor
-            ? state.cursor - 1
-            : state.cursor,
+        cursor: state.cursor - 1,
       };
 
     case 'DROPPING_NODE':
       return {
         ...state,
-        stack: state.stack
-          .slice(0, state.cursor + 1)
-          .concat(insertOrMoveNodeByDrop(state.stack[state.cursor], payload)),
-        cursor: state.cursor + 1,
-      };
-
-    case 'SELECT_NODE':
-      if (state.selected?.id === payload?.id) {
-        return state;
-      }
-
-      return {
-        ...state,
-        selected: payload,
+        stack: [
+          insertOrMoveNodeByDnd(state.stack[state.cursor], payload),
+        ].concat(state.stack.slice(state.cursor)),
+        cursor: 0,
       };
 
     case 'DELETE_NODE':
-      if (!state.selected?.id) {
-        return state;
-      }
-
       return {
         ...state,
-        stack: state.stack
-          .slice(0, state.cursor + 1)
-          .concat(removeNodeById(state.stack[state.cursor], state.selected.id)),
-        cursor: state.cursor + 1,
-        selected: null,
+        stack: [removeNodeById(state.stack[state.cursor], payload.id)].concat(
+          state.stack.slice(state.cursor),
+        ),
+        cursor: 0,
       };
 
-    case 'UPDATE_NODE_PROPERTIES':
+    case 'UPDATE_NODE':
       return {
         ...state,
-        stack: state.stack
-          .slice(0, state.cursor + 1)
-          .concat(
-            updateNodeProperties(
-              state.stack[state.cursor],
-              state.selected.id,
-              payload,
-            ),
-          ),
-        cursor: state.cursor + 1,
-      };
-
-    case 'UPDATE_NODE_ACTIONS':
-      return {
-        ...state,
-        stack: state.stack
-          .slice(0, state.cursor + 1)
-          .concat(
-            updateNodeActions(
-              state.stack[state.cursor],
-              state.selected.id,
-              payload,
-            ),
-          ),
-        cursor: state.cursor + 1,
+        stack: [updateNode(state.stack[state.cursor], payload)].concat(
+          state.stack.slice(state.cursor),
+        ),
+        cursor: 0,
       };
 
     default:
@@ -126,22 +66,14 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
   }
 };
 
-function assignCreatedAt(tree: CofeTree) {
-  tree.created_at = Date.now();
-
-  return tree;
-}
-
-function removeNodeById(tree: CofeTree, nodeId: string) {
-  return assignCreatedAt(
-    filter(tree, { cascade: false }, ({ id }: any) => id !== nodeId) ??
-      u('fragment', {
-        id: makeId(),
-      }),
+function removeNodeById(tree: CofeTree, id: string) {
+  return Tree.create(
+    filter(tree, { cascade: false }, (node: any) => id !== node.id) ??
+      'fragment',
   );
 }
 
-function insertOrMoveNodeByDrop(
+function insertOrMoveNodeByDnd(
   tree: CofeTree,
   { dragging, container, reference, adjacent }: CofeDndPayload,
 ) {
@@ -183,37 +115,21 @@ function insertOrMoveNodeByDrop(
     });
   }
 
-  return assignCreatedAt(tree);
+  return Tree.create(tree);
 }
 
-type Properties = Record<string, any>;
-
-function updateNodeProperties(
-  tree: CofeTree,
-  selected: string,
-  payload: Properties,
-) {
+function updateNode(tree: CofeTree, payload: Partial<CofeTree>) {
   tree = cloneDeep(tree);
 
-  visit(tree, { id: selected }, (node, index, parent) => {
-    node.properties = { ...node.properties, ...payload };
+  visit(tree, { id: payload.id }, (node, index, parent) => {
+    ['properties', 'actions', 'events'].forEach((key) => {
+      if (key in payload) {
+        node[key] = { ...node[key], ...payload[key] };
+      }
+    });
 
     return EXIT;
   });
 
-  return assignCreatedAt(tree);
-}
-
-type Actions = Record<string, any>;
-
-function updateNodeActions(tree: CofeTree, selected: string, payload: Actions) {
-  tree = cloneDeep(tree);
-
-  visit(tree, { id: selected }, (node, index, parent) => {
-    node.actions = { ...node.actions, ...payload };
-
-    return EXIT;
-  });
-
-  return assignCreatedAt(tree);
+  return Tree.create(tree);
 }

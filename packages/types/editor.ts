@@ -1,7 +1,6 @@
-import { CofeTree, CofeTreeNodeIdentity } from './tree';
+import { CofeTree } from './tree';
 
 export interface CofeEditor {
   stack?: CofeTree[];
   cursor?: number;
-  selected?: CofeTreeNodeIdentity;
 }

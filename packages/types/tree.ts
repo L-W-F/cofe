@@ -17,5 +17,6 @@ export interface CofeTree {
   properties?: CofeTreeNodeProperties;
   actions?: CofeTreeNodeActions;
   events?: CofeTreeNodeEvents;
+  parent?: CofeTree;
   children?: CofeTree[];
 }

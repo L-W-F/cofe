@@ -1,5 +1,13 @@
-import React from 'react';
-import { Box, BoxProps, useColorModeValue } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { DeleteIcon } from '@chakra-ui/icons';
+import {
+  Box,
+  BoxProps,
+  Menu,
+  MenuItem,
+  MenuList,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { Renderer } from '@cofe/core';
 import { useDispatch, useStore } from '@cofe/store';
 import { CofeDndAdjacent, CofeTree, CofeTreeNodeIdentity } from '@cofe/types';
@@ -80,7 +88,7 @@ const DnDHandle = ({
   id,
   ...props
 }: DnDHandleProps) => {
-  const selected = useStore<CofeTreeNodeIdentity>('editor.selected');
+  const selected = useStore<CofeTreeNodeIdentity>('dnd.selected');
   const { dragging, reference, container, adjacent } =
     useStore<DndState>('dnd');
   const [{ isDragging }, drag] = useDrag({
@@ -176,30 +184,41 @@ interface DesignCanvasProps extends BoxProps {
 }
 
 export const DesignCanvas = ({ tree, ...props }: DesignCanvasProps) => {
+  const selected = useStore('dnd.selected');
   const dispatch = useDispatch();
+  const [[x, y], setMenuCoord] = useState<[number?, number?]>([]);
 
-  const handleKeyDown = async (e: any) => {
+  const handleContextMenu = (e) => {
+    e.preventDefault();
+    setMenuCoord([e.clientX, e.clientY]);
+  };
+
+  const handleMouseDown = (e) => {
+    setMenuCoord([]);
+  };
+
+  const handleKeyDown = async (e) => {
     // Delete
     // ⌘+Backspace
     if (e.key === 'Delete' || (e.key === 'Backspace' && isMac && e.metaKey)) {
-      dispatch('DELETE_NODE')(null);
+      dispatch('DELETE_NODE')(selected);
 
       e.currentTarget.focus();
     }
 
     // Escape
     if (e.key === 'Escape') {
-      dispatch('SELECT_NODE')(null);
+      dispatch('SELECTED')(null);
 
       e.currentTarget.focus();
     }
   };
 
   const handleFocus = (e) => {
-    if (e.target.dataset) {
-      dispatch('SELECT_NODE')(pick(e.target.dataset, ['type', 'id']));
+    if (e.currentTarget.dataset) {
+      dispatch('SELECTED')(pick(e.target.dataset, ['type', 'id']));
     } else {
-      dispatch('SELECT_NODE')(null);
+      dispatch('SELECTED')(null);
     }
   };
 
@@ -215,24 +234,47 @@ export const DesignCanvas = ({ tree, ...props }: DesignCanvasProps) => {
   });
 
   return (
-    <Box
-      ref={drop}
-      bgImage={`
-      linear-gradient(45deg, ${cellColor} 25%, transparent 25%),
-      linear-gradient(-45deg, ${cellColor} 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, ${cellColor} 75%),
-      linear-gradient(-45deg, transparent 75%, ${cellColor} 75%);
-      `}
-      bgSize="20px 20px"
-      bgPosition="0 0, 0 10px, 10px -10px, -10px 0px"
-      tabIndex={0}
-      minHeight="100%"
-      onFocus={handleFocus}
-      onKeyDown={handleKeyDown}
-      {...props}
-    >
-      <NodeRenderer isRoot {...tree} />
-    </Box>
+    <>
+      <Box
+        ref={drop}
+        bgImage={`
+        linear-gradient(45deg, ${cellColor} 25%, transparent 25%),
+        linear-gradient(-45deg, ${cellColor} 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, ${cellColor} 75%),
+        linear-gradient(-45deg, transparent 75%, ${cellColor} 75%);
+        `}
+        bgSize="20px 20px"
+        bgPosition="0 0, 0 10px, 10px -10px, -10px 0px"
+        tabIndex={0}
+        minHeight="100%"
+        onContextMenu={handleContextMenu}
+        onFocus={handleFocus}
+        onKeyDown={handleKeyDown}
+        onMouseDown={handleMouseDown}
+        {...props}
+      >
+        <NodeRenderer isRoot {...tree} />
+      </Box>
+      <Box pos="absolute" left={x} top={y}>
+        <Menu
+          matchWidth
+          size="small"
+          isOpen={!!x && !!y}
+          onClose={() => setMenuCoord([])}
+        >
+          <MenuList minW="initial">
+            <MenuItem
+              icon={<DeleteIcon />}
+              onClick={() => {
+                dispatch('DELETE_NODE')(selected);
+              }}
+            >
+              删除
+            </MenuItem>
+          </MenuList>
+        </Menu>
+      </Box>
+    </>
   );
 };
 

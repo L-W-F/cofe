@@ -1,13 +1,11 @@
 import React from 'react';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { Accordion, Box, Flex, useColorModeValue } from '@chakra-ui/react';
-import { Renderer } from '@cofe/core';
+import { Renderer, Tree } from '@cofe/core';
 import { compose } from '@cofe/gssp';
 import { useSplitPane } from '@cofe/hooks';
 import { renderers } from '@cofe/renderers';
 import { schemas } from '@cofe/schemas';
-import { makeId } from '@cofe/utils';
-import { u } from 'unist-builder';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Root } from '@/components/Root';
@@ -15,13 +13,13 @@ import { ActionPanel } from '@/editor/ActionPanel';
 import { AtomPanel } from '@/editor/AtomPanel';
 import { CanvasPanel } from '@/editor/CanvasPanel';
 import { EventPanel } from '@/editor/EventPanel';
-import { HistoryPanel } from '@/editor/HistoryPanel';
 import { PropertyPanel } from '@/editor/PropertyPanel';
 import { TemplatePanel } from '@/editor/TemplatePanel';
 import { TreePanel } from '@/editor/TreePanel';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
 import { supabase } from '@/utils/supabase';
+import { withGsspCatch } from '@/gssp/withGsspCatch';
 
 Renderer.register(renderers);
 
@@ -104,8 +102,6 @@ const PageEditor = ({
         >
           <AtomPanel />
           <TemplatePanel />
-          <TreePanel />
-          <HistoryPanel />
         </Accordion>
         <SplitHandle {...sp1.handleProps} />
         <Flex flex={1}>
@@ -119,6 +115,7 @@ const PageEditor = ({
             gridGap={2}
             overflow="hidden"
           >
+            <TreePanel />
             <PropertyPanel />
             <ActionPanel />
             <EventPanel />
@@ -131,14 +128,12 @@ const PageEditor = ({
 };
 
 export const getServerSideProps = compose(
-  [withGsspWhoami, withGsspColorMode],
+  [withGsspCatch, withGsspWhoami, withGsspColorMode],
   async (context: GetServerSidePropsContext<{ id: string }>) => {
-    const [{ data: trees }, { data: snapshots }, { data: templates }] =
-      await Promise.all([
-        supabase.from('trees').select('tree').eq('id', context.params.id),
-        supabase.from('snapshots').select('stack').eq('id', context.params.id),
-        supabase.from('templates').select('type,template,description'),
-      ]);
+    const [{ data: trees }, { data: templates }] = await Promise.all([
+      supabase.from('trees').select('tree').eq('id', context.params.id),
+      supabase.from('templates').select('type,template,description'),
+    ]);
 
     const { left_pane_size = 240, right_pane_size = 240 } = context.req.cookies;
 
@@ -148,15 +143,7 @@ export const getServerSideProps = compose(
         rightPaneSize: +right_pane_size,
         initialStates: {
           editor: {
-            stack: [
-              ...(snapshots?.[0]?.stack ?? []),
-              trees?.[0]?.tree ??
-                u('fragment', {
-                  id: makeId(),
-                  created_at: Date.now(),
-                }),
-            ],
-            cursor: snapshots?.[0]?.stack.length ?? 0,
+            stack: [trees?.[0]?.tree ?? Tree.create('fragment')],
           },
           schema: templates.reduce((o, { type, template }) => {
             return {

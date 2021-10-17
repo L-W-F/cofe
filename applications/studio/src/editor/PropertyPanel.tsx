@@ -33,7 +33,10 @@ export const PropertyPanel = () => {
             uiSchema={Ui.get(selectedNode.type)?.properties}
             idPrefix="properties"
             onChange={(e) => {
-              dispatch('UPDATE_NODE_PROPERTIES')(e.formData);
+              dispatch('UPDATE_NODE')({
+                ...selectedNode,
+                properties: e.formData,
+              });
             }}
           />
         ) : (

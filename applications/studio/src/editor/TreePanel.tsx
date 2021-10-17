@@ -10,6 +10,7 @@ import {
   List,
   ListItem,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useDispatch, useStore } from '@cofe/store';
 import { useSelectedTree } from '@/hooks/useSelectedTree';
@@ -24,21 +25,28 @@ const TreeItemTag = ({
   indent = 0,
   ...props
 }: TreeItemTagProps) => {
+  const bgColors = useColorModeValue(
+    ['blackAlpha.100', 'blackAlpha.200', 'blackAlpha.400'],
+    ['whiteAlpha.100', 'whiteAlpha.200', 'whiteAlpha.400'],
+  );
+
   return (
     <Box
       cursor="default"
       alignItems="center"
+      my={1}
       pl={indent * 4}
       fontSize="sm"
+      borderRadius="sm"
       whiteSpace="nowrap"
       textTransform="capitalize"
       sx={{
-        backgroundColor: isSelected ? 'gray.100' : '',
+        backgroundColor: isSelected ? bgColors[0] : '',
         '&:hover': {
-          backgroundColor: 'gray.200',
+          backgroundColor: bgColors[1],
         },
         '&:active': {
-          backgroundColor: 'gray.300',
+          backgroundColor: bgColors[2],
         },
       }}
       {...props}
@@ -47,7 +55,7 @@ const TreeItemTag = ({
 };
 
 const TreeItem = ({ level = 0, type, id, children }) => {
-  const selected = useStore('editor.selected');
+  const selected = useStore('dnd.selected');
   const [isCollapsed, setIsCollapsed] = useState(true);
   const dispatch = useDispatch();
 
@@ -58,7 +66,7 @@ const TreeItem = ({ level = 0, type, id, children }) => {
     <ListItem
       onClick={(e) => {
         e.stopPropagation();
-        dispatch('SELECT_NODE')({ type, id });
+        dispatch('SELECTED')({ type, id });
       }}
     >
       {children ? (

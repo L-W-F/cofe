@@ -1,2 +1,3 @@
-export const treeCache = new WeakMap();
-export const errorCache = new Map();
+import { CofeTree } from '@cofe/types';
+
+export const treeCache = new WeakMap<object, CofeTree>();

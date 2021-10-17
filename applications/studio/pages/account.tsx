@@ -28,8 +28,8 @@ const Account = ({
 };
 
 export const getServerSideProps = compose([
-  withGsspCurrentTime,
   withGsspCatch,
+  withGsspCurrentTime,
   withGsspWhoami,
   withGsspColorMode,
 ]);

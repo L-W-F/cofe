@@ -1,7 +1,7 @@
 import { compose } from '@cofe/gssp';
 import { Header } from '@/components/Header';
+import { errorCache } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
-import { errorCache } from '@/utils/cache';
 
 const ServiceError = ({ error }) => {
   return (

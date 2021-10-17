@@ -1,12 +1,12 @@
 import { GetServerSidePropsContext } from 'next';
 import { debug } from '@cofe/logger';
-import { formatDate } from '@cofe/utils';
+import { dt } from '@cofe/utils';
 
 export const withGsspCurrentTime =
   (next?) => async (context: GetServerSidePropsContext) => {
     debug('gssp')('withCurrentTime');
 
-    const currentTime = formatDate(Date.now());
+    const currentTime = dt().format('YYYY-MM-DD HH:mm:ss');
 
     if (next) {
       const { props, ...rest } = await next(context);

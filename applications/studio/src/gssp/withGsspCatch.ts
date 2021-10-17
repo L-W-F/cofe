@@ -1,7 +1,8 @@
 import { GetServerSidePropsContext } from 'next';
 import { debug } from '@cofe/logger';
 import { makeId } from '@cofe/utils';
-import { errorCache } from 'utils/cache';
+
+export const errorCache = new Map();
 
 export const withGsspCatch =
   (next?) => async (context: GetServerSidePropsContext) => {
@@ -10,6 +11,7 @@ export const withGsspCatch =
     try {
       return await next(context);
     } catch (error) {
+      debug('gssp')('%j', error);
       const id = makeId();
 
       errorCache.set(id, error.message);

@@ -5,9 +5,9 @@ import { useSelectedTree } from './useSelectedTree';
 
 export const useSelectedNode = () => {
   const tree = useSelectedTree();
-  const selected = useStore('editor.selected');
+  const selected = useStore('dnd.selected');
 
   return selected?.id
-    ? (select(`[id=${selected.id}]`, tree) as CofeTree)
+    ? (select(`[id=${selected.id}]`, tree as any) as CofeTree)
     : null;
 };

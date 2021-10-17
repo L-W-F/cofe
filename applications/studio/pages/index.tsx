@@ -210,7 +210,7 @@ const Index = ({
 };
 
 export const getServerSideProps = compose(
-  [withGsspCurrentTime, withGsspCatch, withGsspWhoami, withGsspColorMode],
+  [withGsspCatch, withGsspCurrentTime, withGsspWhoami, withGsspColorMode],
   async (context: GetServerSidePropsContext) => {
     const { data: apps } = await supabase
       .from('apps')

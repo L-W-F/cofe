@@ -4,6 +4,7 @@ import { isEqual } from 'lodash';
 
 export interface DndState {
   dragging?: CofeTreeNodeIdentity;
+  selected?: CofeTreeNodeIdentity;
   reference?: CofeTreeNodeIdentity;
   container?: CofeTreeNodeIdentity;
   adjacent?: CofeDndAdjacent;
@@ -29,6 +30,16 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
       return {
         ...state,
         dragging: payload,
+      };
+
+    case 'SELECTED':
+      if (state.selected?.id === payload?.id) {
+        return state;
+      }
+
+      return {
+        ...state,
+        selected: payload,
       };
 
     case 'REFERENCE':
