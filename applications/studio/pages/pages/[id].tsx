@@ -16,10 +16,10 @@ import { EventPanel } from '@/editor/EventPanel';
 import { PropertyPanel } from '@/editor/PropertyPanel';
 import { TemplatePanel } from '@/editor/TemplatePanel';
 import { TreePanel } from '@/editor/TreePanel';
+import { withGsspCatch } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
 import { supabase } from '@/utils/supabase';
-import { withGsspCatch } from '@/gssp/withGsspCatch';
 
 Renderer.register(renderers);
 

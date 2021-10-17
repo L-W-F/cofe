@@ -82,7 +82,6 @@ const DropMenu = () => {
       .select('stack')
       .eq('id', query.id)
       .then(({ data, error }) => {
-          console.log(data, error);
         if (data) {
           setSnapshots(data[0]?.stack ?? []);
         }
@@ -232,9 +231,7 @@ const DropMenu = () => {
                         dispatch('JUMP')(index);
                       }}
                     >
-                      <Box>
-                        {dt(created_at).format('YYYY-MM-DD HH:mm:ss')}
-                      </Box>
+                      <Box>{dt(created_at).format('YYYY-MM-DD HH:mm:ss')}</Box>
                       <ListIcon
                         aria-label="还原"
                         as={RepeatClockIcon}

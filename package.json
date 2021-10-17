@@ -20,6 +20,7 @@
   "repository": "git@github.com:crossjs/cofe.git",
   "scripts": {
     "commit": "cz",
+    "lint": "eslint --ext .ts,.tsx .",
     "build": "yarn workspace studio build",
     "dev": "yarn workspace studio dev",
     "start": "yarn workspace studio start"

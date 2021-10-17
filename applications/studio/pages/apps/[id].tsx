@@ -34,11 +34,11 @@ import { Card, Toolbar } from '@cofe/ui';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Root } from '@/components/Root';
+import { withGsspCatch } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspCurrentTime } from '@/gssp/withGsspCurrentTime';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
 import { supabase } from '@/utils/supabase';
-import { withGsspCatch } from '@/gssp/withGsspCatch';
 
 const App = ({
   appId,

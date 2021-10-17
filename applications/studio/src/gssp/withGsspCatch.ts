@@ -12,6 +12,7 @@ export const withGsspCatch =
       return await next(context);
     } catch (error) {
       debug('gssp')('%j', error);
+
       const id = makeId();
 
       errorCache.set(id, error.message);
