@@ -23,6 +23,10 @@ export const withGsspWhoami =
     if (next) {
       const { props, ...rest } = await next(context);
 
+      if (!props) {
+        return rest;
+      }
+
       return {
         ...rest,
         props: {

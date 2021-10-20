@@ -1,5 +1,5 @@
 export interface CofeDbApp {
-  id: string;
+  id: number;
   user_id: string;
   title: string;
   description?: string;

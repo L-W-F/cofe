@@ -4,8 +4,8 @@ import { Paper, PaperProps } from './Paper';
 
 export interface CardProps extends PaperProps, ThemingProps {}
 
-export const Card = ({ sx, ...props }: CardProps) => {
+export const Card = (props: CardProps) => {
   const styles = useStyleConfig('Card', props);
 
-  return <Paper sx={{ ...sx, ...styles }} {...props} />;
+  return <Paper __css={styles} {...props} />;
 };

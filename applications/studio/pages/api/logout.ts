@@ -17,8 +17,8 @@ export default compose([withApiCatch(), withApiAuth()], async (req, res) => {
       }),
     );
 
-    res.status(200).end();
+    res.status(200).json(null);
   } else {
-    res.status(405).end();
+    res.status(405).json(null);
   }
 });

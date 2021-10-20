@@ -1,13 +1,12 @@
 import { GetServerSidePropsContext } from 'next';
 import { debug } from '@cofe/logger';
 
-export const withGsspColorMode =
+export const withGsspPanelSize =
   (next?) => async (context: GetServerSidePropsContext) => {
-    debug('gssp')('withGsspColorMode');
+    debug('gssp')('withGsspPanelSize');
 
-    const colorModeKey = process.env.KEY_OF_COLOR_MODE_COOKIE;
-    const colorMode = context.req.cookies[colorModeKey] ?? '';
-    const colorModeCookie = `${colorModeKey}=${colorMode}`;
+    const { left_pane_size = '240', right_pane_size = '240' } =
+      context.req.cookies;
 
     if (next) {
       const { props, ...rest } = await next(context);
@@ -20,14 +19,16 @@ export const withGsspColorMode =
         ...rest,
         props: {
           ...props,
-          colorModeCookie,
+          leftPaneSize: +left_pane_size,
+          rightPaneSize: +right_pane_size,
         },
       };
     }
 
     return {
       props: {
-        colorModeCookie,
+        leftPaneSize: +left_pane_size,
+        rightPaneSize: +right_pane_size,
       },
     };
   };

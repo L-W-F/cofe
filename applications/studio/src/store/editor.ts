@@ -8,12 +8,20 @@ import { EXIT, visit } from 'unist-util-visit';
 export interface EditorState extends CofeEditor {}
 
 export const initialState: EditorState = {
+  app_id: 0,
+  page_id: 0,
   stack: [],
   cursor: 0,
 };
 
 export const reducer = (state = initialState, { type, payload }: AnyAction) => {
   switch (type) {
+    case 'EDIT':
+      return {
+        ...payload,
+        cursor: 0,
+      };
+
     case 'UNDO':
       if (state.cursor >= state.stack.length - 1) {
         return state;
@@ -32,6 +40,13 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
       return {
         ...state,
         cursor: state.cursor - 1,
+      };
+
+    case 'PUSH':
+      return {
+        ...state,
+        stack: [payload].concat(state.stack),
+        cursor: 0,
       };
 
     case 'DROPPING_NODE':

@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from 'next';
-import { debug } from '@cofe/logger';
+import { debug, warn } from '@cofe/logger';
 import { makeId } from '@cofe/utils';
 
 export const errorCache = new Map();
@@ -11,7 +11,8 @@ export const withGsspCatch =
     try {
       return await next(context);
     } catch (error) {
-      debug('gssp')('%j', error);
+      warn('gssp')('[error] %j', error.message);
+      debug('gssp')('[stack] %j', error.stack);
 
       const id = makeId();
 

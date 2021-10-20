@@ -1,16 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  EditIcon,
-  HamburgerIcon,
-  RepeatClockIcon,
-  ViewIcon,
-} from '@chakra-ui/icons';
+import { HamburgerIcon, RepeatClockIcon } from '@chakra-ui/icons';
 import {
   Box,
-  BoxProps,
   Button,
   Drawer,
   DrawerBody,
@@ -29,30 +20,20 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
-  Tag,
   useToast,
-  VStack,
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
-import { post, put } from '@cofe/io';
-import { getState, useDispatch, useStore } from '@cofe/store';
-import { CofeConfig, CofeTree } from '@cofe/types';
-import { Paper, Toolbar } from '@cofe/ui';
+import { get, post, put } from '@cofe/io';
+import { useDispatch, useStore } from '@cofe/store';
+import { CofeTree } from '@cofe/types';
 import { dt, isMac } from '@cofe/utils';
-import { pick } from 'lodash';
+import { map } from 'lodash';
 import { u } from 'unist-builder';
-import { map } from 'unist-util-map';
-import { DesignCanvas } from './DesignCanvas';
-import { PreviewCanvas } from './PreviewCanvas';
-import { useSelectedNode } from '@/hooks/useSelectedNode';
-import { useSelectedTree } from '@/hooks/useSelectedTree';
-import { EDIT_MODE_DESIGN } from '@/store/config';
 import { EditorState } from '@/store/editor';
-import { supabase } from '@/utils/supabase';
 
-const DropMenu = () => {
+export const DropMenu = () => {
+  const { page_id, stack, cursor } = useStore<EditorState>('editor');
   const dispatch = useDispatch();
-  const { query } = useRouter();
   const toast = useToast({
     status: 'success',
     duration: 1000,
@@ -63,32 +44,37 @@ const DropMenu = () => {
   const [snapshots, setSnapshots] = useState(null);
 
   const saveCurrent = useCallback(async () => {
-    const { stack, cursor } = getState().editor;
-
-    await put(`/api/pages/${query.id}/stack`, stack[cursor]);
+    if (stack.length > 1) {
+      await post(`/api/pages/${page_id}/stack`, stack[cursor]);
+    }
 
     toast({
-      title: '已保存',
+      title: '所有更改已保存',
     });
-  }, [toast, query.id]);
+  }, [stack, cursor, toast, page_id]);
+
+  const restoreSnapshot = useCallback(
+    async (index) => {
+      await put(`/api/pages/${page_id}/stack`, snapshots[index]);
+
+      dispatch('PUSH')(snapshots[index]);
+
+      toast({
+        title: '已还原指定版本',
+      });
+    },
+    [page_id, snapshots, dispatch, toast],
+  );
 
   const openTemplate = useCallback(() => {
     setOpen('template');
   }, []);
 
   const openHistory = useCallback(() => {
-    supabase
-      .from('snapshots')
-      .select('stack')
-      .eq('id', query.id)
-      .then(({ data, error }) => {
-        if (data) {
-          setSnapshots(data[0]?.stack ?? []);
-        }
-      });
+    get(`/api/pages/${page_id}/stack`).then(setSnapshots);
 
     setOpen('history');
-  }, [query.id]);
+  }, [page_id]);
 
   const keydown = useCallback(
     async (e: KeyboardEvent) => {
@@ -133,7 +119,11 @@ const DropMenu = () => {
           variant="ghost"
         />
         <MenuList minW="initial">
-          <MenuItem command="⌘S" onClick={saveCurrent}>
+          <MenuItem
+            command="⌘S"
+            isDisabled={stack.length <= 1}
+            onClick={saveCurrent}
+          >
             保存
           </MenuItem>
           <MenuItem command="⌘⇧S" onClick={openTemplate}>
@@ -182,8 +172,6 @@ const DropMenu = () => {
               <Button
                 colorScheme="teal"
                 onClick={async () => {
-                  const { stack, cursor } = getState().editor;
-
                   try {
                     const template = await post('/api/templates', {
                       ...formData,
@@ -220,16 +208,13 @@ const DropMenu = () => {
             <DrawerCloseButton />
             <DrawerHeader>历史版本</DrawerHeader>
             <DrawerBody>
-              <List display="flex" flexDirection="column-reverse">
+              <List display="flex" flexDirection="column">
                 {snapshots?.map(({ created_at }, index) => {
                   return (
                     <ListItem
                       as={HStack}
                       justifyContent="space-between"
                       key={created_at ?? index}
-                      onClick={() => {
-                        dispatch('JUMP')(index);
-                      }}
                     >
                       <Box>{dt(created_at).format('YYYY-MM-DD HH:mm:ss')}</Box>
                       <ListIcon
@@ -238,7 +223,7 @@ const DropMenu = () => {
                         cursor="pointer"
                         onClick={(e) => {
                           e.stopPropagation();
-                          dispatch('RESTORE')(index);
+                          restoreSnapshot(index);
                         }}
                       />
                     </ListItem>
@@ -250,131 +235,5 @@ const DropMenu = () => {
         )}
       </Drawer>
     </>
-  );
-};
-
-const UndoRedo = () => {
-  const { stack, cursor } = useStore<EditorState>('editor');
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const keydown = (e) => {
-      // ctrl+z, ctrl+shift+z, ⌘+z, ⌘+shift+z
-      if ((!isMac && e.ctrlKey) || (isMac && e.metaKey)) {
-        if (e.key.toLowerCase() === 'z') {
-          e.preventDefault();
-          dispatch(e.shiftKey ? 'REDO' : 'UNDO')(null);
-        } else if (e.key.toLowerCase() === 'y') {
-          e.preventDefault();
-          dispatch(!e.shiftKey ? 'REDO' : 'UNDO')(null);
-        }
-      }
-    };
-
-    document.addEventListener('keydown', keydown, true);
-
-    return () => {
-      document.removeEventListener('keydown', keydown, true);
-    };
-  }, [dispatch]);
-
-  return (
-    <>
-      <IconButton
-        aria-label="undo"
-        variant="ghost"
-        icon={<ChevronLeftIcon />}
-        disabled={cursor === stack.length - 1}
-        onClick={() => {
-          dispatch('UNDO')(null);
-        }}
-      />
-      <IconButton
-        aria-label="redo"
-        variant="ghost"
-        icon={<ChevronRightIcon />}
-        disabled={cursor === 0}
-        onClick={() => {
-          dispatch('REDO')(null);
-        }}
-      />
-    </>
-  );
-};
-
-const SelectedPath = () => {
-  const selected = useSelectedNode();
-
-  const dispatch = useDispatch();
-  const nodes = [];
-
-  const handleClick = (e) => {
-    dispatch('SELECTED')(pick(e.target.dataset, ['type', 'id']));
-  };
-
-  let current = selected;
-
-  console.log(current);
-
-  while (current) {
-    nodes.unshift(
-      <ChevronRightIcon key={`icon-${current.id}`} />,
-      <Tag
-        key={current.id}
-        data-type={current.type}
-        data-id={current.id}
-        cursor="default"
-        textTransform="capitalize"
-        size="sm"
-        variant={current === selected ? 'solid' : 'outline'}
-        onClick={handleClick}
-      >
-        {current.type}
-      </Tag>,
-    );
-
-    current = current.parent;
-  }
-
-  return <>{nodes.slice(1)}</>;
-};
-
-const EditModeSwitch = () => {
-  const editorMode = useStore<CofeConfig['editorMode']>('config.editorMode');
-  const dispatch = useDispatch();
-
-  return (
-    <IconButton
-      aria-label="Toggle edit mode"
-      variant="ghost"
-      icon={editorMode === EDIT_MODE_DESIGN ? <ViewIcon /> : <EditIcon />}
-      onClick={() => {
-        dispatch('TOGGLE_EDIT_MODE')(null);
-      }}
-    />
-  );
-};
-
-export const CanvasPanel = (props: BoxProps) => {
-  const tree = useSelectedTree();
-  const editorMode = useStore<CofeConfig['editorMode']>('config.editorMode');
-
-  const Canvas = editorMode === EDIT_MODE_DESIGN ? DesignCanvas : PreviewCanvas;
-
-  return (
-    <VStack alignItems="stretch" {...props}>
-      <Toolbar size="sm">
-        <DropMenu />
-        <UndoRedo />
-        <Box flex={1} />
-        <EditModeSwitch />
-      </Toolbar>
-      <Paper flex={1} p={4}>
-        <Canvas tree={tree} />
-      </Paper>
-      <Toolbar size="sm">
-        <SelectedPath />
-      </Toolbar>
-    </VStack>
   );
 };

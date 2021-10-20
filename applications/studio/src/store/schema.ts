@@ -18,6 +18,12 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
     case 'DELETE_SCHEMA':
       return omit(state, [payload.type]);
 
+    case 'FETCH_SCHEMAS':
+      return {
+        ...state,
+        ...payload,
+      };
+
     default:
       return state;
   }

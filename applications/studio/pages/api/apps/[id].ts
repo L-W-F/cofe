@@ -16,7 +16,7 @@ export default compose([withApiCatch(), withApiAuth()], async (req, res) => {
       res.status(200).json(data[0]);
     }
   } else if (req.method === 'DELETE') {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('apps')
       .delete()
       .eq('id', req.query.id);
@@ -24,9 +24,9 @@ export default compose([withApiCatch(), withApiAuth()], async (req, res) => {
     if (error) {
       res.status(500).json(error);
     } else {
-      res.status(200).end(data[0]);
+      res.status(200).json(null);
     }
   } else {
-    res.status(405).end();
+    res.status(405).json(null);
   }
 });

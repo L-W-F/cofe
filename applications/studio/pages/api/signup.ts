@@ -12,6 +12,6 @@ export default compose([withApiCatch()], async (req, res) => {
 
     res.status(201).json(user);
   } else {
-    res.status(405).end();
+    res.status(405).json(null);
   }
 });

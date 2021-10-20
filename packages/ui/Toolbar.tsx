@@ -1,15 +1,10 @@
 import React from 'react';
-import {
-  Flex,
-  FlexProps,
-  ThemingProps,
-  useStyleConfig,
-} from '@chakra-ui/react';
+import { Box, BoxProps, ThemingProps, useStyleConfig } from '@chakra-ui/react';
 
-export interface ToolbarProps extends FlexProps, ThemingProps {}
+export interface ToolbarProps extends BoxProps, ThemingProps {}
 
 export const Toolbar = (props: ToolbarProps) => {
   const styles = useStyleConfig('Toolbar', props);
 
-  return <Flex sx={styles} {...props} />;
+  return <Box __css={styles} {...props} />;
 };

@@ -20,7 +20,7 @@ export const createLog2file =
 
         /* istanbul ignore if */
         if (writeStream) {
-          writeStream.end();
+          writeStream.json(null);
           writeStream = null;
         }
       }

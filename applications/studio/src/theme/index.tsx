@@ -43,6 +43,8 @@ export const theme = extendTheme({
     },
     Toolbar: {
       baseStyle: {
+        display: 'flex',
+        zIndex: 2,
         minH: 12,
         px: 4,
         gridGap: 2,

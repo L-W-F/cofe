@@ -1,226 +1,170 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import NextLink from 'next/link';
-import { AddIcon, EditIcon, TimeIcon } from '@chakra-ui/icons';
-import {
-  Avatar,
-  Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Button,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  Flex,
-  Heading,
-  IconButton,
-  LinkBox,
-  LinkOverlay,
-  SimpleGrid,
-  Text,
-  useDisclosure,
-  useToast,
-  VStack,
-} from '@chakra-ui/react';
-import { Form } from '@cofe/form';
+import { Accordion, Box, Flex } from '@chakra-ui/react';
+import { Renderer, Tree } from '@cofe/core';
 import { compose } from '@cofe/gssp';
-import { patch, post } from '@cofe/io';
-import { useDispatch, useStore } from '@cofe/store';
-import { Card, Toolbar } from '@cofe/ui';
+import { useSplitPane } from '@cofe/hooks';
+import { renderers } from '@cofe/renderers';
+import { schemas } from '@cofe/schemas';
+import { AppManager } from '@/components/AppManager';
+import { ColorModeSwitch } from '@/components/ColorModeSwitch';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Root } from '@/components/Root';
+import { SplitHandle } from '@/components/SplitHandle';
+import { Whoami } from '@/components/Whoami';
 import { withGsspCatch } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
-import { withGsspCurrentTime } from '@/gssp/withGsspCurrentTime';
+import { withGsspPanelSize } from '@/gssp/withGsspPanelSize';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
-import { AppState } from '@/store/app';
-import { WhoamiState } from '@/store/whoami';
+import { ActionPanel } from '@/pageEditor/ActionPanel';
+import { AtomPanel } from '@/pageEditor/AtomPanel';
+import { CanvasPanel } from '@/pageEditor/CanvasPanel';
+import { EventPanel } from '@/pageEditor/EventPanel';
+import { PropertyPanel } from '@/pageEditor/PropertyPanel';
+import { TemplatePanel } from '@/pageEditor/TemplatePanel';
+import { TreePanel } from '@/pageEditor/TreePanel';
+import { a2m } from '@/utils/a2m';
 import { supabase } from '@/utils/supabase';
 
+Renderer.register(renderers);
+
 const Index = ({
-  currentTime,
+  leftPaneSize,
+  rightPaneSize,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const apps = useStore<AppState>('app');
-  const last_sign_in_at = useStore<WhoamiState['last_sign_in_at']>(
-    'whoami.last_sign_in_at',
-  );
-  const dispatch = useDispatch();
-  const toast = useToast({
-    status: 'success',
-    duration: 1000,
-    position: 'bottom-left',
+  const sp1 = useSplitPane({
+    initialSize: leftPaneSize,
+    maxSize: 400,
+    onInit: (size, pane) => {
+      pane.style.width = `${size}px`;
+      pane.style.display = size ? 'block' : 'none';
+    },
+    onResize: (size, pane) => {
+      pane.style.width = `${size}px`;
+      pane.style.display = size ? 'block' : 'none';
+    },
+    onEnd: (size) => {
+      document.cookie = `left_pane_size=${size}`;
+    },
   });
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [formData, setFormData] = useState(null);
+
+  const sp2 = useSplitPane({
+    direction: 'row-reverse',
+    initialSize: rightPaneSize,
+    maxSize: 400,
+    onInit: (size, pane) => {
+      pane.style.width = `${size}px`;
+      pane.style.display = size ? 'block' : 'none';
+    },
+    onResize: (size, pane) => {
+      pane.style.width = `${size}px`;
+      pane.style.display = size ? 'block' : 'none';
+    },
+    onEnd: (size) => {
+      document.cookie = `right_pane_size=${size}`;
+    },
+  });
 
   return (
-    <>
-      <Root>
-        <Header />
-        <Toolbar size="sm">
-          <Breadcrumb>
-            <BreadcrumbItem isCurrentPage>
-              <NextLink href="/" passHref>
-                <BreadcrumbLink>首页</BreadcrumbLink>
-              </NextLink>
-            </BreadcrumbItem>
-          </Breadcrumb>
-        </Toolbar>
-        <SimpleGrid m={2} gridGap={2} columns={{ base: 1, md: 2 }}>
-          <Card>
-            <Toolbar>
-              <Heading as="h3" size="md" flex={1}>
-                应用
-              </Heading>
-              <IconButton
-                aria-label="创建新的应用"
-                icon={<AddIcon />}
-                size="sm"
-                onClick={() => {
-                  setFormData(null);
-                  onOpen();
-                }}
-              />
-            </Toolbar>
-            <VStack m={4} gridGap={2} align="stretch">
-              {apps.map(({ id, title, description, updated_at }) => (
-                <LinkBox key={id} as={Card}>
-                  <Toolbar>
-                    <Avatar size="sm" name="A" />
-                    <NextLink href={`/apps/${id}`} passHref>
-                      <LinkOverlay flex={1}>{title}</LinkOverlay>
-                    </NextLink>
-                    <IconButton
-                      aria-label="编辑"
-                      icon={<EditIcon />}
-                      size="xs"
-                      onClick={() => {
-                        setFormData(apps.find((app) => app.id === id));
-
-                        onOpen();
-                      }}
-                    />
-                  </Toolbar>
-                  <Flex m={4}>
-                    <Text flex={1}>{description}</Text>
-                    <Text>
-                      <TimeIcon aria-label="最后修改" mr={1} />
-                      {updated_at}
-                    </Text>
-                  </Flex>
-                </LinkBox>
-              ))}
-            </VStack>
-          </Card>
-          <Card>
-            <Toolbar>
-              <Heading as="h3" size="md">
-                上一次登录
-              </Heading>
-            </Toolbar>
-            <Box p={4}>{last_sign_in_at}</Box>
-          </Card>
-          <Card>
-            <Toolbar>
-              <Heading as="h3" size="md">
-                关于
-              </Heading>
-            </Toolbar>
-            <Box m={4}>我们</Box>
-          </Card>
-        </SimpleGrid>
-
-        <Footer>{currentTime}</Footer>
-      </Root>
-      <Drawer
-        isOpen={isOpen}
-        placement={formData?.id ? 'right' : 'bottom'}
-        onClose={onClose}
-      >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>{formData?.id ? '编辑' : '创建'}</DrawerHeader>
-          <DrawerBody>
-            <Form
-              formData={formData}
-              uiSchema={{
-                id: { 'ui:widget': 'hidden' },
-              }}
-              schema={{
-                type: 'object',
-                properties: {
-                  id: {
-                    type: 'string',
-                  },
-                  title: {
-                    type: 'string',
-                    title: '名称',
-                  },
-                  description: {
-                    type: 'string',
-                    title: '描述',
-                  },
-                },
-                required: ['title'],
-              }}
-              onChange={(e) => {
-                setFormData(e.formData);
-              }}
-            />
-          </DrawerBody>
-          <DrawerFooter>
-            <Button
-              colorScheme="teal"
-              onClick={async () => {
-                if (formData?.id) {
-                  const app = await patch(`/api/apps/${formData.id}`, formData);
-
-                  toast({
-                    title: '保存成功',
-                  });
-
-                  dispatch('UPDATE_APP')(app);
-                } else {
-                  const app = await post('/api/apps', formData);
-
-                  toast({
-                    title: '创建成功',
-                  });
-
-                  dispatch('CREATE_APP')(app);
-                }
-
-                onClose();
-              }}
-            >
-              保存
-            </Button>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
-    </>
+    <Root>
+      <Header>
+        <AppManager />
+        <Box flex={1} />
+        <ColorModeSwitch />
+        <Whoami />
+      </Header>
+      <Flex flex={1}>
+        <Accordion
+          ref={sp1.paneRef}
+          allowMultiple
+          defaultIndex={[0]}
+          direction="column"
+          gridGap={2}
+          overflow="hidden"
+        >
+          <AtomPanel />
+          <TemplatePanel />
+        </Accordion>
+        <SplitHandle {...sp1.handleProps} />
+        <Flex flex={1}>
+          <CanvasPanel flex={1} />
+          <SplitHandle {...sp2.handleProps} />
+          <Accordion
+            ref={sp2.paneRef}
+            allowMultiple
+            defaultIndex={[0]}
+            direction="column"
+            gridGap={2}
+            overflow="hidden"
+          >
+            <TreePanel />
+            <PropertyPanel />
+            <ActionPanel />
+            <EventPanel />
+          </Accordion>
+        </Flex>
+      </Flex>
+      <Footer />
+    </Root>
   );
 };
 
 export const getServerSideProps = compose(
-  [withGsspCatch, withGsspCurrentTime, withGsspWhoami, withGsspColorMode],
-  async (context: GetServerSidePropsContext) => {
+  [withGsspCatch, withGsspPanelSize, withGsspColorMode, withGsspWhoami],
+  async (context: GetServerSidePropsContext<{ id: string }>) => {
     const { data: apps } = await supabase
       .from('apps')
-      .select('id,title,description,updated_at')
+      .select()
       .order('updated_at', { ascending: false });
+
+    const firstAppId = apps?.[0]?.id;
+
+    if (!firstAppId) {
+      return {
+        redirect: {
+          destination: '/apps/create',
+          permanent: false,
+        },
+      };
+    }
+
+    const { data: pages } = await supabase
+      .from('pages')
+      .select()
+      .eq('app_id', firstAppId)
+      .order('updated_at', { ascending: false });
+
+    const firstPageId = pages?.[0]?.id;
+
+    if (!firstPageId) {
+      return {
+        redirect: {
+          destination: `/apps/${firstAppId}/pages/create`,
+          permanent: false,
+        },
+      };
+    }
+
+    const { data: trees } = await supabase
+      .from('trees')
+      .select('tree')
+      .eq('id', firstPageId);
+
+    const app = a2m(apps);
+
+    app[firstAppId].pages = a2m(pages);
 
     return {
       props: {
         initialStates: {
-          app: apps ?? [],
+          app,
+          editor: {
+            app_id: firstAppId,
+            page_id: firstPageId,
+            stack: [trees?.[0]?.tree ?? Tree.create('fragment')],
+          },
+          schema: schemas,
         },
       },
     };

@@ -1,7 +1,7 @@
 import { CofeTree } from '../tree';
 
 export interface CofeDbTemplate {
-  id: string;
+  id: number;
   user_id: string;
   type: string;
   template: CofeTree;

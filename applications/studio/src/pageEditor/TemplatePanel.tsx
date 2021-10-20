@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   AccordionButton,
   AccordionIcon,
@@ -8,12 +8,30 @@ import {
   List,
   Text,
 } from '@chakra-ui/react';
-import { useStore } from '@cofe/store';
+import { get } from '@cofe/io';
+import { useDispatch, useStore } from '@cofe/store';
 import { DragItem } from './DragItem';
 import { SchemaState } from '@/store/schema';
 
 export const TemplatePanel = () => {
   const schemas = useStore<SchemaState>('schema');
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    get('/api/templates').then((v) => {
+      dispatch('FETCH_SCHEMAS')(
+        v.reduce((o, { type, template }) => {
+          return {
+            ...o,
+            [`template:${type}`]: {
+              type: `template:${type}`,
+              template,
+            },
+          };
+        }, {}),
+      );
+    });
+  }, [dispatch]);
 
   return (
     <AccordionItem>

@@ -4,7 +4,20 @@ import { withApiCatch } from '@/api/withApiCatch';
 import { supabase } from '@/utils/supabase';
 
 export default compose([withApiCatch(), withApiAuth()], async (req, res) => {
-  if (req.method === 'PUT') {
+  if (req.method === 'GET') {
+    const id = req.query.id as string;
+
+    const { data, error } = await supabase
+      .from('snapshots')
+      .select('stack')
+      .eq('id', id);
+
+    if (error) {
+      res.status(500).json(error);
+    } else {
+      res.status(200).json(data[0]?.stack ?? []);
+    }
+  } else if (req.method === 'POST') {
     const id = req.query.id as string;
     const tree = req.body;
 
@@ -17,9 +30,11 @@ export default compose([withApiCatch(), withApiAuth()], async (req, res) => {
     if (e1 || e2) {
       res.status(500).json(e1 || e2);
     } else {
-      const stack = d2[0].stack ?? [];
+      const stack = d2[0]?.stack ?? [];
 
-      stack.unshift(d1[0]?.tree);
+      if (d1[0]?.tree) {
+        stack.unshift(d1[0].tree);
+      }
 
       const [{ error: e3 }, { error: e4 }] = await Promise.all([
         supabase.from('trees').upsert({ tree, id }),
@@ -32,7 +47,19 @@ export default compose([withApiCatch(), withApiAuth()], async (req, res) => {
         res.status(200).json(null);
       }
     }
+  } else if (req.method === 'PUT') {
+    // 还原
+    const id = req.query.id as string;
+    const tree = req.body;
+
+    const { error } = await supabase.from('trees').upsert({ tree, id });
+
+    if (error) {
+      res.status(500).json(error);
+    } else {
+      res.status(200).json(null);
+    }
   } else {
-    res.status(405).end();
+    res.status(405).json(null);
   }
 });

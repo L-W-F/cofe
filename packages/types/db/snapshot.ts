@@ -1,7 +1,7 @@
 import { CofeTree } from '../tree';
 
 export interface CofeDbSnapshot {
-  id: string;
+  id: number;
   user_id: string;
   page_id: string;
   stack: CofeTree[];
