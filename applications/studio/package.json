@@ -54,7 +54,7 @@
     "@types/cookie": "^0.4.1",
     "@types/json-schema": "^7.0.9",
     "@types/lodash": "^4.14.175",
-    "@types/react": "^17.0.29",
+    "@types/react": "^17.0.30",
     "@types/shallowequal": "^1.1.1",
     "babel-preset-cofe": "^0.0.1",
     "eslint": "^7.32.0",
