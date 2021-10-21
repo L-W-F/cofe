@@ -59,7 +59,7 @@ interface TreeItemProps extends Parital<CofeTree> {
   level?: number;
 }
 
-const TreeItem = ({ level = 0, type, id, children }) => {
+const TreeItem = ({ level = 0, type, id, children }: TreeItemProps) => {
   const selected = useStore('dnd.selected');
   const [isCollapsed, setIsCollapsed] = useState(true);
   const dispatch = useDispatch();
