@@ -55,7 +55,7 @@ const TreeItemTag = ({
   );
 };
 
-interface TreeItemProps extends Parital<CofeTree> {
+interface TreeItemProps extends Partial<CofeTree> {
   level?: number;
 }
 
