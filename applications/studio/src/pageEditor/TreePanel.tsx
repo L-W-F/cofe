@@ -13,6 +13,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useDispatch, useStore } from '@cofe/store';
+import { CofeTree } from '@cofe/types';
 import { useSelectedTree } from '@/hooks/useSelectedTree';
 
 interface TreeItemTagProps extends BoxProps {
@@ -53,6 +54,10 @@ const TreeItemTag = ({
     />
   );
 };
+
+interface TreeItemProps extends Parital<CofeTree> {
+  level?: number;
+}
 
 const TreeItem = ({ level = 0, type, id, children }) => {
   const selected = useStore('dnd.selected');
