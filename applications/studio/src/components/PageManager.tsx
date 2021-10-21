@@ -111,6 +111,7 @@ export const PageManager = ({
                       icon={<Icon as={DesignIcon} w="3" h="3" />}
                       variant="ghost"
                       size="xs"
+                      isDisabled={isLoading}
                       onClick={() => {
                         get(`/api/pages/${id}/tree`).then((tree) => {
                           dispatch('EDIT')({

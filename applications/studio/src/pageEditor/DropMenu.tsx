@@ -1,20 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { HamburgerIcon, RepeatClockIcon } from '@chakra-ui/icons';
+import { HamburgerIcon } from '@chakra-ui/icons';
 import {
-  Box,
-  Button,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  HStack,
   IconButton,
-  List,
-  ListIcon,
-  ListItem,
   Menu,
   MenuButton,
   MenuDivider,
@@ -22,26 +9,21 @@ import {
   MenuList,
   useToast,
 } from '@chakra-ui/react';
-import { Form } from '@cofe/form';
-import { get, post, put } from '@cofe/io';
-import { useDispatch, useStore } from '@cofe/store';
-import { CofeTree } from '@cofe/types';
-import { dt, isMac } from '@cofe/utils';
-import { map } from 'lodash';
-import { u } from 'unist-builder';
+import { post } from '@cofe/io';
+import { useStore } from '@cofe/store';
+import { isMac } from '@cofe/utils';
+import { SaveTemplate } from './SaveTemplate';
+import { ShowHistory } from './ShowHistory';
 import { EditorState } from '@/store/editor';
 
 export const DropMenu = () => {
   const { page_id, stack, cursor } = useStore<EditorState>('editor');
-  const dispatch = useDispatch();
   const toast = useToast({
     status: 'success',
     duration: 1000,
     position: 'bottom-left',
   });
   const [open, setOpen] = useState<'template' | 'history'>(null);
-  const [formData, setFormData] = useState(null);
-  const [snapshots, setSnapshots] = useState(null);
 
   const saveCurrent = useCallback(async () => {
     if (stack.length > 1) {
@@ -53,28 +35,13 @@ export const DropMenu = () => {
     });
   }, [stack, cursor, toast, page_id]);
 
-  const restoreSnapshot = useCallback(
-    async (index) => {
-      await put(`/api/pages/${page_id}/stack`, snapshots[index]);
-
-      dispatch('PUSH')(snapshots[index]);
-
-      toast({
-        title: '已还原指定版本',
-      });
-    },
-    [page_id, snapshots, dispatch, toast],
-  );
-
-  const openTemplate = useCallback(() => {
+  const saveTemplate = useCallback(() => {
     setOpen('template');
   }, []);
 
-  const openHistory = useCallback(() => {
-    get(`/api/pages/${page_id}/stack`).then(setSnapshots);
-
+  const showHistory = useCallback(() => {
     setOpen('history');
-  }, [page_id]);
+  }, []);
 
   const keydown = useCallback(
     async (e: KeyboardEvent) => {
@@ -94,11 +61,11 @@ export const DropMenu = () => {
         if (e.key.toLowerCase() === 'h') {
           e.preventDefault();
 
-          openHistory();
+          showHistory();
         }
       }
     },
-    [saveCurrent, openHistory],
+    [saveCurrent, showHistory],
   );
 
   useEffect(() => {
@@ -126,114 +93,27 @@ export const DropMenu = () => {
           >
             保存
           </MenuItem>
-          <MenuItem command="⌘⇧S" onClick={openTemplate}>
+          <MenuItem command="⌘⇧S" onClick={saveTemplate}>
             保存为模板
           </MenuItem>
           <MenuDivider />
-          <MenuItem command="⌘H" onClick={openHistory}>
+          <MenuItem command="⌘H" onClick={showHistory}>
             历史版本
           </MenuItem>
         </MenuList>
       </Menu>
-      <Drawer
-        isOpen={!!open}
+      <ShowHistory
+        isOpen={open === 'history'}
         onClose={() => {
           setOpen(null);
         }}
-      >
-        <DrawerOverlay />
-        {open === 'template' ? (
-          <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader>另存为模板</DrawerHeader>
-            <DrawerBody>
-              <Form
-                formData={formData}
-                schema={{
-                  type: 'object',
-                  properties: {
-                    type: {
-                      type: 'string',
-                      title: '类型',
-                    },
-                    description: {
-                      type: 'string',
-                      title: '描述',
-                    },
-                  },
-                  required: ['type'],
-                }}
-                onChange={(e) => {
-                  setFormData(e.formData);
-                }}
-              />
-            </DrawerBody>
-            <DrawerFooter>
-              <Button
-                colorScheme="teal"
-                onClick={async () => {
-                  try {
-                    const template = await post('/api/templates', {
-                      ...formData,
-                      template: map(
-                        stack[cursor],
-                        ({ type, properties }: CofeTree) => {
-                          return u(type, { properties });
-                        },
-                      ),
-                    });
-
-                    toast({
-                      title: '已保存为模板',
-                    });
-
-                    dispatch('CREATE_SCHEMA')({
-                      type: `template:${template.type}`,
-                      schema: {
-                        type: `template:${template.type}`,
-                        template: template.template,
-                      },
-                    });
-
-                    setOpen(null);
-                  } catch (error) {}
-                }}
-              >
-                保存
-              </Button>
-            </DrawerFooter>
-          </DrawerContent>
-        ) : (
-          <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader>历史版本</DrawerHeader>
-            <DrawerBody>
-              <List display="flex" flexDirection="column">
-                {snapshots?.map(({ created_at }, index) => {
-                  return (
-                    <ListItem
-                      as={HStack}
-                      justifyContent="space-between"
-                      key={created_at ?? index}
-                    >
-                      <Box>{dt(created_at).format('YYYY-MM-DD HH:mm:ss')}</Box>
-                      <ListIcon
-                        aria-label="还原"
-                        as={RepeatClockIcon}
-                        cursor="pointer"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          restoreSnapshot(index);
-                        }}
-                      />
-                    </ListItem>
-                  );
-                }) ?? null}
-              </List>
-            </DrawerBody>
-          </DrawerContent>
-        )}
-      </Drawer>
+      />
+      <SaveTemplate
+        isOpen={open === 'template'}
+        onClose={() => {
+          setOpen(null);
+        }}
+      />
     </>
   );
 };
