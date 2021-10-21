@@ -8,7 +8,7 @@ const defaultExtensions = [
   }),
 ];
 
-const defaultMdastExtensions = [gfmFromMarkdown];
+const defaultMdastExtensions = [gfmFromMarkdown()];
 
 export const createFromMdOptions = ({
   extensions = [],
