@@ -1875,10 +1875,10 @@
     prop-types "^15.7.2"
     tslib "^2.1.0"
 
-"@rjsf/core@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.nlark.com/@rjsf/core/download/@rjsf/core-3.1.0.tgz#7667364a4532e25c164abbc2adabe39157ffec4c"
-  integrity sha1-dmc2SkUy4lwWSrvCravjkVf/7Ew=
+"@rjsf/core@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@rjsf/core/-/core-3.2.0.tgz#189ff7fb132cb223463792d75fb1e04e9dd5d9f9"
+  integrity sha512-Cgonq9bBWlpE0yeeIv7rAIDuJvO1wAvp9G7tT/UvhODAyb4tDb1q8J/8ubWuRRiEyzYUkuxN0W8uPIzQsJgtTQ==
   dependencies:
     "@types/json-schema" "^7.0.7"
     ajv "^6.7.0"
