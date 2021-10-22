@@ -1857,10 +1857,10 @@
     prop-types "^15.7.2"
     tslib "^2.1.0"
 
-"@rjsf/core@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.nlark.com/@rjsf/core/download/@rjsf/core-3.1.0.tgz#7667364a4532e25c164abbc2adabe39157ffec4c"
-  integrity sha1-dmc2SkUy4lwWSrvCravjkVf/7Ew=
+"@rjsf/core@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@rjsf/core/-/core-3.2.0.tgz#189ff7fb132cb223463792d75fb1e04e9dd5d9f9"
+  integrity sha512-Cgonq9bBWlpE0yeeIv7rAIDuJvO1wAvp9G7tT/UvhODAyb4tDb1q8J/8ubWuRRiEyzYUkuxN0W8uPIzQsJgtTQ==
   dependencies:
     "@types/json-schema" "^7.0.7"
     ajv "^6.7.0"
@@ -2004,19 +2004,10 @@
   resolved "https://registry.nlark.com/@types/prop-types/download/@types/prop-types-15.7.4.tgz?cache=0&sync_timestamp=1629708789374&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fprop-types%2Fdownload%2F%40types%2Fprop-types-15.7.4.tgz#fcf7205c25dff795ee79af1e30da2c9790808f11"
   integrity sha1-/PcgXCXf95Xuea8eMNosl5CAjxE=
 
-"@types/react@^17.0.0":
-  version "17.0.24"
-  resolved "https://registry.nlark.com/@types/react/download/@types/react-17.0.24.tgz#7e1b3f78d0fc53782543f9bce6d949959a5880bd"
-  integrity sha1-fhs/eND8U3glQ/m85tlJlZpYgL0=
-  dependencies:
-    "@types/prop-types" "*"
-    "@types/scheduler" "*"
-    csstype "^3.0.2"
-
-"@types/react@^17.0.29":
-  version "17.0.29"
-  resolved "https://registry.npmmirror.com/@types/react/download/@types/react-17.0.29.tgz?cache=0&sync_timestamp=1634058506463&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Freact%2Fdownload%2F%40types%2Freact-17.0.29.tgz#9535f3fc01a4981ce9cadcf0daa2593c0c2f2251"
-  integrity sha1-lTXz/AGkmBzpytzw2qJZPAwvIlE=
+"@types/react@^17.0.0", "@types/react@^17.0.31":
+  version "17.0.31"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.31.tgz#fe05ebf91ff3ae35bb6b13f6c1b461db8089dff8"
+  integrity sha512-MQSR5EL4JZtdWRvqDgz9kXhSDDoy2zMTYyg7UhP+FZ5ttUOocWyxiqFJiI57sUG0BtaEX7WDXYQlkCYkb3X9vQ==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
