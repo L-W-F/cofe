@@ -5,6 +5,10 @@ import { cloneDeep } from 'lodash';
 import { filter } from 'unist-util-filter';
 import { EXIT, visit } from 'unist-util-visit';
 
+export const MODE_DESIGN = 1;
+export const MODE_SOURCE = 2;
+export const MODE_PREVIEW = 3;
+
 export interface EditorState extends CofeEditor {}
 
 export const initialState: EditorState = {
@@ -12,11 +16,22 @@ export const initialState: EditorState = {
   page_id: 0,
   stack: [],
   cursor: 0,
+  mode: 1,
 };
 
 export const reducer = (state = initialState, { type, payload }: AnyAction) => {
   switch (type) {
-    case 'EDIT':
+    case 'SET_MODE':
+      if (state.mode === payload) {
+        return state;
+      }
+
+      return {
+        ...state,
+        mode: payload,
+      };
+
+    case 'SET_PAGE':
       return {
         ...payload,
         cursor: 0,
@@ -49,7 +64,7 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
         cursor: 0,
       };
 
-    case 'DROPPING_NODE':
+    case 'APPEND_NODE':
       return {
         ...state,
         stack: [

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Flex, FlexProps, Progress, useToast } from '@chakra-ui/react';
-import { Listener, subscribe } from '@cofe/io';
+import { subscribe } from '@cofe/io';
 
 export interface RootProps extends FlexProps {
   loading?: boolean;
@@ -12,7 +12,7 @@ export const Root = ({
   minH = '100vh',
   ...props
 }: FlexProps) => {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const toast = useToast({
     status: 'error',
     isClosable: true,
@@ -21,48 +21,33 @@ export const Root = ({
 
   useEffect(() => {
     let count = 0;
-    let mounted = true;
 
-    const listener: Listener = (type, url, init, payload) => {
+    return subscribe((type, url, init, payload) => {
       if (type === 'start') {
-        setTimeout(() => {
-          if (mounted) {
-            setLoading(++count > 0);
-          }
-        }, 500);
+        setIsLoading(++count > 0);
       } else {
-        if (mounted) {
-          setLoading(--count > 0);
+        setIsLoading(--count > 0);
 
-          if (payload instanceof Error) {
-            toast({
-              title: payload.message,
-            });
-          }
+        if (payload instanceof Error) {
+          toast({
+            title: payload.message,
+          });
         }
       }
-    };
-
-    const unsubscribe = subscribe(listener);
-
-    return () => {
-      mounted = false;
-      unsubscribe();
-    };
+    });
   }, [toast]);
 
   return (
     <Flex direction={direction} minH={minH} {...props}>
-      {loading ? (
-        <Progress
-          pos="fixed"
-          top={0}
-          left={0}
-          right={0}
-          size="xs"
-          isIndeterminate
-        />
-      ) : null}
+      <Progress
+        pos="fixed"
+        zIndex={isLoading ? 10000 : -1}
+        top={0}
+        left={0}
+        right={0}
+        size="xs"
+        isIndeterminate
+      />
       {children}
     </Flex>
   );

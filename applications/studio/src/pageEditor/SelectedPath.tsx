@@ -19,7 +19,6 @@ export const SelectedPath = () => {
 
   while (current) {
     nodes.unshift(
-      <ChevronRightIcon key={`icon-${current.id}`} />,
       <Tag
         key={current.id}
         data-type={current.type}
@@ -35,7 +34,11 @@ export const SelectedPath = () => {
     );
 
     current = current.parent;
+
+    if (current) {
+      nodes.unshift(<ChevronRightIcon key={`icon-${current.id}`} />);
+    }
   }
 
-  return <>{nodes.slice(1)}</>;
+  return <>{nodes}</>;
 };

@@ -1,22 +1,25 @@
 import React from 'react';
 import { Box, BoxProps, VStack } from '@chakra-ui/react';
 import { useStore } from '@cofe/store';
-import { CofeConfig } from '@cofe/types';
 import { Paper, Toolbar } from '@cofe/ui';
 import { DesignCanvas } from './DesignCanvas';
 import { DropMenu } from './DropMenu';
-import { EditModeSwitch } from './EditModeSwitch';
+import { ModeSwitch } from './ModeSwitch';
 import { PreviewCanvas } from './PreviewCanvas';
 import { SelectedPath } from './SelectedPath';
+import { SourceCanvas } from './SourceCanvas';
 import { UndoRedo } from './UndoRedo';
-import { useSelectedTree } from '@/hooks/useSelectedTree';
-import { EDIT_MODE_DESIGN } from '@/store/config';
+import { EditorState, MODE_DESIGN, MODE_SOURCE } from '@/store/editor';
 
 export const CanvasPanel = (props: BoxProps) => {
-  const tree = useSelectedTree();
-  const editorMode = useStore<CofeConfig['editorMode']>('config.editorMode');
+  const mode = useStore<EditorState['mode']>('editor.mode');
 
-  const Canvas = editorMode === EDIT_MODE_DESIGN ? DesignCanvas : PreviewCanvas;
+  const Canvas =
+    mode === MODE_DESIGN
+      ? DesignCanvas
+      : mode === MODE_SOURCE
+      ? SourceCanvas
+      : PreviewCanvas;
 
   return (
     <VStack alignItems="stretch" {...props}>
@@ -24,10 +27,10 @@ export const CanvasPanel = (props: BoxProps) => {
         <DropMenu />
         <UndoRedo />
         <Box flex={1} />
-        <EditModeSwitch />
+        <ModeSwitch />
       </Toolbar>
       <Paper flex={1} p={4}>
-        <Canvas tree={tree} />
+        <Canvas />
       </Paper>
       <Toolbar size="sm">
         <SelectedPath />

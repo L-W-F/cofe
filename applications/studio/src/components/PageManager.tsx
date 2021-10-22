@@ -114,7 +114,7 @@ export const PageManager = ({
                       isDisabled={isLoading}
                       onClick={() => {
                         get(`/api/pages/${id}/tree`).then((tree) => {
-                          dispatch('EDIT')({
+                          dispatch('SET_PAGE')({
                             app_id: app.id,
                             page_id: id,
                             stack: [tree],

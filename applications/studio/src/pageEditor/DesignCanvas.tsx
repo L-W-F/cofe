@@ -16,6 +16,7 @@ import { pick } from 'lodash';
 import { useDrag } from '@/hooks/useDrag';
 import { useDrop } from '@/hooks/useDrop';
 import { useSchema } from '@/hooks/useSchema';
+import { useSelectedTree } from '@/hooks/useSelectedTree';
 import { DndState } from '@/store/dnd';
 
 const getAdjacentProps = (adjacent?: CofeDndAdjacent, isInline?: boolean) => {
@@ -179,11 +180,10 @@ const NodeRenderer = ({
   );
 };
 
-interface DesignCanvasProps extends BoxProps {
-  tree: CofeTree;
-}
+interface DesignCanvasProps extends BoxProps {}
 
-export const DesignCanvas = ({ tree, ...props }: DesignCanvasProps) => {
+export const DesignCanvas = (props: DesignCanvasProps) => {
+  const tree = useSelectedTree();
   const selected = useStore('dnd.selected');
   const dispatch = useDispatch();
   const [[x, y], setMenuCoord] = useState<[number?, number?]>([]);
@@ -229,7 +229,7 @@ export const DesignCanvas = ({ tree, ...props }: DesignCanvasProps) => {
 
   const [, drop] = useDrop({
     onDrop: (payload) => {
-      dispatch('DROPPING_NODE')(payload);
+      dispatch('APPEND_NODE')(payload);
     },
   });
 

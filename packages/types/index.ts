@@ -7,7 +7,6 @@ export * from './db/tree';
 export * from './db/user';
 
 // local
-export * from './config';
 export * from './dnd';
 export * from './editor';
 export * from './renderer';

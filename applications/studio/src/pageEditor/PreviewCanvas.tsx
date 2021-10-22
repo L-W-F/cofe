@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, BoxProps } from '@chakra-ui/react';
 import { Renderer } from '@cofe/core';
 import { CofeTree } from '@cofe/types';
+import { useSelectedTree } from '@/hooks/useSelectedTree';
 
 interface NodeRendererProps extends CofeTree {}
 
@@ -28,11 +29,11 @@ export const NodeRenderer = ({
   );
 };
 
-interface PreviewCanvasProps extends BoxProps {
-  tree: CofeTree;
-}
+interface PreviewCanvasProps extends BoxProps {}
 
-export const PreviewCanvas = ({ tree, ...props }: PreviewCanvasProps) => {
+export const PreviewCanvas = (props: PreviewCanvasProps) => {
+  const tree = useSelectedTree();
+
   return (
     <Box {...props}>
       <NodeRenderer {...tree} />
