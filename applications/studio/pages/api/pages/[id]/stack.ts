@@ -1,4 +1,5 @@
 import { compose } from '@cofe/api';
+import { isEqual } from 'lodash';
 import { withApiAuth } from '@/api/withApiAuth';
 import { withApiCatch } from '@/api/withApiCatch';
 import { supabase } from '@/utils/supabase';
@@ -29,6 +30,8 @@ export default compose([withApiCatch(), withApiAuth()], async (req, res) => {
 
     if (e1 || e2) {
       res.status(500).json(e1 || e2);
+    } else if (isEqual(d1[0]?.tree, tree)) {
+      res.status(200).json(null);
     } else {
       const stack = d2[0]?.stack ?? [];
 
