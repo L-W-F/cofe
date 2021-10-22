@@ -18,7 +18,7 @@ export const ModeSwitch = () => {
     <ButtonGroup isAttached variant="outline">
       <IconButton
         aria-label="设计模式"
-        // variant="ghost"
+        title="设计模式"
         icon={<DesignIcon />}
         isDisabled={mode === MODE_DESIGN}
         onClick={() => {
@@ -27,7 +27,7 @@ export const ModeSwitch = () => {
       />
       <IconButton
         aria-label="源码模式"
-        // variant="ghost"
+        title="源码模式"
         icon={<JsonIcon />}
         isDisabled={mode === MODE_SOURCE}
         onClick={() => {
@@ -36,7 +36,7 @@ export const ModeSwitch = () => {
       />
       <IconButton
         aria-label="预览模式"
-        // variant="ghost"
+        title="预览模式"
         icon={<ViewIcon />}
         isDisabled={mode === MODE_PREVIEW}
         onClick={() => {

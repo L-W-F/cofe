@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Flex, FlexProps, Progress, useToast } from '@chakra-ui/react';
 import { subscribe } from '@cofe/io';
+import { useDispatch, useStore } from '@cofe/store';
+import { MiscState } from '@/store/misc';
 
 export interface RootProps extends FlexProps {
   loading?: boolean;
@@ -12,7 +14,8 @@ export const Root = ({
   minH = '100vh',
   ...props
 }: FlexProps) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const is_loading = useStore<MiscState['is_loading']>('misc.is_loading');
+  const dispatch = useDispatch();
   const toast = useToast({
     status: 'error',
     isClosable: true,
@@ -24,9 +27,9 @@ export const Root = ({
 
     return subscribe((type, url, init, payload) => {
       if (type === 'start') {
-        setIsLoading(++count > 0);
+        dispatch('IS_LOADING')(++count > 0);
       } else {
-        setIsLoading(--count > 0);
+        dispatch('IS_LOADING')(--count > 0);
 
         if (payload instanceof Error) {
           toast({
@@ -34,14 +37,16 @@ export const Root = ({
           });
         }
       }
+
+      console.log(count);
     });
-  }, [toast]);
+  }, [dispatch, toast]);
 
   return (
     <Flex direction={direction} minH={minH} {...props}>
       <Progress
         pos="fixed"
-        zIndex={isLoading ? 10000 : -1}
+        zIndex={is_loading ? 10000 : -1}
         top={0}
         left={0}
         right={0}

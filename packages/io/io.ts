@@ -43,7 +43,7 @@ const wrap = (url: string, init: RequestInit) => {
         try {
           return Promise.reject(createError(await response.json()));
         } catch (error) {
-          throw Error(await response.text());
+          throw Error(error.message);
         }
       }
     })

@@ -9,6 +9,7 @@ export * from './db/user';
 // local
 export * from './dnd';
 export * from './editor';
+export * from './misc';
 export * from './renderer';
 export * from './schema';
 export * from './tree';
