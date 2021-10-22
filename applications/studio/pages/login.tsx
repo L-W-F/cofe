@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import NextImage from 'next/image';
 import { useRouter } from 'next/router';
-import { Box, Button, Icon, Spinner, useToast, VStack } from '@chakra-ui/react';
+import { Box, Button, Spinner, useToast, VStack } from '@chakra-ui/react';
 import { compose } from '@cofe/gssp';
 import { GithubIcon, GitlabIcon } from '@cofe/icons';
 import { post } from '@cofe/io';
@@ -91,7 +91,7 @@ const Login = (
               onClick={() => {
                 handleSignIn('github');
               }}
-              leftIcon={<Icon as={GithubIcon} />}
+              leftIcon={<GithubIcon />}
             >
               使用 Github 账号登录
             </Button>
@@ -102,7 +102,7 @@ const Login = (
               onClick={() => {
                 handleSignIn('gitlab');
               }}
-              leftIcon={<Icon as={GitlabIcon} />}
+              leftIcon={<GitlabIcon />}
             >
               使用 Gitlab 账号登录
             </Button>

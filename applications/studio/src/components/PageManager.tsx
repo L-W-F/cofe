@@ -10,7 +10,6 @@ import {
   DrawerHeader,
   DrawerOverlay,
   HStack,
-  Icon,
   IconButton,
   List,
   ListItem,
@@ -108,7 +107,7 @@ export const PageManager = ({
                     <Box flex={1}>{page.title}</Box>
                     <IconButton
                       aria-label="设计"
-                      icon={<Icon as={DesignIcon} w="3" h="3" />}
+                      icon={<DesignIcon />}
                       variant="ghost"
                       size="xs"
                       isDisabled={isLoading}

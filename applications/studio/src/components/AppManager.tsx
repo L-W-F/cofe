@@ -10,7 +10,6 @@ import {
   DrawerHeader,
   DrawerOverlay,
   HStack,
-  Icon,
   IconButton,
   List,
   ListItem,
@@ -55,7 +54,7 @@ export const AppManager = () => {
     <>
       <IconButton
         aria-label="Options"
-        icon={<Icon as={CofeIcon} w="6" h="6" />}
+        icon={<CofeIcon />}
         variant="ghost"
         onClick={onOpen}
       />
