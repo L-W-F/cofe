@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { RepeatClockIcon } from '@chakra-ui/icons';
+import { DeleteIcon, RepeatClockIcon } from '@chakra-ui/icons';
 import {
   Box,
   Drawer,
@@ -9,18 +9,20 @@ import {
   DrawerHeader,
   DrawerOverlay,
   HStack,
+  IconButton,
   List,
-  ListIcon,
   ListItem,
   useToast,
 } from '@chakra-ui/react';
-import { get, put, subscribe } from '@cofe/io';
+import { del, get, put } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
 import { Empty } from '@cofe/ui';
 import { dt } from '@cofe/utils';
 import { EditorState } from '@/store/editor';
+import { MiscState } from '@/store/misc';
 
 export const ShowHistory = ({ isOpen, onClose }) => {
+  const is_loading = useStore<MiscState['is_loading']>('misc.is_loading');
   const page_id = useStore<EditorState['page_id']>('editor.page_id');
   const dispatch = useDispatch();
   const toast = useToast({
@@ -29,7 +31,6 @@ export const ShowHistory = ({ isOpen, onClose }) => {
     position: 'bottom-left',
   });
   const [snapshots, setSnapshots] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   const isEmpty = snapshots.length === 0;
 
@@ -50,19 +51,28 @@ export const ShowHistory = ({ isOpen, onClose }) => {
     [page_id, snapshots, dispatch, toast],
   );
 
+  const deleteSnapshot = useCallback(
+    async (index) => {
+      await del(`/api/pages/${page_id}/stack/${index}`);
+
+      const val = [...snapshots];
+
+      val.splice(index, 1);
+
+      setSnapshots(val);
+
+      toast({
+        title: '已删除指定版本',
+      });
+    },
+    [page_id, snapshots, toast],
+  );
+
   useEffect(() => {
     if (isEmpty && isOpen) {
       fetchSnapshots();
-    } else {
-      setIsLoading(false);
     }
   }, [fetchSnapshots, isEmpty, isOpen]);
-
-  useEffect(() => {
-    return subscribe((type) => {
-      setIsLoading(type === 'start');
-    });
-  }, []);
 
   return (
     <Drawer isOpen={isOpen} onClose={onClose}>
@@ -72,7 +82,7 @@ export const ShowHistory = ({ isOpen, onClose }) => {
         <DrawerHeader>历史版本</DrawerHeader>
         <DrawerBody>
           {isEmpty ? (
-            isLoading ? null : (
+            is_loading ? null : (
               <Empty my={8} />
             )
           ) : (
@@ -84,14 +94,30 @@ export const ShowHistory = ({ isOpen, onClose }) => {
                     justifyContent="space-between"
                     key={created_at ?? index}
                   >
-                    <Box>{dt(created_at).format('YYYY-MM-DD HH:mm:ss')}</Box>
-                    <ListIcon
-                      aria-label="还原"
-                      as={RepeatClockIcon}
-                      cursor="pointer"
+                    <Box flex={1}>
+                      {dt(created_at).format('YYYY-MM-DD HH:mm:ss')}
+                    </Box>
+                    <IconButton
+                      aria-label="还原到此版本"
+                      size="xs"
+                      icon={<RepeatClockIcon />}
+                      variant="ghost"
+                      isDisabled={is_loading}
                       onClick={(e) => {
                         e.stopPropagation();
                         restoreSnapshot(index);
+                      }}
+                    />
+                    <IconButton
+                      aria-label="删除此版本"
+                      size="xs"
+                      icon={<DeleteIcon />}
+                      variant="ghost"
+                      colorScheme="red"
+                      isDisabled={is_loading}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteSnapshot(index);
                       }}
                     />
                   </ListItem>
