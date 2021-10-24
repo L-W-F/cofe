@@ -7,7 +7,7 @@ export const Logo = () => {
   return (
     <NextLink aria-label="返回首页" href="/" passHref>
       <Link>
-        <CofeIcon />
+        <CofeIcon boxSize="6" />
       </Link>
     </NextLink>
   );
