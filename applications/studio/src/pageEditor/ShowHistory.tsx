@@ -19,11 +19,11 @@ import { useDispatch, useStore } from '@cofe/store';
 import { CofeSnapshot } from '@cofe/types';
 import { Empty } from '@cofe/ui';
 import { dt } from '@cofe/utils';
+import { useIsLoading } from '@/hooks/useIsLoading';
 import { EditorState } from '@/store/editor';
-import { MiscState } from '@/store/misc';
 
 export const ShowHistory = ({ isOpen, onClose }) => {
-  const is_loading = useStore<MiscState['is_loading']>('misc.is_loading');
+  const is_loading = useIsLoading();
   const page_id = useStore<EditorState['page_id']>('editor.page_id');
   const dispatch = useDispatch();
   const toast = useToast({

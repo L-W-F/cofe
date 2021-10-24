@@ -1,4 +1,4 @@
-import React, { cloneElement, ReactElement, useEffect, useState } from 'react';
+import React, { cloneElement, ReactElement, useState } from 'react';
 import {
   Button,
   Drawer,
@@ -14,17 +14,18 @@ import {
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
 import { EditIcon } from '@cofe/icons';
-import { patch, post, subscribe } from '@cofe/io';
+import { patch, post } from '@cofe/io';
 import { useDispatch } from '@cofe/store';
 import { CofeDbApp } from '@cofe/types';
+import { useIsLoading } from '@/hooks/useIsLoading';
 
 interface EditAppProps {
   trigger?: ReactElement;
   app: Partial<CofeDbApp>;
-  isDisabled?: boolean;
 }
 
-export const EditApp = ({ trigger, app, isDisabled }: EditAppProps) => {
+export const EditApp = ({ trigger, app }: EditAppProps) => {
+  const is_loading = useIsLoading();
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast({
@@ -33,20 +34,13 @@ export const EditApp = ({ trigger, app, isDisabled }: EditAppProps) => {
     position: 'bottom-left',
   });
   const [formData, setFormData] = useState(app);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    return subscribe((type) => {
-      setIsLoading(type === 'start');
-    });
-  }, []);
 
   return (
     <>
       {trigger ? (
         cloneElement(trigger, {
           onClick: onOpen,
-          isDisabled,
+          isDisabled: is_loading,
         })
       ) : (
         <IconButton
@@ -54,7 +48,7 @@ export const EditApp = ({ trigger, app, isDisabled }: EditAppProps) => {
           size="xs"
           icon={<EditIcon />}
           variant="ghost"
-          isDisabled={isDisabled}
+          isDisabled={is_loading}
           onClick={onOpen}
         />
       )}
@@ -88,8 +82,8 @@ export const EditApp = ({ trigger, app, isDisabled }: EditAppProps) => {
           <DrawerFooter>
             <Button
               colorScheme="teal"
-              isLoading={isLoading}
-              isDisabled={isLoading}
+              isLoading={is_loading}
+              isDisabled={is_loading}
               loadingText="保存"
               onClick={async () => {
                 if (app.id) {

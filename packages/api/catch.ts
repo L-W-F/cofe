@@ -11,6 +11,8 @@ export const createApiCatch =
     } catch (error) {
       warn('api')('catch %s\n%s', error.message, error.stack);
 
-      res.status(error.code ?? 500).end(error.message ?? '服务错误');
+      res.status(error.code ?? 500).json({
+        message: error.message ?? '服务错误',
+      });
     }
   };

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -10,34 +10,27 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@cofe/icons';
-import { del, subscribe } from '@cofe/io';
+import { del } from '@cofe/io';
 import { useDispatch } from '@cofe/store';
+import { useIsLoading } from '@/hooks/useIsLoading';
 import { AppState } from '@/store/app';
 
 interface DeletePageProps {
   page: AppState[string]['pages'][string];
-  isDisabled?: boolean;
 }
 
-export const DeletePage = ({ page, isDisabled }: DeletePageProps) => {
+export const DeletePage = ({ page }: DeletePageProps) => {
+  const is_loading = useIsLoading();
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async () => {
     await del(`/api/pages/${page.id}`);
 
-    dispatch('DELETE_PAGE')(page);
-
     onClose();
+    dispatch('DELETE_PAGE')(page);
   };
-
-  useEffect(() => {
-    return subscribe((type) => {
-      setIsLoading(type === 'start');
-    });
-  }, []);
 
   return (
     <>
@@ -47,7 +40,7 @@ export const DeletePage = ({ page, isDisabled }: DeletePageProps) => {
         icon={<DeleteIcon />}
         variant="ghost"
         colorScheme="red"
-        isDisabled={isDisabled}
+        isDisabled={is_loading}
         onClick={onOpen}
       />
       <AlertDialog
@@ -66,8 +59,8 @@ export const DeletePage = ({ page, isDisabled }: DeletePageProps) => {
               取消
             </Button>
             <Button
-              isLoading={isLoading}
-              isDisabled={isLoading}
+              isLoading={is_loading}
+              isDisabled={is_loading}
               loadingText="删除"
               colorScheme="red"
               onClick={handleDelete}

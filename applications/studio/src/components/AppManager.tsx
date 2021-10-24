@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -15,19 +15,20 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { AddIcon, CofeIcon, SpinnerIcon } from '@cofe/icons';
-import { get, subscribe } from '@cofe/io';
+import { get } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
 import { Empty, Toolbar } from '@cofe/ui';
 import { DeleteApp } from './DeleteApp';
 import { EditApp } from './EditApp';
 import { PageManager } from './PageManager';
+import { useIsLoading } from '@/hooks/useIsLoading';
 import { AppState } from '@/store/app';
 
 export const AppManager = () => {
+  const is_loading = useIsLoading();
   const apps = useStore<AppState>('app');
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isLoading, setIsLoading] = useState(true);
 
   const isEmpty = Object.keys(apps).length === 0;
 
@@ -38,16 +39,8 @@ export const AppManager = () => {
   useEffect(() => {
     if (isEmpty && isOpen) {
       fetchApps();
-    } else {
-      setIsLoading(false);
     }
   }, [fetchApps, isEmpty, isOpen]);
-
-  useEffect(() => {
-    return subscribe((type) => {
-      setIsLoading(type === 'start');
-    });
-  }, []);
 
   return (
     <>
@@ -69,8 +62,8 @@ export const AppManager = () => {
                 icon={<SpinnerIcon />}
                 variant="outline"
                 size="sm"
-                isLoading={isLoading}
-                isDisabled={isLoading}
+                isLoading={is_loading}
+                isDisabled={is_loading}
                 onClick={fetchApps}
               />
               <Box flex={1} />
@@ -84,11 +77,10 @@ export const AppManager = () => {
                   title: '',
                   description: '',
                 }}
-                isDisabled={isLoading}
               />
             </Toolbar>
             {isEmpty ? (
-              isLoading ? null : (
+              is_loading ? null : (
                 <Empty my={8} />
               )
             ) : (
@@ -96,13 +88,9 @@ export const AppManager = () => {
                 {Object.entries(apps).map(([id, app]) => (
                   <ListItem key={id} as={HStack}>
                     <Box flex={1}>{app.title}</Box>
-                    <EditApp app={app} isDisabled={isLoading} />
-                    <DeleteApp app={app} isDisabled={isLoading} />
-                    <PageManager
-                      app={app}
-                      isDisabled={isLoading}
-                      closeParent={onClose}
-                    />
+                    <EditApp app={app} />
+                    <DeleteApp app={app} />
+                    <PageManager app={app} closeParent={onClose} />
                   </ListItem>
                 ))}
               </List>

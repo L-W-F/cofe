@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -10,29 +10,27 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@cofe/icons';
-import { del, subscribe } from '@cofe/io';
+import { del } from '@cofe/io';
+import { useDispatch } from '@cofe/store';
+import { useIsLoading } from '@/hooks/useIsLoading';
 import { AppState } from '@/store/app';
 
 interface DeleteAppProps {
   app: AppState[string];
-  isDisabled?: boolean;
 }
 
-export const DeleteApp = ({ app, isDisabled }: DeleteAppProps) => {
+export const DeleteApp = ({ app }: DeleteAppProps) => {
+  const is_loading = useIsLoading();
+  const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async () => {
     await del(`/api/apps/${app.id}`);
-    onClose();
-  };
 
-  useEffect(() => {
-    return subscribe((type) => {
-      setIsLoading(type === 'start');
-    });
-  }, []);
+    onClose();
+    dispatch('DELETE_APP')(app);
+  };
 
   return (
     <>
@@ -42,7 +40,7 @@ export const DeleteApp = ({ app, isDisabled }: DeleteAppProps) => {
         icon={<DeleteIcon />}
         variant="ghost"
         colorScheme="red"
-        isDisabled={isDisabled}
+        isDisabled={is_loading}
         onClick={onOpen}
       />
       <AlertDialog
@@ -61,8 +59,8 @@ export const DeleteApp = ({ app, isDisabled }: DeleteAppProps) => {
               取消
             </Button>
             <Button
-              isLoading={isLoading}
-              isDisabled={isLoading}
+              isLoading={is_loading}
+              isDisabled={is_loading}
               loadingText="删除"
               colorScheme="red"
               onClick={handleDelete}

@@ -2,8 +2,8 @@ import React from 'react';
 import { Flex, FlexProps, Progress, useToast } from '@chakra-ui/react';
 import { useIsomorphicLayoutEffect } from '@cofe/hooks';
 import { subscribe } from '@cofe/io';
-import { useDispatch, useStore } from '@cofe/store';
-import { MiscState } from '@/store/misc';
+import { useDispatch } from '@cofe/store';
+import { useIsLoading } from '@/hooks/useIsLoading';
 
 export interface RootProps extends FlexProps {
   loading?: boolean;
@@ -15,7 +15,7 @@ export const Root = ({
   minH = '100vh',
   ...props
 }: FlexProps) => {
-  const is_loading = useStore<MiscState['is_loading']>('misc.is_loading');
+  const is_loading = useIsLoading();
   const dispatch = useDispatch();
   const toast = useToast({
     status: 'error',

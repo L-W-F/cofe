@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import { Box, Button, Heading, useToast, VStack } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
 import { compose } from '@cofe/gssp';
-import { post, subscribe } from '@cofe/io';
+import { post } from '@cofe/io';
 import { Paper } from '@cofe/ui';
 import { ColorModeSwitch } from '@/components/ColorModeSwitch';
 import { Footer } from '@/components/Footer';
@@ -15,12 +15,14 @@ import { Whoami } from '@/components/Whoami';
 import { withGsspCatch } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
+import { useIsLoading } from '@/hooks/useIsLoading';
 
 const initialData = {};
 
 const CreatePage = ({
   appId,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const is_loading = useIsLoading();
   const { push } = useRouter();
   const toast = useToast({
     status: 'success',
@@ -28,13 +30,6 @@ const CreatePage = ({
     position: 'bottom-left',
   });
   const [formData, setFormData] = useState(initialData);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    return subscribe((type) => {
-      setIsLoading(type === 'start');
-    });
-  }, []);
 
   return (
     <Root>
@@ -77,18 +72,12 @@ const CreatePage = ({
           onChange={(e) => {
             setFormData(e.formData);
           }}
-          onError={(e) => {
-            console.log(e);
-          }}
-          onSubmit={(e) => {
-            console.log(e);
-          }}
         />
         <Button
           colorScheme="teal"
           size="lg"
-          isLoading={isLoading}
-          isDisabled={isLoading}
+          isLoading={is_loading}
+          isDisabled={is_loading}
           loadingText="保存"
           onClick={async () => {
             await post(`/api/apps/${appId}/pages`, formData);

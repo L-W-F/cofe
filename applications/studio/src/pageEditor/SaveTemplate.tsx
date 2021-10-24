@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Drawer,
@@ -11,14 +11,16 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
-import { post, subscribe } from '@cofe/io';
+import { post } from '@cofe/io';
 import { useDispatch } from '@cofe/store';
 import { CofeTree } from '@cofe/types';
 import { map } from 'lodash';
 import { u } from 'unist-builder';
+import { useIsLoading } from '@/hooks/useIsLoading';
 import { useSelectedTree } from '@/hooks/useSelectedTree';
 
 export const SaveTemplate = ({ isOpen, onClose }) => {
+  const is_loading = useIsLoading();
   const selectedTree = useSelectedTree();
   const dispatch = useDispatch();
   const toast = useToast({
@@ -27,13 +29,6 @@ export const SaveTemplate = ({ isOpen, onClose }) => {
     position: 'bottom-left',
   });
   const [formData, setFormData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    return subscribe((type) => {
-      setIsLoading(type === 'start');
-    });
-  }, []);
 
   return (
     <Drawer isOpen={isOpen} onClose={onClose}>
@@ -66,9 +61,9 @@ export const SaveTemplate = ({ isOpen, onClose }) => {
         <DrawerFooter>
           <Button
             colorScheme="teal"
-            isLoading={isLoading}
+            isLoading={is_loading}
+            isDisabled={is_loading}
             loadingText="保存"
-            isDisabled={isLoading}
             onClick={async () => {
               try {
                 const template = await post('/api/templates', {

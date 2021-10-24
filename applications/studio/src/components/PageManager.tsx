@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -20,27 +20,23 @@ import {
   DesignIcon,
   SpinnerIcon,
 } from '@cofe/icons';
-import { get, subscribe } from '@cofe/io';
+import { get } from '@cofe/io';
 import { useDispatch } from '@cofe/store';
 import { Empty, Toolbar } from '@cofe/ui';
 import { DeletePage } from './DeletePage';
 import { EditPage } from './EditPage';
+import { useIsLoading } from '@/hooks/useIsLoading';
 import { AppState } from '@/store/app';
 
 interface PageManagerProps {
   app: AppState[string];
-  isDisabled: boolean;
   closeParent: () => void;
 }
 
-export const PageManager = ({
-  app,
-  isDisabled,
-  closeParent,
-}: PageManagerProps) => {
+export const PageManager = ({ app, closeParent }: PageManagerProps) => {
+  const is_loading = useIsLoading();
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isLoading, setIsLoading] = useState(true);
 
   const { id: app_id, pages = {} } = app;
   const isEmpty = !pages || Object.keys(pages).length === 0;
@@ -52,16 +48,8 @@ export const PageManager = ({
   useEffect(() => {
     if (isEmpty && isOpen) {
       fetchPages();
-    } else {
-      setIsLoading(false);
     }
   }, [fetchPages, isEmpty, isOpen]);
-
-  useEffect(() => {
-    return subscribe((type) => {
-      setIsLoading(type === 'start');
-    });
-  }, []);
 
   return (
     <>
@@ -70,7 +58,7 @@ export const PageManager = ({
         size="xs"
         icon={<ChevronRightIcon boxSize="6" />}
         variant="ghost"
-        isDisabled={isDisabled}
+        isDisabled={is_loading}
         onClick={onOpen}
       />
       <Drawer isOpen={isOpen} onClose={onClose} placement="left">
@@ -85,8 +73,8 @@ export const PageManager = ({
                 icon={<SpinnerIcon />}
                 variant="outline"
                 size="sm"
-                isLoading={isLoading}
-                isDisabled={isLoading}
+                isLoading={is_loading}
+                isDisabled={is_loading}
                 onClick={fetchPages}
               />
               <Box flex={1} />
@@ -97,11 +85,10 @@ export const PageManager = ({
                   </Button>
                 }
                 page={{ title: '', description: '' }}
-                isDisabled={isLoading}
               />
             </Toolbar>
             {isEmpty ? (
-              isLoading ? null : (
+              is_loading ? null : (
                 <Empty my={8} />
               )
             ) : (
@@ -114,7 +101,7 @@ export const PageManager = ({
                       icon={<DesignIcon />}
                       variant="ghost"
                       size="xs"
-                      isDisabled={isLoading}
+                      isDisabled={is_loading}
                       onClick={() => {
                         get(`/api/pages/${id}/tree`).then((tree) => {
                           dispatch('SET_PAGE')({
@@ -128,8 +115,8 @@ export const PageManager = ({
                         });
                       }}
                     />
-                    <EditPage page={page} isDisabled={isLoading} />
-                    <DeletePage page={page} isDisabled={isLoading} />
+                    <EditPage page={page} />
+                    <DeletePage page={page} />
                   </ListItem>
                 ))}
               </List>
