@@ -45,8 +45,8 @@ export const AppManager = () => {
   return (
     <>
       <IconButton
-        aria-label="Options"
-        icon={<CofeIcon />}
+        aria-label="管理应用"
+        icon={<CofeIcon boxSize="6" />}
         variant="ghost"
         onClick={onOpen}
       />

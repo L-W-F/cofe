@@ -96,6 +96,8 @@ export const PageManager = ({ app, closeParent }: PageManagerProps) => {
                 {Object.entries(pages).map(([id, page]) => (
                   <ListItem key={id} as={HStack}>
                     <Box flex={1}>{page.title}</Box>
+                    <EditPage page={page} />
+                    <DeletePage page={page} />
                     <IconButton
                       aria-label="设计"
                       icon={<DesignIcon />}
@@ -115,8 +117,6 @@ export const PageManager = ({ app, closeParent }: PageManagerProps) => {
                         });
                       }}
                     />
-                    <EditPage page={page} />
-                    <DeletePage page={page} />
                   </ListItem>
                 ))}
               </List>
