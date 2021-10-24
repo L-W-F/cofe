@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronRightIcon } from '@chakra-ui/icons';
+import { ChevronRightIcon } from '@cofe/icons';
 import { Tag } from '@chakra-ui/react';
 import { useDispatch } from '@cofe/store';
 import { pick } from 'lodash';

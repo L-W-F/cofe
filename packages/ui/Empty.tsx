@@ -1,6 +1,6 @@
 import React from 'react';
-import { QuestionIcon } from '@chakra-ui/icons';
 import { Center, CenterProps } from '@chakra-ui/react';
+import { QuestionIcon } from '@cofe/icons';
 
 export const Empty = (props: CenterProps) => (
   <Center p={4} {...props}>

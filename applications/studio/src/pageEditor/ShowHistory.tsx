@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { DeleteIcon, RepeatClockIcon } from '@chakra-ui/icons';
 import {
   Box,
   Drawer,
@@ -14,8 +13,10 @@ import {
   ListItem,
   useToast,
 } from '@chakra-ui/react';
+import { DeleteIcon, RepeatClockIcon } from '@cofe/icons';
 import { del, get, put } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
+import { CofeSnapshot } from '@cofe/types';
 import { Empty } from '@cofe/ui';
 import { dt } from '@cofe/utils';
 import { EditorState } from '@/store/editor';
@@ -30,7 +31,7 @@ export const ShowHistory = ({ isOpen, onClose }) => {
     duration: 1000,
     position: 'bottom-left',
   });
-  const [snapshots, setSnapshots] = useState([]);
+  const [snapshots, setSnapshots] = useState<CofeSnapshot[]>([]);
 
   const isEmpty = snapshots.length === 0;
 

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
   AccordionButton,
   AccordionIcon,
@@ -12,6 +11,7 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { ChevronDownIcon, ChevronRightIcon } from '@cofe/icons';
 import { useDispatch, useStore } from '@cofe/store';
 import { CofeTree } from '@cofe/types';
 import { useSelectedTree } from '@/hooks/useSelectedTree';

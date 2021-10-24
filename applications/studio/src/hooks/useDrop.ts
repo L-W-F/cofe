@@ -1,11 +1,7 @@
 import { RefCallback, useEffect, useRef, useState } from 'react';
 import { Schema } from '@cofe/core';
 import { useDispatch, useStore } from '@cofe/store';
-import {
-  CofeDndAdjacent,
-  CofeDndPayload,
-  CofeTreeNodeIdentity,
-} from '@cofe/types';
+import { CofeDndAdjacent, CofeDndIdentity, CofeDndPayload } from '@cofe/types';
 import { isEqual } from 'lodash';
 import { select } from 'unist-util-select';
 import { useSelectedTree } from './useSelectedTree';
@@ -24,14 +20,14 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
   const dragging = useStore<DndState['dragging']>('dnd.dragging');
   const dispatch = useDispatch();
   const [dropHandle, setDropHandle] = useState<HTMLElement>(null);
-  const referenceRef = useRef<CofeTreeNodeIdentity>();
-  const containerRef = useRef<CofeTreeNodeIdentity>();
+  const referenceRef = useRef<CofeDndIdentity>();
+  const containerRef = useRef<CofeDndIdentity>();
   const adjacentRef = useRef<CofeDndAdjacent>();
 
   useEffect(() => {
     if (dropHandle && dragging) {
-      let reference: CofeTreeNodeIdentity = null;
-      let container: CofeTreeNodeIdentity = null;
+      let reference: CofeDndIdentity = null;
+      let container: CofeDndIdentity = null;
       let adjacent: CofeDndAdjacent = null;
 
       const drop = (e: DragEvent & { target: HTMLElement }) => {

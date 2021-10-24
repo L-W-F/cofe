@@ -1,12 +1,12 @@
 import { AnyAction } from '@cofe/store';
-import { CofeDndAdjacent, CofeTreeNodeIdentity } from '@cofe/types';
+import { CofeDndAdjacent, CofeDndIdentity } from '@cofe/types';
 import { isEqual } from 'lodash';
 
 export interface DndState {
-  dragging?: CofeTreeNodeIdentity;
-  selected?: CofeTreeNodeIdentity;
-  reference?: CofeTreeNodeIdentity;
-  container?: CofeTreeNodeIdentity;
+  dragging?: CofeDndIdentity;
+  selected?: CofeDndIdentity;
+  reference?: CofeDndIdentity;
+  container?: CofeDndIdentity;
   adjacent?: CofeDndAdjacent;
 }
 

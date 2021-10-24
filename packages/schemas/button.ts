@@ -2,6 +2,7 @@ import { CofeSchema } from '@cofe/types';
 
 export const button: CofeSchema = {
   type: 'button',
+  extends: [],
   accept: ['text', 'icon'],
   properties: {
     type: 'object',

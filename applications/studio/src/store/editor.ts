@@ -67,8 +67,17 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
     case 'APPEND_NODE':
       return {
         ...state,
+        stack: [appendNodeByDnd(state.stack[state.cursor], payload)].concat(
+          state.stack.slice(state.cursor),
+        ),
+        cursor: 0,
+      };
+
+    case 'DUPLICATE_NODE':
+      return {
+        ...state,
         stack: [
-          insertOrMoveNodeByDnd(state.stack[state.cursor], payload),
+          duplicateNodeById(state.stack[state.cursor], payload.id),
         ].concat(state.stack.slice(state.cursor)),
         cursor: 0,
       };
@@ -76,7 +85,7 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
     case 'DELETE_NODE':
       return {
         ...state,
-        stack: [removeNodeById(state.stack[state.cursor], payload.id)].concat(
+        stack: [deleteNodeById(state.stack[state.cursor], payload.id)].concat(
           state.stack.slice(state.cursor),
         ),
         cursor: 0,
@@ -96,14 +105,26 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
   }
 };
 
-function removeNodeById(tree: CofeTree, id: string) {
+function duplicateNodeById(tree: CofeTree, id: string) {
+  tree = cloneDeep(tree);
+
+  visit(tree, { id }, (node, index, parent: any) => {
+    parent.children.splice(index, 0, Tree.clone(node)) as [CofeTree];
+
+    return EXIT;
+  });
+
+  return Tree.create(tree);
+}
+
+function deleteNodeById(tree: CofeTree, id: string) {
   return Tree.create(
     filter(tree, { cascade: false }, (node: any) => id !== node.id) ??
       'fragment',
   );
 }
 
-function insertOrMoveNodeByDnd(
+function appendNodeByDnd(
   tree: CofeTree,
   { dragging, container, reference, adjacent }: CofeDndPayload,
 ) {

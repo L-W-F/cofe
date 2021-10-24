@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { HamburgerIcon } from '@cofe/icons';
 import {
   IconButton,
   Menu,

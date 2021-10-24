@@ -1,5 +1,5 @@
 import React from 'react';
-import { ViewIcon } from '@chakra-ui/icons';
+import { ViewIcon } from '@cofe/icons';
 import { ButtonGroup, IconButton } from '@chakra-ui/react';
 import { DesignIcon, JsonIcon } from '@cofe/icons';
 import { useDispatch, useStore } from '@cofe/store';

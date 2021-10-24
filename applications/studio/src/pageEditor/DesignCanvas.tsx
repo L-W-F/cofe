@@ -1,18 +1,12 @@
-import React, { useState } from 'react';
-import { DeleteIcon } from '@chakra-ui/icons';
-import {
-  Box,
-  BoxProps,
-  Menu,
-  MenuItem,
-  MenuList,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import React from 'react';
+import { Box, BoxProps, useColorModeValue } from '@chakra-ui/react';
 import { Renderer } from '@cofe/core';
 import { useDispatch, useStore } from '@cofe/store';
-import { CofeDndAdjacent, CofeTree, CofeTreeNodeIdentity } from '@cofe/types';
+import { CofeDndAdjacent, CofeDndIdentity, CofeTree } from '@cofe/types';
 import { isMac } from '@cofe/utils';
 import { pick } from 'lodash';
+import { ContextMenu } from './ContextMenu';
+import { useContextMenu } from '@/hooks/useContextMenu';
 import { useDrag } from '@/hooks/useDrag';
 import { useDrop } from '@/hooks/useDrop';
 import { useSchema } from '@/hooks/useSchema';
@@ -89,10 +83,10 @@ const DnDHandle = ({
   id,
   ...props
 }: DnDHandleProps) => {
-  const selected = useStore<CofeTreeNodeIdentity>('dnd.selected');
+  const selected = useStore<CofeDndIdentity>('dnd.selected');
   const { dragging, reference, container, adjacent } =
     useStore<DndState>('dnd');
-  const [{ isDragging }, drag] = useDrag({
+  const [{ isDragging }, dragRef] = useDrag({
     type,
     id,
     effectAllowed: 'move',
@@ -111,7 +105,7 @@ const DnDHandle = ({
 
   return (
     <Box
-      ref={isRoot ? null : drag}
+      ref={isRoot ? null : dragRef}
       data-id={id}
       data-type={type}
       position="relative"
@@ -184,18 +178,9 @@ interface DesignCanvasProps extends BoxProps {}
 
 export const DesignCanvas = (props: DesignCanvasProps) => {
   const tree = useSelectedTree();
-  const selected = useStore('dnd.selected');
+  const selected = useStore<DndState['selected']>('dnd.selected');
   const dispatch = useDispatch();
-  const [[x, y], setMenuCoord] = useState<[number?, number?]>([]);
-
-  const handleContextMenu = (e) => {
-    e.preventDefault();
-    setMenuCoord([e.clientX, e.clientY]);
-  };
-
-  const handleMouseDown = (e) => {
-    setMenuCoord([]);
-  };
+  const { triggerProps, ...contextMenuProps } = useContextMenu();
 
   const handleKeyDown = async (e) => {
     // Delete
@@ -215,7 +200,7 @@ export const DesignCanvas = (props: DesignCanvasProps) => {
   };
 
   const handleFocus = (e) => {
-    if (e.currentTarget.dataset) {
+    if (e.target.dataset) {
       dispatch('SELECTED')(pick(e.target.dataset, ['type', 'id']));
     } else {
       dispatch('SELECTED')(null);
@@ -227,7 +212,7 @@ export const DesignCanvas = (props: DesignCanvasProps) => {
     'var(--chakra-colors-whiteAlpha-50)',
   );
 
-  const [, drop] = useDrop({
+  const [, dropRef] = useDrop({
     onDrop: (payload) => {
       dispatch('APPEND_NODE')(payload);
     },
@@ -236,7 +221,7 @@ export const DesignCanvas = (props: DesignCanvasProps) => {
   return (
     <>
       <Box
-        ref={drop}
+        ref={dropRef}
         bgImage={`
         linear-gradient(45deg, ${cellColor} 25%, transparent 25%),
         linear-gradient(-45deg, ${cellColor} 25%, transparent 25%),
@@ -247,33 +232,14 @@ export const DesignCanvas = (props: DesignCanvasProps) => {
         bgPosition="0 0, 0 10px, 10px -10px, -10px 0px"
         tabIndex={0}
         minHeight="100%"
-        onContextMenu={handleContextMenu}
         onFocus={handleFocus}
         onKeyDown={handleKeyDown}
-        onMouseDown={handleMouseDown}
+        {...triggerProps}
         {...props}
       >
         <NodeRenderer isRoot {...tree} />
       </Box>
-      <Box pos="absolute" left={x} top={y}>
-        <Menu
-          matchWidth
-          size="small"
-          isOpen={!!x && !!y}
-          onClose={() => setMenuCoord([])}
-        >
-          <MenuList minW="initial">
-            <MenuItem
-              icon={<DeleteIcon />}
-              onClick={() => {
-                dispatch('DELETE_NODE')(selected);
-              }}
-            >
-              删除
-            </MenuItem>
-          </MenuList>
-        </Menu>
-      </Box>
+      <ContextMenu {...contextMenuProps} />
     </>
   );
 };

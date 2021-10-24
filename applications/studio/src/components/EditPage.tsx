@@ -1,5 +1,4 @@
 import React, { cloneElement, ReactElement, useEffect, useState } from 'react';
-import { EditIcon } from '@chakra-ui/icons';
 import {
   Button,
   Drawer,
@@ -14,6 +13,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
+import { EditIcon } from '@cofe/icons';
 import { patch, post, subscribe } from '@cofe/io';
 import { useDispatch } from '@cofe/store';
 import { CofeDbPage } from '@cofe/types';

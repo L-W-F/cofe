@@ -1135,12 +1135,27 @@
   dependencies:
     "@chakra-ui/utils" "1.8.2"
 
+"@chakra-ui/icon@1.1.12":
+  version "1.1.12"
+  resolved "https://registry.npmmirror.com/@chakra-ui/icon/download/@chakra-ui/icon-1.1.12.tgz#50a8929100c5dc2ed32c1b6930b67b09b63ed895"
+  integrity sha1-UKiSkQDF3C7TLBtpMLZ7CbY+2JU=
+  dependencies:
+    "@chakra-ui/utils" "1.8.3"
+
 "@chakra-ui/icons@^1.0.15":
   version "1.0.15"
   resolved "https://registry.nlark.com/@chakra-ui/icons/download/@chakra-ui/icons-1.0.15.tgz#90b0e3c2c161c5a100d6b83a277941b22945f880"
   integrity sha1-kLDjwsFhxaEA1rg6J3lBsilF+IA=
   dependencies:
     "@chakra-ui/icon" "1.1.11"
+    "@types/react" "^17.0.0"
+
+"@chakra-ui/icons@^1.0.16":
+  version "1.0.16"
+  resolved "https://registry.npmmirror.com/@chakra-ui/icons/download/@chakra-ui/icons-1.0.16.tgz#b8bb0f258c6b883cb050bd840fffc08834db932a"
+  integrity sha1-uLsPJYxriDywUL2ED//AiDTbkyo=
+  dependencies:
+    "@chakra-ui/icon" "1.1.12"
     "@types/react" "^17.0.0"
 
 "@chakra-ui/image@1.0.20":

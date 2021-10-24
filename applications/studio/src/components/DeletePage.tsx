@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { DeleteIcon } from '@chakra-ui/icons';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -10,6 +9,7 @@ import {
   IconButton,
   useDisclosure,
 } from '@chakra-ui/react';
+import { DeleteIcon } from '@cofe/icons';
 import { del, subscribe } from '@cofe/io';
 import { useDispatch } from '@cofe/store';
 import { AppState } from '@/store/app';

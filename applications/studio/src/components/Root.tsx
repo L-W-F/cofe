@@ -37,8 +37,6 @@ export const Root = ({
           });
         }
       }
-
-      console.log(count);
     });
   }, [dispatch, toast]);
 

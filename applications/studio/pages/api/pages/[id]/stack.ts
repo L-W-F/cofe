@@ -36,7 +36,10 @@ export default compose([withApiCatch(), withApiAuth()], async (req, res) => {
       const stack = d2[0]?.stack ?? [];
 
       if (d1[0]?.tree) {
-        stack.unshift(d1[0].tree);
+        stack.unshift({
+          ...d1[0].tree,
+          created_at: Date.now(),
+        });
       }
 
       const [{ error: e3 }, { error: e4 }] = await Promise.all([

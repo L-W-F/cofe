@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { IconButton } from '@chakra-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@cofe/icons';
 import { useDispatch, useStore } from '@cofe/store';
 import { isMac } from '@cofe/utils';
 import { EditorState } from '@/store/editor';

@@ -1,22 +1,15 @@
-export interface CofeTreeNodeProperties extends Record<string, any> {}
-export interface CofeTreeNodeActions extends Record<string, any> {}
-export interface CofeTreeNodeEvents extends Record<string, any> {}
-
-export interface CofeTreeNodeIdentity {
-  type: string;
-  id?: string;
-}
+export interface CofeTreeProperties extends Record<string, any> {}
+export interface CofeTreeActions extends Record<string, any> {}
+export interface CofeTreeEvents extends Record<string, any> {}
 
 export interface CofeTree {
   id: string;
   type: string;
   title?: string;
   description?: string;
-  created_at?: number;
-  updated_at?: number;
-  properties?: CofeTreeNodeProperties;
-  actions?: CofeTreeNodeActions;
-  events?: CofeTreeNodeEvents;
+  properties?: CofeTreeProperties;
+  actions?: CofeTreeActions;
+  events?: CofeTreeEvents;
   parent?: CofeTree;
   children?: CofeTree[];
 }

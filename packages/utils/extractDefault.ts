@@ -3,7 +3,7 @@ import { clone } from 'lodash';
 export const extractDefaults = (
   { default: dft, type, properties = {} } = {} as any,
 ): any => {
-  if (typeof dft !== 'undefined') {
+  if (dft !== undefined) {
     return clone(dft);
   }
 

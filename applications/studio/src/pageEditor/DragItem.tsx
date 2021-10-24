@@ -1,6 +1,6 @@
 import React from 'react';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { ListIcon, ListItem, Tag, TagProps } from '@chakra-ui/react';
+import { ArrowForwardIcon } from '@cofe/icons';
 import { useDrag } from '@/hooks/useDrag';
 
 interface DragItemProps extends TagProps {

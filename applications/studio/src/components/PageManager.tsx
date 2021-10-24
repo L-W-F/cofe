@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { AddIcon, ChevronRightIcon, SpinnerIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
@@ -15,7 +14,12 @@ import {
   ListItem,
   useDisclosure,
 } from '@chakra-ui/react';
-import { DesignIcon } from '@cofe/icons';
+import {
+  AddIcon,
+  ChevronRightIcon,
+  DesignIcon,
+  SpinnerIcon,
+} from '@cofe/icons';
 import { get, subscribe } from '@cofe/io';
 import { useDispatch } from '@cofe/store';
 import { Empty, Toolbar } from '@cofe/ui';
