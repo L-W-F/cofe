@@ -24,7 +24,7 @@ export const AtomPanel = () => {
       <AccordionPanel>
         <List as={Flex} flexDirection="column" gridGap={2}>
           {Object.keys(schemas).map((type) => {
-            if (type.indexOf('template:') === 0) {
+            if (type.indexOf(':') !== -1) {
               return null;
             }
 
