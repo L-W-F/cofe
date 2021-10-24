@@ -15,8 +15,8 @@ import { DndState } from '@/store/dnd';
 
 const getAdjacentProps = (adjacent?: CofeDndAdjacent, isInline?: boolean) => {
   return {
-    display: isInline ? 'inline-flex' : 'flex',
-    flexDirection: isInline ? 'row' : 'column',
+    display: isInline ? 'inline-block' : 'block',
+    // flexDirection: isInline ? 'row' : 'column',
     _before:
       adjacent === 'INSERT_BEFORE'
         ? isInline
