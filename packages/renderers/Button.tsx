@@ -1,17 +1,24 @@
 import React from 'react';
 import { Button, ButtonProps } from '@chakra-ui/react';
-import { CofeRendererProps } from '@cofe/types';
+import { CofeRendererProps, CofeTreeActions } from '@cofe/types';
+import { useActions } from './hooks/useActions';
 
 interface ButtonRendererProps extends CofeRendererProps, ButtonProps {
   disabled?: boolean;
+  actions?: CofeTreeActions;
 }
 
 export const ButtonRenderer = ({
   isDesign,
   autoFocus = false,
   disabled: isDisabled,
+  actions,
   ...props
 }: ButtonRendererProps) => {
+  const actionsProps = useActions(
+    isDesign || !actions?.length ? null : actions,
+  );
+
   return (
     <Button
       autoFocus={autoFocus}
@@ -27,6 +34,7 @@ export const ButtonRenderer = ({
           : null
       }
       isDisabled={isDisabled}
+      {...actionsProps}
       {...props}
     />
   );

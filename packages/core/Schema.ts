@@ -25,15 +25,18 @@ export class Schema {
     });
   }
 
-  static createCompositeNode(
-    { type, properties, children }: CofeSchema,
+  private static createCompositeNode(
+    { type, properties, actions, children }: CofeSchema,
     schemas?: Record<string, CofeSchema>,
   ): CofeTree {
     const atomicNode = Schema.createAtomicNode(schemas[type]);
 
-    // @todo actions and events
     if (properties) {
       Object.assign(atomicNode.properties, properties);
+    }
+
+    if (actions) {
+      Object.assign(atomicNode.actions, actions);
     }
 
     if (children) {
@@ -45,14 +48,21 @@ export class Schema {
     return atomicNode;
   }
 
-  static createAtomicNode({ type, properties }: CofeSchema): CofeTree {
+  private static createAtomicNode({
+    type,
+    properties,
+    actions,
+  }: CofeSchema): CofeTree {
     const props = {
       id: makeId(),
     };
 
-    // @todo actions and events
     if (properties) {
       Object.assign(props, { properties: extractDefaults(properties) });
+    }
+
+    if (actions) {
+      Object.assign(props, { actions: extractDefaults(actions) });
     }
 
     return u(type, props);

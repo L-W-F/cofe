@@ -10,13 +10,14 @@ export const NodeRenderer = ({
   type,
   id,
   properties,
+  actions,
   children,
 }: NodeRendererProps) => {
   const R = Renderer.get(type);
 
   if (R) {
     return (
-      <R key={id} id={id} {...properties}>
+      <R key={id} id={id} {...properties} actions={actions}>
         {children?.map(NodeRenderer)}
       </R>
     );

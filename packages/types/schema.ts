@@ -7,7 +7,6 @@ export interface CofeSchema {
   accept?: string[];
   properties?: JSONSchema4 & JSONSchema7;
   actions?: JSONSchema4 & JSONSchema7;
-  events?: JSONSchema4 & JSONSchema7;
   children?: CofeSchema[];
   template?: CofeSchema;
 }

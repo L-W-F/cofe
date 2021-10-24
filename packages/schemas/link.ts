@@ -2,6 +2,7 @@ import { CofeSchema } from '@cofe/types';
 
 export const link: CofeSchema = {
   type: 'link',
+  extends: ['mixin:actions'],
   accept: ['text', 'icon'],
   isInline: true,
   properties: {
@@ -15,33 +16,6 @@ export const link: CofeSchema = {
       },
       isExternal: {
         type: 'boolean',
-      },
-    },
-  },
-  actions: {
-    type: 'object',
-    properties: {
-      click: {
-        type: 'string',
-        const: ['alert'],
-      },
-    },
-  },
-  events: {
-    type: 'object',
-    properties: {
-      onClick: {
-        type: 'object',
-        properties: {
-          type: {
-            type: 'string',
-            const: ['alert'],
-          },
-          payload: {
-            type: 'string',
-          },
-        },
-        required: ['type', 'payload'],
       },
     },
   },

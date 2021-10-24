@@ -1,4 +1,5 @@
 import { ThemeProps } from '@rjsf/core';
+import { ArrayFieldTemplate } from './templates/ArrayFieldTemplate';
 import { FieldTemplate } from './templates/FieldTemplate';
 import { ObjectFieldTemplate } from './templates/ObjectFieldTemplate';
 import { CheckboxWidget } from './widgets/CheckboxWidget';
@@ -12,6 +13,7 @@ export const theme: ThemeProps = {
   omitExtraData: true,
   showErrorList: false,
   FieldTemplate,
+  ArrayFieldTemplate,
   ObjectFieldTemplate,
   widgets: {
     TextWidget,

@@ -20,7 +20,6 @@ import { withGsspWhoami } from '@/gssp/withGsspWhoami';
 import { ActionPanel } from '@/pageEditor/ActionPanel';
 import { AtomPanel } from '@/pageEditor/AtomPanel';
 import { CanvasPanel } from '@/pageEditor/CanvasPanel';
-import { EventPanel } from '@/pageEditor/EventPanel';
 import { PropertyPanel } from '@/pageEditor/PropertyPanel';
 import { TemplatePanel } from '@/pageEditor/TemplatePanel';
 import { TreePanel } from '@/pageEditor/TreePanel';
@@ -101,7 +100,6 @@ const Index = ({
             <TreePanel />
             <PropertyPanel />
             <ActionPanel />
-            <EventPanel />
           </Accordion>
         </Flex>
       </Flex>

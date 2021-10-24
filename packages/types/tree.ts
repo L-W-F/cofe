@@ -1,6 +1,10 @@
 export interface CofeTreeProperties extends Record<string, any> {}
-export interface CofeTreeActions extends Record<string, any> {}
-export interface CofeTreeEvents extends Record<string, any> {}
+export interface CofeTreeActions
+  extends Array<{
+    type: string;
+    action: string;
+    params?: string[];
+  }> {}
 
 export interface CofeTree {
   id: string;
@@ -9,7 +13,6 @@ export interface CofeTree {
   description?: string;
   properties?: CofeTreeProperties;
   actions?: CofeTreeActions;
-  events?: CofeTreeEvents;
   parent?: CofeTree;
   children?: CofeTree[];
 }

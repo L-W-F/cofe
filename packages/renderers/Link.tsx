@@ -1,10 +1,21 @@
 import React from 'react';
 import { Link, LinkProps } from '@chakra-ui/react';
-import { CofeRendererProps } from '@cofe/types';
+import { CofeRendererProps, CofeTreeActions } from '@cofe/types';
+import { useActions } from './hooks/useActions';
 
-interface LinkRendererProps extends CofeRendererProps, LinkProps {}
+interface LinkRendererProps extends CofeRendererProps, LinkProps {
+  actions?: CofeTreeActions;
+}
 
-export const LinkRenderer = ({ isDesign, ...props }: LinkRendererProps) => {
+export const LinkRenderer = ({
+  isDesign,
+  actions,
+  ...props
+}: LinkRendererProps) => {
+  const actionsProps = useActions(
+    isDesign || !actions?.length ? null : actions,
+  );
+
   return (
     <Link
       _empty={
@@ -18,6 +29,7 @@ export const LinkRenderer = ({ isDesign, ...props }: LinkRendererProps) => {
             }
           : null
       }
+      {...actionsProps}
       {...props}
     />
   );

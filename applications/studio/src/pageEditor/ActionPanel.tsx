@@ -28,9 +28,9 @@ export const ActionPanel = () => {
       <AccordionPanel>
         {aSchema ? (
           <Form
-            formData={selectedNode.actions}
+            formData={selectedNode.actions ?? []}
             schema={aSchema}
-            uiSchema={Ui.get(selectedNode.type)?.properties}
+            uiSchema={Ui.get(selectedNode.type)?.actions}
             idPrefix="actions"
             onChange={(e) => {
               dispatch('UPDATE_NODE')({

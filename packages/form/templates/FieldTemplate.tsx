@@ -26,7 +26,7 @@ export const FieldTemplate = ({
       isRequired={required}
       isInvalid={Boolean(rawErrors)}
     >
-      <FormLabel htmlFor={id}>{label}</FormLabel>
+      {label && <FormLabel htmlFor={id}>{label}</FormLabel>}
       {children}
       <FormErrorMessage>
         <List>

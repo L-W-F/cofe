@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Flex, FlexProps, Progress, useToast } from '@chakra-ui/react';
+import { useIsomorphicLayoutEffect } from '@cofe/hooks';
 import { subscribe } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
 import { MiscState } from '@/store/misc';
@@ -22,14 +23,14 @@ export const Root = ({
     position: 'bottom-left',
   });
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     let count = 0;
 
     return subscribe((type, url, init, payload) => {
       if (type === 'start') {
-        dispatch('IS_LOADING')(++count > 0);
+        dispatch('SET_IS_LOADING')(++count > 0);
       } else {
-        dispatch('IS_LOADING')(--count > 0);
+        dispatch('SET_IS_LOADING')(--count > 0);
 
         if (payload instanceof Error) {
           toast({
@@ -42,16 +43,18 @@ export const Root = ({
 
   return (
     <Flex direction={direction} minH={minH} {...props}>
+      {children}
       <Progress
         pos="fixed"
-        zIndex={is_loading ? 10000 : -1}
+        zIndex={10000}
         top={0}
         left={0}
         right={0}
         size="xs"
+        opacity={is_loading ? 1 : 0}
+        animation="opacity 1s"
         isIndeterminate
       />
-      {children}
     </Flex>
   );
 };

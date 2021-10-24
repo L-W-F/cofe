@@ -153,6 +153,7 @@ const NodeRenderer = ({
   type,
   id,
   properties,
+  actions,
   children,
 }: NodeRendererProps) => {
   const R = Renderer.get(type);
@@ -160,7 +161,7 @@ const NodeRenderer = ({
   if (R) {
     return (
       <DnDHandle key={id} isRoot={isRoot} type={type} id={id}>
-        <R {...properties} isDesign pointerEvents="none">
+        <R {...properties} actions={actions} isDesign pointerEvents="none">
           {children?.map(NodeRenderer)}
         </R>
       </DnDHandle>
@@ -168,7 +169,7 @@ const NodeRenderer = ({
   }
 
   return (
-    <Box key={id} id={id}>
+    <Box key={id} type={type} id={id}>
       未知节点
     </Box>
   );

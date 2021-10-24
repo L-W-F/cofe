@@ -1,7 +1,7 @@
 import { AnyAction } from '@cofe/store';
 import { CofeMisc } from '@cofe/types';
 
-export type MiscState = Partial<CofeMisc>;
+export type MiscState = CofeMisc;
 
 export const initialState: MiscState = {
   is_loading: false,

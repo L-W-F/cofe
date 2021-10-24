@@ -11,7 +11,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@chakra-ui/react": "^1.6.9",
+    "@chakra-ui/react": "^1.6.10",
     "@chakra-ui/theme-tools": "^1.2.2",
     "@cofe/api": "^0.1.0",
     "@cofe/core": "^0.1.0",
@@ -53,7 +53,7 @@
     "@types/cookie": "^0.4.1",
     "@types/json-schema": "^7.0.9",
     "@types/lodash": "^4.14.176",
-    "@types/react": "^17.0.31",
+    "@types/react": "^17.0.32",
     "@types/shallowequal": "^1.1.1",
     "babel-preset-cofe": "^0.0.1",
     "eslint": "^7.32.0",

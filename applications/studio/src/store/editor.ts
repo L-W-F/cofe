@@ -173,11 +173,13 @@ function updateNode(tree: CofeTree, payload: Partial<CofeTree>) {
   tree = cloneDeep(tree);
 
   visit(tree, { id: payload.id }, (node, index, parent) => {
-    ['properties', 'actions', 'events'].forEach((key) => {
-      if (key in payload) {
-        node[key] = { ...node[key], ...payload[key] };
-      }
-    });
+    if ('properties' in payload) {
+      node.properties = { ...node.properties, ...payload.properties };
+    }
+
+    if ('actions' in payload) {
+      node.actions = [...payload.actions];
+    }
 
     return EXIT;
   });
