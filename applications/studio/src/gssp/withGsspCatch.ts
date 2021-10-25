@@ -8,21 +8,27 @@ export const withGsspCatch =
   (next?) => async (context: GetServerSidePropsContext) => {
     debug('gssp')('withGsspCatch');
 
-    try {
-      return await next(context);
-    } catch (error) {
-      warn('gssp')('[error] %j', error.message);
-      debug('gssp')('[stack] %j', error.stack);
+    if (next) {
+      try {
+        return await next(context);
+      } catch (error) {
+        warn('gssp')('[error] %j', error.message);
+        debug('gssp')('[stack] %j', error.stack);
 
-      const id = makeId();
+        const id = makeId();
 
-      errorCache.set(id, error.message);
+        errorCache.set(id, error.message);
 
+        return {
+          redirect: {
+            destination: `error?${id}`,
+            permanent: false,
+          },
+        };
+      }
+    } else {
       return {
-        redirect: {
-          destination: `error?${id}`,
-          permanent: false,
-        },
+        props: {},
       };
     }
   };

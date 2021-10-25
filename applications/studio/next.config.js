@@ -114,6 +114,13 @@ const nextConfig = withTM(
   compress: false,
   poweredByHeader: false,
   pageExtensions: ['ts', 'tsx'],
+  images: {
+    domains: [
+      process.env.NEXT_PUBLIC_SUPABASE_URL.replace(/^https?:\/\//, ''),
+      'avatars.githubusercontent.com',
+      'secure.gravatar.com',
+    ],
+  },
   /**
    * @param {import('webpack').Configuration} config
    * @returns import('webpack').Configuration

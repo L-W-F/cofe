@@ -1,6 +1,8 @@
 import { GetServerSidePropsContext } from 'next';
 import { debug } from '@cofe/logger';
+import { CofeDbProfile } from '@/../../../packages/types';
 import { supabase } from '@/utils/supabase';
+import { user2whoami } from '@/utils/user2whoami';
 
 export const withGsspWhoami =
   (next?) => async (context: GetServerSidePropsContext) => {
@@ -33,13 +35,32 @@ export const withGsspWhoami =
           ...props,
           initialStates: {
             ...props.initialStates,
-            whoami: user,
+            whoami: await getProfile(user),
           },
         },
       };
     }
 
     return {
-      props: { initialStates: { whoami: user } },
+      props: { initialStates: { whoami: await getProfile(user) } },
     };
   };
+
+async function getProfile(user: any) {
+  const { data: profiles } = await supabase
+    .from('profiles')
+    .select()
+    .eq('id', user.id);
+
+  return mergeProfile(profiles?.[0] ?? {}, user2whoami(user));
+}
+
+function mergeProfile(a: Partial<CofeDbProfile>, b: Partial<CofeDbProfile>) {
+  Object.entries(b).forEach(([k, v]) => {
+    if (v && !a[k]) {
+      a[k] = v;
+    }
+  });
+
+  return a;
+}

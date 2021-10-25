@@ -1,3 +1,3 @@
-import { CofeDbUser } from './db/user';
+import { CofeDbProfile } from './db/profile';
 
-export interface CofeWhoami extends CofeDbUser {}
+export interface CofeWhoami extends CofeDbProfile {}

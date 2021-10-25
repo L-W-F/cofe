@@ -10,6 +10,12 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
     case 'CLEAR_LOGIN':
       return {};
 
+    case 'UPDATE_USER':
+      return {
+        ...state,
+        ...payload,
+      };
+
     default:
       return state;
   }
