@@ -7,7 +7,6 @@ import { compose } from '@cofe/gssp';
 import { patch } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
 import { Paper } from '@cofe/ui';
-import { makeId } from '@cofe/utils';
 import { ColorModeSwitch } from '@/components/ColorModeSwitch';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
@@ -126,35 +125,47 @@ const Profile = (
                           const avatarFile = e.target.files[0];
 
                           if (avatarFile) {
-                            const filepath = `public/${makeId()}.png`;
+                            const filepath = `${user.id}.png`;
 
-                            const { error } = await supabase.storage
+                            const { error: e1 } = await supabase.storage
                               .from('avatars')
-                              .upload(filepath, avatarFile);
+                              .update(filepath, avatarFile);
 
-                            if (error) {
-                              toast({
-                                status: 'error',
-                                duration: 3000,
-                                position: 'bottom-left',
-                              });
-                            } else {
-                              const { publicURL } = supabase.storage
+                            if (e1) {
+                              await supabase.storage
                                 .from('avatars')
-                                .getPublicUrl(filepath);
+                                .remove([filepath]);
 
-                              await patch(`/api/profiles/${user.id}`, {
-                                avatar_url: publicURL,
-                              });
+                              const { error: e2 } = await supabase.storage
+                                .from('avatars')
+                                .upload(filepath, avatarFile);
 
-                              dispatch('UPDATE_USER')({
-                                avatar_url: publicURL,
-                              });
+                              if (e2) {
+                                toast({
+                                  status: 'error',
+                                  duration: 3000,
+                                  position: 'bottom-left',
+                                });
 
-                              toast({
-                                title: '修改成功',
-                              });
+                                return;
+                              }
                             }
+
+                            const { publicURL } = supabase.storage
+                              .from('avatars')
+                              .getPublicUrl(filepath);
+
+                            await patch(`/api/profiles/${user.id}`, {
+                              avatar_url: publicURL,
+                            });
+
+                            dispatch('UPDATE_USER')({
+                              avatar_url: publicURL,
+                            });
+
+                            toast({
+                              title: '修改成功',
+                            });
                           }
                         }}
                       />
