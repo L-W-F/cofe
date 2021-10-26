@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { InferGetServerSidePropsType } from 'next';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import { useRouter } from 'next/router';
 import {
   Box,
@@ -17,6 +17,7 @@ import { compose } from '@cofe/gssp';
 import { patch, post } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
 import { Paper } from '@cofe/ui';
+import { AvatarUpload } from '@/components/AvatarUpload';
 import { ColorModeSwitch } from '@/components/ColorModeSwitch';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
@@ -40,7 +41,6 @@ const Profile = (
     duration: 1000,
     position: 'bottom-left',
   });
-  const inputRef = useRef<HTMLInputElement>();
 
   return !user.username ? null : (
     <Root>
@@ -68,7 +68,7 @@ const Profile = (
             onBlur={async (e) => {
               const username = e.target.value.trim();
 
-              if (username) {
+              if (username && username !== user.username) {
                 await patch(`/api/profiles/${user.id}`, {
                   username,
                 });
@@ -87,84 +87,18 @@ const Profile = (
         </FormControl>
         <FormControl id="avatar_url">
           <FormLabel>头像</FormLabel>
-          <Box maxW={64}>
+          <Box pos="relative" w={64} h={64}>
             <Box
-              pos="relative"
-              pb="100%"
-              h={0}
+              as={NextImage}
+              src={user.avatar_url}
+              alt="头像"
               borderRadius="md"
-              overflow="hidden"
-            >
-              <Image
-                src={user.avatar_url}
-                alt="头像"
-                layout="fill"
-                objectFit="cover"
-              />
-              <Box
-                pos="absolute"
-                inset={0}
-                cursor="pointer"
-                onClick={() => inputRef.current.click()}
-              >
-                <input
-                  type="file"
-                  ref={inputRef}
-                  accept=".png"
-                  style={{ display: 'none' }}
-                  onChange={async (e) => {
-                    // eslint-disable-next-line prefer-destructuring
-                    const avatarFile = e.target.files[0];
-
-                    if (avatarFile) {
-                      const filepath = `${user.id}.png`;
-
-                      const { error: e1 } = await supabase.storage
-                        .from('avatars')
-                        .update(filepath, avatarFile);
-
-                      if (e1) {
-                        await supabase.storage
-                          .from('avatars')
-                          .remove([filepath]);
-
-                        const { error: e2 } = await supabase.storage
-                          .from('avatars')
-                          .upload(filepath, avatarFile);
-
-                        if (e2) {
-                          toast({
-                            status: 'error',
-                            duration: 3000,
-                            position: 'bottom-left',
-                          });
-
-                          return;
-                        }
-                      }
-
-                      const { publicURL } = supabase.storage
-                        .from('avatars')
-                        .getPublicUrl(filepath);
-
-                      await patch(`/api/profiles/${user.id}`, {
-                        avatar_url: publicURL,
-                      });
-
-                      dispatch('UPDATE_USER')({
-                        avatar_url: publicURL,
-                      });
-
-                      toast({
-                        title: '修改成功',
-                      });
-                    }
-                  }}
-                />
-              </Box>
-            </Box>
+              layout="fill"
+              objectFit="cover"
+            />
+            <AvatarUpload />
           </Box>
-          <FormHelperText>We'll never share your email.</FormHelperText>
+          <FormHelperText>可以上传不大于 2MB 的 PNG 图片。</FormHelperText>
         </FormControl>
         <Heading size="md">高级设置</Heading>
         <Button
