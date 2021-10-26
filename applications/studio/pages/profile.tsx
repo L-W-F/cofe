@@ -1,10 +1,20 @@
 import React, { useRef } from 'react';
 import { InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
-import { Box, Heading, Input, useToast, VStack } from '@chakra-ui/react';
-import { Form } from '@cofe/form';
+import { useRouter } from 'next/router';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Heading,
+  Input,
+  useToast,
+  VStack,
+} from '@chakra-ui/react';
 import { compose } from '@cofe/gssp';
-import { patch } from '@cofe/io';
+import { patch, post } from '@cofe/io';
 import { useDispatch, useStore } from '@cofe/store';
 import { Paper } from '@cofe/ui';
 import { ColorModeSwitch } from '@/components/ColorModeSwitch';
@@ -24,6 +34,7 @@ const Profile = (
 ) => {
   const user = useStore<WhoamiState>('whoami');
   const dispatch = useDispatch();
+  const { push } = useRouter();
   const toast = useToast({
     status: 'success',
     duration: 1000,
@@ -31,7 +42,7 @@ const Profile = (
   });
   const inputRef = useRef<HTMLInputElement>();
 
-  return (
+  return !user.username ? null : (
     <Root>
       <Header>
         <Logo />
@@ -48,134 +59,131 @@ const Profile = (
         justifyContent="center"
         gridGap={2}
       >
-        <Heading size="md">个人信息</Heading>
-        <Form
-          formData={user}
-          schema={{
-            type: 'object',
-            properties: {
-              username: {
-                type: 'string',
-                title: '昵称',
-              },
-              avatar_url: {
-                type: 'string',
-                title: '头像',
-                // format: 'data-url',
-              },
-            },
-            required: ['title'],
-          }}
-          uiSchema={{
-            username: {
-              'ui:widget': ({ value, onChange }) => {
-                return (
-                  <Input
-                    defaultValue={value}
-                    onChange={async (e) => {
-                      const username = e.target.value.trim();
+        <Heading size="md">基础设置</Heading>
+        <FormControl id="username">
+          <FormLabel>昵称</FormLabel>
+          <Input
+            defaultValue={user.username}
+            maxLength={20}
+            onBlur={async (e) => {
+              const username = e.target.value.trim();
 
-                      if (username) {
-                        await patch(`/api/profiles/${user.id}`, {
-                          username,
-                        });
+              if (username) {
+                await patch(`/api/profiles/${user.id}`, {
+                  username,
+                });
 
-                        dispatch('UPDATE_USER')({
-                          username,
-                        });
+                dispatch('UPDATE_USER')({
+                  username,
+                });
 
-                        toast({
-                          title: '修改成功',
-                        });
+                toast({
+                  title: '修改成功',
+                });
+              }
+            }}
+          />
+          <FormHelperText>最多 20 个字符</FormHelperText>
+        </FormControl>
+        <FormControl id="avatar_url">
+          <FormLabel>头像</FormLabel>
+          <Box maxW={64}>
+            <Box
+              pos="relative"
+              pb="100%"
+              h={0}
+              borderRadius="md"
+              overflow="hidden"
+            >
+              <Image
+                src={user.avatar_url}
+                alt="头像"
+                layout="fill"
+                objectFit="cover"
+              />
+              <Box
+                pos="absolute"
+                inset={0}
+                cursor="pointer"
+                onClick={() => inputRef.current.click()}
+              >
+                <input
+                  type="file"
+                  ref={inputRef}
+                  accept=".png"
+                  style={{ display: 'none' }}
+                  onChange={async (e) => {
+                    // eslint-disable-next-line prefer-destructuring
+                    const avatarFile = e.target.files[0];
+
+                    if (avatarFile) {
+                      const filepath = `${user.id}.png`;
+
+                      const { error: e1 } = await supabase.storage
+                        .from('avatars')
+                        .update(filepath, avatarFile);
+
+                      if (e1) {
+                        await supabase.storage
+                          .from('avatars')
+                          .remove([filepath]);
+
+                        const { error: e2 } = await supabase.storage
+                          .from('avatars')
+                          .upload(filepath, avatarFile);
+
+                        if (e2) {
+                          toast({
+                            status: 'error',
+                            duration: 3000,
+                            position: 'bottom-left',
+                          });
+
+                          return;
+                        }
                       }
-                    }}
-                  />
-                );
-              },
-            },
-            avatar_url: {
-              'ui:widget': ({ value, onChange }) => {
-                return (
-                  <Box
-                    pos="relative"
-                    pb="100%"
-                    h={0}
-                    borderRadius="md"
-                    overflow="hidden"
-                  >
-                    <Image
-                      src={value}
-                      alt="头像"
-                      layout="fill"
-                      objectFit="cover"
-                    />
-                    <Box
-                      pos="absolute"
-                      inset={0}
-                      cursor="pointer"
-                      onClick={() => inputRef.current.click()}
-                    >
-                      <input
-                        type="file"
-                        ref={inputRef}
-                        accept=".png"
-                        style={{ display: 'none' }}
-                        onChange={async (e) => {
-                          // eslint-disable-next-line prefer-destructuring
-                          const avatarFile = e.target.files[0];
 
-                          if (avatarFile) {
-                            const filepath = `${user.id}.png`;
+                      const { publicURL } = supabase.storage
+                        .from('avatars')
+                        .getPublicUrl(filepath);
 
-                            const { error: e1 } = await supabase.storage
-                              .from('avatars')
-                              .update(filepath, avatarFile);
+                      await patch(`/api/profiles/${user.id}`, {
+                        avatar_url: publicURL,
+                      });
 
-                            if (e1) {
-                              await supabase.storage
-                                .from('avatars')
-                                .remove([filepath]);
+                      dispatch('UPDATE_USER')({
+                        avatar_url: publicURL,
+                      });
 
-                              const { error: e2 } = await supabase.storage
-                                .from('avatars')
-                                .upload(filepath, avatarFile);
+                      toast({
+                        title: '修改成功',
+                      });
+                    }
+                  }}
+                />
+              </Box>
+            </Box>
+          </Box>
+          <FormHelperText>We'll never share your email.</FormHelperText>
+        </FormControl>
+        <Heading size="md">高级设置</Heading>
+        <Button
+          colorScheme="red"
+          onClick={async (e) => {
+            try {
+              await Promise.all([
+                post('/api/logout', null),
+                supabase.auth.signOut(),
+              ]);
 
-                              if (e2) {
-                                toast({
-                                  status: 'error',
-                                  duration: 3000,
-                                  position: 'bottom-left',
-                                });
+              dispatch('CLEAR_LOGIN')(null);
 
-                                return;
-                              }
-                            }
-
-                            const { publicURL } = supabase.storage
-                              .from('avatars')
-                              .getPublicUrl(filepath);
-
-                            await patch(`/api/profiles/${user.id}`, {
-                              avatar_url: publicURL,
-                            });
-
-                            dispatch('UPDATE_USER')({
-                              avatar_url: publicURL,
-                            });
-
-                            toast({
-                              title: '修改成功',
-                            });
-                          }
-                        }}
-                      />
-                    </Box>
-                  </Box>
-                );
-              },
-            },
+              push('/login');
+            } catch (error) {}
           }}
-        />
+        >
+          退出登录
+        </Button>
       </VStack>
       <Footer />
     </Root>
