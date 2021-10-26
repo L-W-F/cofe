@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import NextImage from 'next/image';
 import { useRouter } from 'next/router';
-import { Box, Button, Spinner, useToast, VStack } from '@chakra-ui/react';
+import { Button, Spinner, useToast, VStack } from '@chakra-ui/react';
 import { compose } from '@cofe/gssp';
 import { GithubIcon, GitlabIcon } from '@cofe/icons';
 import { post } from '@cofe/io';
 import { withGsspColorMode } from 'gssp/withGsspColorMode';
 import { Header } from 'components/Header';
-import banner from '../public/cofe.png';
 import { Footer } from '@/components/Footer';
+import { Logo } from '@/components/Logo';
 import { Root } from '@/components/Root';
 import { supabase } from '@/utils/supabase';
 
@@ -70,7 +69,9 @@ const Login = (
 
   return (
     <Root>
-      <Header />
+      <Header display="flex" justifyContent="center">
+        <Logo />
+      </Header>
       <VStack
         flex={1}
         p={8}
@@ -82,31 +83,32 @@ const Login = (
         {loading ? (
           <Spinner />
         ) : (
-          <>
-            <Box as={NextImage} src={banner} borderRadius="md" />
+          <VStack alignItems="stretch" justifyContent="center" gridGap={1}>
             <Button
-              variant="solid"
-              colorScheme="teal"
-              size="lg"
+              variant="outline"
+              colorScheme="blue"
+              flexDirection="column"
+              py={8}
               onClick={() => {
                 handleSignIn('github');
               }}
-              leftIcon={<GithubIcon />}
+              leftIcon={<GithubIcon boxSize={6} />}
             >
               使用 Github 账号登录
             </Button>
             <Button
-              variant="solid"
-              colorScheme="teal"
-              size="lg"
+              variant="outline"
+              colorScheme="orange"
+              flexDirection="column"
+              py={8}
               onClick={() => {
                 handleSignIn('gitlab');
               }}
-              leftIcon={<GitlabIcon />}
+              leftIcon={<GitlabIcon boxSize={6} />}
             >
               使用 Gitlab 账号登录
             </Button>
-          </>
+          </VStack>
         )}
       </VStack>
       <Footer />
