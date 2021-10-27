@@ -7,8 +7,8 @@ export interface CofeTreeActions
   }> {}
 
 export interface CofeTree {
-  id: string;
   type: string;
+  id: string;
   title?: string;
   description?: string;
   properties?: CofeTreeProperties;

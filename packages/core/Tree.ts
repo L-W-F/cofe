@@ -1,6 +1,6 @@
 import { CofeTree } from '@cofe/types';
 import { makeId } from '@cofe/utils';
-import { merge } from 'lodash';
+import { isEqual, isEqualWith, merge } from 'lodash';
 import { u } from 'unist-builder';
 import { map } from 'unist-util-map';
 import { parents } from 'unist-util-parents';
@@ -17,18 +17,54 @@ export class Tree {
       tree.id = makeId();
     }
 
+    return tree as CofeTree;
+  }
+
+  static append(node: Partial<CofeTree> | string, tree: CofeTree) {
+    node = Tree.create(node);
+
+    if (!tree.children) {
+      tree.children = [];
+    }
+
+    tree.children.push(node as CofeTree);
+
     return tree;
   }
 
-  static clone(tree: Partial<CofeTree>) {
-    return map(tree as any, (node) => {
+  static prepend(node: Partial<CofeTree> | string, tree: CofeTree) {
+    node = Tree.create(node);
+
+    if (!tree.children) {
+      tree.children = [];
+    }
+
+    tree.children.unshift(node as CofeTree);
+
+    return tree;
+  }
+
+  static clone(tree: CofeTree) {
+    return map(tree as CofeTree, ({ children, ...node }: CofeTree) => {
       return merge({}, node, {
         id: makeId(),
       });
+    }) as CofeTree;
+  }
+
+  static isEqual(tree1: CofeTree, tree2: CofeTree) {
+    return isEqual(tree1, tree2);
+  }
+
+  static isSame(tree1: CofeTree, tree2: CofeTree) {
+    return isEqualWith(tree1, tree2, (v1, v2, key) => {
+      if (key === 'id') {
+        return true;
+      }
     });
   }
 
-  static hydrate(tree: Partial<CofeTree>) {
+  static hydrate(tree: CofeTree) {
     if (!cache.has(tree)) {
       cache.set(tree, parents(tree as any) as CofeTree);
     }
