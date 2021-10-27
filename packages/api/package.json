@@ -8,9 +8,9 @@
   "author": "crossjs <liwenfu@crossjs.com>",
   "devDependencies": {
     "@cofe/logger": "^0.1.0",
-    "next": "^11.1.2"
+    "next": "^12.0.1"
   },
   "peerDependencies": {
-    "next": "^11.1.2"
+    "next": "^12.0.1"
   }
 }
