@@ -2,3 +2,4 @@
 
 ![CI](https://github.com/crossjs/cofe/actions/workflows/ci.yml/badge.svg)
 ![CodeQL](https://github.com/crossjs/cofe/actions/workflows/codeql-analysis.yml/badge.svg)
+![Vercel](https://img.shields.io/github/deployments/crossjs/cofe/production?label=vercel&logo=vercel)

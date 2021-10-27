@@ -28,7 +28,7 @@
   resolved "https://registry.nlark.com/@babel/compat-data/download/@babel/compat-data-7.15.0.tgz#2dbaf8b85334796cafbb0f5793a90a2fc010b176"
   integrity sha1-Lbr4uFM0eWyvuw9Xk6kKL8AQsXY=
 
-"@babel/core@^7.1.0", "@babel/core@^7.12.3", "@babel/core@^7.15.8", "@babel/core@^7.7.2", "@babel/core@^7.7.5":
+"@babel/core@^7.1.0", "@babel/core@^7.12.3", "@babel/core@^7.7.2", "@babel/core@^7.7.5":
   version "7.15.8"
   resolved "https://registry.npmmirror.com/@babel/core/download/@babel/core-7.15.8.tgz?cache=0&sync_timestamp=1633554060461&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40babel%2Fcore%2Fdownload%2F%40babel%2Fcore-7.15.8.tgz#195b9f2bffe995d2c6c159e72fe525b4114e8c10"
   integrity sha1-GVufK//pldLGwVnnL+UltBFOjBA=
@@ -332,15 +332,6 @@
   version "7.15.4"
   resolved "https://registry.nlark.com/@babel/plugin-proposal-async-generator-functions/download/@babel/plugin-proposal-async-generator-functions-7.15.4.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40babel%2Fplugin-proposal-async-generator-functions%2Fdownload%2F%40babel%2Fplugin-proposal-async-generator-functions-7.15.4.tgz#f82aabe96c135d2ceaa917feb9f5fca31635277e"
   integrity sha1-+Cqr6WwTXSzqqRf+ufX8oxY1J34=
-  dependencies:
-    "@babel/helper-plugin-utils" "^7.14.5"
-    "@babel/helper-remap-async-to-generator" "^7.15.4"
-    "@babel/plugin-syntax-async-generators" "^7.8.4"
-
-"@babel/plugin-proposal-async-generator-functions@^7.15.8":
-  version "7.15.8"
-  resolved "https://registry.npmmirror.com/@babel/plugin-proposal-async-generator-functions/download/@babel/plugin-proposal-async-generator-functions-7.15.8.tgz?cache=0&sync_timestamp=1633554059567&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40babel%2Fplugin-proposal-async-generator-functions%2Fdownload%2F%40babel%2Fplugin-proposal-async-generator-functions-7.15.8.tgz#a3100f785fab4357987c4223ab1b02b599048403"
-  integrity sha1-oxAPeF+rQ1eYfEIjqxsCtZkEhAM=
   dependencies:
     "@babel/helper-plugin-utils" "^7.14.5"
     "@babel/helper-remap-async-to-generator" "^7.15.4"
@@ -836,14 +827,6 @@
     "@babel/helper-plugin-utils" "^7.14.5"
     "@babel/helper-skip-transparent-expression-wrappers" "^7.14.5"
 
-"@babel/plugin-transform-spread@^7.15.8":
-  version "7.15.8"
-  resolved "https://registry.npmmirror.com/@babel/plugin-transform-spread/download/@babel/plugin-transform-spread-7.15.8.tgz?cache=0&sync_timestamp=1633554059197&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40babel%2Fplugin-transform-spread%2Fdownload%2F%40babel%2Fplugin-transform-spread-7.15.8.tgz#79d5aa27f68d700449b2da07691dfa32d2f6d468"
-  integrity sha1-edWqJ/aNcARJstoHaR36MtL21Gg=
-  dependencies:
-    "@babel/helper-plugin-utils" "^7.14.5"
-    "@babel/helper-skip-transparent-expression-wrappers" "^7.15.4"
-
 "@babel/plugin-transform-sticky-regex@^7.14.5":
   version "7.14.5"
   resolved "https://registry.nlark.com/@babel/plugin-transform-sticky-regex/download/@babel/plugin-transform-sticky-regex-7.14.5.tgz?cache=0&sync_timestamp=1623280350911&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40babel%2Fplugin-transform-sticky-regex%2Fdownload%2F%40babel%2Fplugin-transform-sticky-regex-7.14.5.tgz#5b617542675e8b7761294381f3c28c633f40aeb9"
@@ -964,85 +947,6 @@
     "@babel/types" "^7.15.6"
     babel-plugin-polyfill-corejs2 "^0.2.2"
     babel-plugin-polyfill-corejs3 "^0.2.2"
-    babel-plugin-polyfill-regenerator "^0.2.2"
-    core-js-compat "^3.16.0"
-    semver "^6.3.0"
-
-"@babel/preset-env@^7.15.8":
-  version "7.15.8"
-  resolved "https://registry.npmmirror.com/@babel/preset-env/download/@babel/preset-env-7.15.8.tgz?cache=0&sync_timestamp=1633554066056&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40babel%2Fpreset-env%2Fdownload%2F%40babel%2Fpreset-env-7.15.8.tgz#f527ce5bcb121cd199f6b502bf23e420b3ff8dba"
-  integrity sha1-9SfOW8sSHNGZ9rUCvyPkILP/jbo=
-  dependencies:
-    "@babel/compat-data" "^7.15.0"
-    "@babel/helper-compilation-targets" "^7.15.4"
-    "@babel/helper-plugin-utils" "^7.14.5"
-    "@babel/helper-validator-option" "^7.14.5"
-    "@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining" "^7.15.4"
-    "@babel/plugin-proposal-async-generator-functions" "^7.15.8"
-    "@babel/plugin-proposal-class-properties" "^7.14.5"
-    "@babel/plugin-proposal-class-static-block" "^7.15.4"
-    "@babel/plugin-proposal-dynamic-import" "^7.14.5"
-    "@babel/plugin-proposal-export-namespace-from" "^7.14.5"
-    "@babel/plugin-proposal-json-strings" "^7.14.5"
-    "@babel/plugin-proposal-logical-assignment-operators" "^7.14.5"
-    "@babel/plugin-proposal-nullish-coalescing-operator" "^7.14.5"
-    "@babel/plugin-proposal-numeric-separator" "^7.14.5"
-    "@babel/plugin-proposal-object-rest-spread" "^7.15.6"
-    "@babel/plugin-proposal-optional-catch-binding" "^7.14.5"
-    "@babel/plugin-proposal-optional-chaining" "^7.14.5"
-    "@babel/plugin-proposal-private-methods" "^7.14.5"
-    "@babel/plugin-proposal-private-property-in-object" "^7.15.4"
-    "@babel/plugin-proposal-unicode-property-regex" "^7.14.5"
-    "@babel/plugin-syntax-async-generators" "^7.8.4"
-    "@babel/plugin-syntax-class-properties" "^7.12.13"
-    "@babel/plugin-syntax-class-static-block" "^7.14.5"
-    "@babel/plugin-syntax-dynamic-import" "^7.8.3"
-    "@babel/plugin-syntax-export-namespace-from" "^7.8.3"
-    "@babel/plugin-syntax-json-strings" "^7.8.3"
-    "@babel/plugin-syntax-logical-assignment-operators" "^7.10.4"
-    "@babel/plugin-syntax-nullish-coalescing-operator" "^7.8.3"
-    "@babel/plugin-syntax-numeric-separator" "^7.10.4"
-    "@babel/plugin-syntax-object-rest-spread" "^7.8.3"
-    "@babel/plugin-syntax-optional-catch-binding" "^7.8.3"
-    "@babel/plugin-syntax-optional-chaining" "^7.8.3"
-    "@babel/plugin-syntax-private-property-in-object" "^7.14.5"
-    "@babel/plugin-syntax-top-level-await" "^7.14.5"
-    "@babel/plugin-transform-arrow-functions" "^7.14.5"
-    "@babel/plugin-transform-async-to-generator" "^7.14.5"
-    "@babel/plugin-transform-block-scoped-functions" "^7.14.5"
-    "@babel/plugin-transform-block-scoping" "^7.15.3"
-    "@babel/plugin-transform-classes" "^7.15.4"
-    "@babel/plugin-transform-computed-properties" "^7.14.5"
-    "@babel/plugin-transform-destructuring" "^7.14.7"
-    "@babel/plugin-transform-dotall-regex" "^7.14.5"
-    "@babel/plugin-transform-duplicate-keys" "^7.14.5"
-    "@babel/plugin-transform-exponentiation-operator" "^7.14.5"
-    "@babel/plugin-transform-for-of" "^7.15.4"
-    "@babel/plugin-transform-function-name" "^7.14.5"
-    "@babel/plugin-transform-literals" "^7.14.5"
-    "@babel/plugin-transform-member-expression-literals" "^7.14.5"
-    "@babel/plugin-transform-modules-amd" "^7.14.5"
-    "@babel/plugin-transform-modules-commonjs" "^7.15.4"
-    "@babel/plugin-transform-modules-systemjs" "^7.15.4"
-    "@babel/plugin-transform-modules-umd" "^7.14.5"
-    "@babel/plugin-transform-named-capturing-groups-regex" "^7.14.9"
-    "@babel/plugin-transform-new-target" "^7.14.5"
-    "@babel/plugin-transform-object-super" "^7.14.5"
-    "@babel/plugin-transform-parameters" "^7.15.4"
-    "@babel/plugin-transform-property-literals" "^7.14.5"
-    "@babel/plugin-transform-regenerator" "^7.14.5"
-    "@babel/plugin-transform-reserved-words" "^7.14.5"
-    "@babel/plugin-transform-shorthand-properties" "^7.14.5"
-    "@babel/plugin-transform-spread" "^7.15.8"
-    "@babel/plugin-transform-sticky-regex" "^7.14.5"
-    "@babel/plugin-transform-template-literals" "^7.14.5"
-    "@babel/plugin-transform-typeof-symbol" "^7.14.5"
-    "@babel/plugin-transform-unicode-escapes" "^7.14.5"
-    "@babel/plugin-transform-unicode-regex" "^7.14.5"
-    "@babel/preset-modules" "^0.1.4"
-    "@babel/types" "^7.15.6"
-    babel-plugin-polyfill-corejs2 "^0.2.2"
-    babel-plugin-polyfill-corejs3 "^0.2.5"
     babel-plugin-polyfill-regenerator "^0.2.2"
     core-js-compat "^3.16.0"
     semver "^6.3.0"
@@ -2913,14 +2817,6 @@ babel-plugin-polyfill-corejs3@^0.2.2:
     "@babel/helper-define-polyfill-provider" "^0.2.2"
     core-js-compat "^3.14.0"
 
-babel-plugin-polyfill-corejs3@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.npmmirror.com/babel-plugin-polyfill-corejs3/download/babel-plugin-polyfill-corejs3-0.2.5.tgz#2779846a16a1652244ae268b1e906ada107faf92"
-  integrity sha1-J3mEahahZSJEriaLHpBq2hB/r5I=
-  dependencies:
-    "@babel/helper-define-polyfill-provider" "^0.2.2"
-    core-js-compat "^3.16.2"
-
 babel-plugin-polyfill-regenerator@^0.2.2:
   version "0.2.2"
   resolved "https://registry.nlark.com/babel-plugin-polyfill-regenerator/download/babel-plugin-polyfill-regenerator-0.2.2.tgz?cache=0&sync_timestamp=1622023907940&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fbabel-plugin-polyfill-regenerator%2Fdownload%2Fbabel-plugin-polyfill-regenerator-0.2.2.tgz#b310c8d642acada348c1fa3b3e6ce0e851bee077"
@@ -3122,17 +3018,6 @@ browserslist@^4.16.6, browserslist@^4.17.0:
     escalade "^3.1.1"
     node-releases "^1.1.75"
 
-browserslist@^4.17.5:
-  version "4.17.5"
-  resolved "https://registry.npmmirror.com/browserslist/download/browserslist-4.17.5.tgz?cache=0&sync_timestamp=1635094525679&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fbrowserslist%2Fdownload%2Fbrowserslist-4.17.5.tgz#c827bbe172a4c22b123f5e337533ceebadfdd559"
-  integrity sha1-yCe74XKkwisSP14zdTPO66391Vk=
-  dependencies:
-    caniuse-lite "^1.0.30001271"
-    electron-to-chromium "^1.3.878"
-    escalade "^3.1.1"
-    node-releases "^2.0.1"
-    picocolors "^1.0.0"
-
 bser@2.1.1:
   version "2.1.1"
   resolved "https://registry.npm.taobao.org/bser/download/bser-2.1.1.tgz#e6787da20ece9d07998533cfd9de6f5c38f4bc05"
@@ -3216,11 +3101,6 @@ caniuse-lite@^1.0.30001202, caniuse-lite@^1.0.30001219, caniuse-lite@^1.0.300012
   version "1.0.30001258"
   resolved "https://registry.nlark.com/caniuse-lite/download/caniuse-lite-1.0.30001258.tgz#b604eed80cc54a578e4bf5a02ae3ed49f869d252"
   integrity sha1-tgTu2AzFSleOS/WgKuPtSfhp0lI=
-
-caniuse-lite@^1.0.30001271:
-  version "1.0.30001271"
-  resolved "https://registry.npmmirror.com/caniuse-lite/download/caniuse-lite-1.0.30001271.tgz?cache=0&sync_timestamp=1635094526359&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fcaniuse-lite%2Fdownload%2Fcaniuse-lite-1.0.30001271.tgz#0dda0c9bcae2cf5407cd34cac304186616cc83e8"
-  integrity sha1-DdoMm8riz1QHzTTKwwQYZhbMg+g=
 
 ccount@^2.0.0:
   version "2.0.0"
@@ -3517,14 +3397,6 @@ core-js-compat@^3.14.0, core-js-compat@^3.16.0:
   integrity sha1-+zYGUiAeisjagScYwAjNBILtm0I=
   dependencies:
     browserslist "^4.17.0"
-    semver "7.0.0"
-
-core-js-compat@^3.16.2:
-  version "3.19.0"
-  resolved "https://registry.npmmirror.com/core-js-compat/download/core-js-compat-3.19.0.tgz#b3b93f93c8721b3ed52b91f12f964cc410967f8b"
-  integrity sha1-s7k/k8hyGz7VK5HxL5ZMxBCWf4s=
-  dependencies:
-    browserslist "^4.17.5"
     semver "7.0.0"
 
 core-js-pure@^3.16.0, core-js-pure@^3.6.5:
@@ -3959,11 +3831,6 @@ electron-to-chromium@^1.3.723, electron-to-chromium@^1.3.830:
   version "1.3.845"
   resolved "https://registry.nlark.com/electron-to-chromium/download/electron-to-chromium-1.3.845.tgz?cache=0&sync_timestamp=1632189773969&other_urls=https%3A%2F%2Fregistry.nlark.com%2Felectron-to-chromium%2Fdownload%2Felectron-to-chromium-1.3.845.tgz#326d3be3ee5d2c065f689119d441c997f9fd41d8"
   integrity sha1-Mm074+5dLAZfaJEZ1EHJl/n9Qdg=
-
-electron-to-chromium@^1.3.878:
-  version "1.3.880"
-  resolved "https://registry.npmmirror.com/electron-to-chromium/download/electron-to-chromium-1.3.880.tgz?cache=0&sync_timestamp=1635311612788&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Felectron-to-chromium%2Fdownload%2Felectron-to-chromium-1.3.880.tgz#58d1a298c5267f2faf440683d038c50ab39a6401"
-  integrity sha1-WNGimMUmfy+vRAaD0DjFCrOaZAE=
 
 elliptic@^6.5.3:
   version "6.5.4"
@@ -6780,11 +6647,6 @@ node-releases@^1.1.71, node-releases@^1.1.75:
   resolved "https://registry.nlark.com/node-releases/download/node-releases-1.1.76.tgz?cache=0&sync_timestamp=1632151407523&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fnode-releases%2Fdownload%2Fnode-releases-1.1.76.tgz#df245b062b0cafbd5282ab6792f7dccc2d97f36e"
   integrity sha1-3yRbBisMr71SgqtnkvfczC2X824=
 
-node-releases@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.npmmirror.com/node-releases/download/node-releases-2.0.1.tgz?cache=0&sync_timestamp=1634806914912&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fnode-releases%2Fdownload%2Fnode-releases-2.0.1.tgz#3d1d395f204f1f2f29a54358b9fb678765ad2fc5"
-  integrity sha1-PR05XyBPHy8ppUNYuftnh2WtL8U=
-
 normalize-package-data@^2.3.2:
   version "2.5.0"
   resolved "https://registry.nlark.com/normalize-package-data/download/normalize-package-data-2.5.0.tgz?cache=0&sync_timestamp=1629301872905&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fnormalize-package-data%2Fdownload%2Fnormalize-package-data-2.5.0.tgz#e66db1838b200c1dfc233225d12cb36520e234a8"
@@ -7100,11 +6962,6 @@ pbkdf2@^3.0.3:
     ripemd160 "^2.0.1"
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
-
-picocolors@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmmirror.com/picocolors/download/picocolors-1.0.0.tgz?cache=0&sync_timestamp=1634093378416&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fpicocolors%2Fdownload%2Fpicocolors-1.0.0.tgz#cb5bdc74ff3f51892236eaf79d68bc44564ab81c"
-  integrity sha1-y1vcdP8/UYkiNur3nWi8RFZKuBw=
 
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.3:
   version "2.3.0"
