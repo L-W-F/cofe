@@ -108,9 +108,9 @@ const nextConfig = withTM(
     resolveSymlinks: false,
   },
 )({
-  experimental: {
-    esmExternals: 'loose',
-  },
+  // experimental: {
+  //   esmExternals: 'loose',
+  // },
   compress: false,
   poweredByHeader: false,
   pageExtensions: ['ts', 'tsx'],
@@ -126,13 +126,7 @@ const nextConfig = withTM(
    * @returns import('webpack').Configuration
    */
   webpack: (config) => {
-    // https://github.com/microsoft/TypeScript/issues/39436#issuecomment-817029140
-    config.module.noParse = [require.resolve('prettier/parser-typescript.js')];
-    // config.resolve.alias = {
-    //   ...config.resolve.alias,
-    //   // 解决本地 link 时的包嵌套引起的子包不走 transpile 的问题
-    //   '@cofe': path.resolve(__dirname, 'node_modules/@cofe'),
-    // };
+    config.resolve.fallback = { fs: false, path: false, url: false };
 
     return config;
   },
