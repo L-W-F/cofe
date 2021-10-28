@@ -111,8 +111,9 @@ const nextConfig = withTM(
   experimental: {
     esmExternals: 'loose',
   },
-  compress: false,
   swcMinify: true,
+  outputFileTracing: false,
+  compress: false,
   poweredByHeader: false,
   pageExtensions: ['ts', 'tsx'],
   images: {
