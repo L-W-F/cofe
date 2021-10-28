@@ -33,6 +33,7 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
 
     case 'SET_PAGE':
       return {
+        ...state,
         ...payload,
         cursor: 0,
       };
