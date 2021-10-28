@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from 'next';
 import { debug } from '@cofe/logger';
-import { CofeDbProfile } from '@/../../../packages/types';
+import { CofeDbProfile } from '@cofe/types';
 import { supabase } from '@/utils/supabase';
 import { user2whoami } from '@/utils/user2whoami';
 
