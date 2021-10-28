@@ -4,7 +4,7 @@ const withTM = require('next-transpile-modules');
 const shell = require('shelljs');
 
 const tmModules = shell
-  .exec('ls ../../packages', { silent: true })
+  .exec('ls ./packages', { silent: true })
   .stdout.trim()
   .split(/\s+/)
   .map((name) => `@cofe/${name}`);
