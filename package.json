@@ -23,8 +23,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint --ext .ts,.tsx .",
-    "lint2": "next lint",
+    "lint": "next lint",
+    "lint:all": "eslint --ext .ts,.tsx .",
     "test": "jest"
   },
   "dependencies": {
