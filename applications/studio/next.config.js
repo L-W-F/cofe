@@ -108,10 +108,11 @@ const nextConfig = withTM(
     resolveSymlinks: false,
   },
 )({
-  // experimental: {
-  //   esmExternals: 'loose',
-  // },
+  experimental: {
+    esmExternals: 'loose',
+  },
   compress: false,
+  swcMinify: true,
   poweredByHeader: false,
   pageExtensions: ['ts', 'tsx'],
   images: {
