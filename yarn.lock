@@ -1951,7 +1951,7 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@napi-rs/triples@^1.0.3":
+"@napi-rs/triples@1.0.3", "@napi-rs/triples@^1.0.3":
   version "1.0.3"
   resolved "https://registry.nlark.com/@napi-rs/triples/download/@napi-rs/triples-1.0.3.tgz#76d6d0c3f4d16013c61e45dfca5ff1e6c31ae53c"
   integrity sha1-dtbQw/TRYBPGHkXfyl/x5sMa5Tw=
@@ -1960,6 +1960,11 @@
   version "12.0.1"
   resolved "https://registry.npmmirror.com/@next/env/download/@next/env-12.0.1.tgz#d57141ef1fe844f6f7c18cdaf29a712788c18ca4"
   integrity sha1-1XFB7x/oRPb3wYza8ppxJ4jBjKQ=
+
+"@next/env@12.0.2-canary.11":
+  version "12.0.2-canary.11"
+  resolved "https://registry.npmmirror.com/@next/env/download/@next/env-12.0.2-canary.11.tgz?cache=0&sync_timestamp=1635596600757&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fenv%2Fdownload%2F%40next%2Fenv-12.0.2-canary.11.tgz#2c2c56286da7366f689b6c9de37338ca124c1957"
+  integrity sha1-LCxWKG2nNm9om2yd43M4yhJMGVc=
 
 "@next/eslint-plugin-next@11.1.2", "@next/eslint-plugin-next@^11.1.2":
   version "11.1.2"
@@ -1972,6 +1977,11 @@
   version "12.0.1"
   resolved "https://registry.npmmirror.com/@next/polyfill-module/download/@next/polyfill-module-12.0.1.tgz#d20abf06f686ee7a8bd0d9056accfd0662f19e87"
   integrity sha1-0gq/BvaG7nqL0NkFasz9BmLxnoc=
+
+"@next/polyfill-module@12.0.2-canary.11":
+  version "12.0.2-canary.11"
+  resolved "https://registry.npmmirror.com/@next/polyfill-module/download/@next/polyfill-module-12.0.2-canary.11.tgz?cache=0&sync_timestamp=1635596601206&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fpolyfill-module%2Fdownload%2F%40next%2Fpolyfill-module-12.0.2-canary.11.tgz#782557457c692730689f56d843316649002305ca"
+  integrity sha1-eCVXRXxpJzBon1bYQzFmSQAjBco=
 
 "@next/react-dev-overlay@12.0.1":
   version "12.0.1"
@@ -1990,45 +2000,102 @@
     stacktrace-parser "0.1.10"
     strip-ansi "6.0.1"
 
+"@next/react-dev-overlay@12.0.2-canary.11":
+  version "12.0.2-canary.11"
+  resolved "https://registry.npmmirror.com/@next/react-dev-overlay/download/@next/react-dev-overlay-12.0.2-canary.11.tgz?cache=0&sync_timestamp=1635596601673&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Freact-dev-overlay%2Fdownload%2F%40next%2Freact-dev-overlay-12.0.2-canary.11.tgz#e63451f42773e2caad491599063ec8261c00e595"
+  integrity sha1-5jRR9Cdz4sqtSRWZBj7IJhwA5ZU=
+  dependencies:
+    "@babel/code-frame" "7.12.11"
+    anser "1.4.9"
+    chalk "4.0.0"
+    classnames "2.2.6"
+    css.escape "1.5.1"
+    data-uri-to-buffer "3.0.1"
+    platform "1.3.6"
+    shell-quote "1.7.3"
+    source-map "0.8.0-beta.0"
+    stacktrace-parser "0.1.10"
+    strip-ansi "6.0.1"
+
 "@next/react-refresh-utils@12.0.1":
   version "12.0.1"
   resolved "https://registry.npmmirror.com/@next/react-refresh-utils/download/@next/react-refresh-utils-12.0.1.tgz#219be7a81696a7bd1e2d4ee397ca100eb8262f23"
   integrity sha1-IZvnqBaWp70eLU7jl8oQDrgmLyM=
+
+"@next/react-refresh-utils@12.0.2-canary.11":
+  version "12.0.2-canary.11"
+  resolved "https://registry.npmmirror.com/@next/react-refresh-utils/download/@next/react-refresh-utils-12.0.2-canary.11.tgz?cache=0&sync_timestamp=1635596602124&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Freact-refresh-utils%2Fdownload%2F%40next%2Freact-refresh-utils-12.0.2-canary.11.tgz#004a3607ec7970fabf1421469d41cf39f29c0b0e"
+  integrity sha1-AEo2B+x5cPq/FCFGnUHPOfKcCw4=
 
 "@next/swc-android-arm64@12.0.1":
   version "12.0.1"
   resolved "https://registry.npmmirror.com/@next/swc-android-arm64/download/@next/swc-android-arm64-12.0.1.tgz?cache=0&sync_timestamp=1635306208436&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-android-arm64%2Fdownload%2F%40next%2Fswc-android-arm64-12.0.1.tgz#c776853e0911c12fcc69a69cd7ab111dff29f8d2"
   integrity sha1-x3aFPgkRwS/Maaac16sRHf8p+NI=
 
+"@next/swc-android-arm64@12.0.2-canary.11":
+  version "12.0.2-canary.11"
+  resolved "https://registry.npmmirror.com/@next/swc-android-arm64/download/@next/swc-android-arm64-12.0.2-canary.11.tgz?cache=0&sync_timestamp=1635597047474&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-android-arm64%2Fdownload%2F%40next%2Fswc-android-arm64-12.0.2-canary.11.tgz#d18e51e96ef33a179d9cb3fde3db863eed533a2c"
+  integrity sha1-0Y5R6W7zOhednLP949uGPu1TOiw=
+
 "@next/swc-darwin-arm64@12.0.1":
   version "12.0.1"
   resolved "https://registry.npmmirror.com/@next/swc-darwin-arm64/download/@next/swc-darwin-arm64-12.0.1.tgz?cache=0&sync_timestamp=1635306208791&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-darwin-arm64%2Fdownload%2F%40next%2Fswc-darwin-arm64-12.0.1.tgz#bee9c5932511c993ab384ef9aedb86c02532d41e"
   integrity sha1-vunFkyURyZOrOE75rtuGwCUy1B4=
+
+"@next/swc-darwin-arm64@12.0.2-canary.11":
+  version "12.0.2-canary.11"
+  resolved "https://registry.npmmirror.com/@next/swc-darwin-arm64/download/@next/swc-darwin-arm64-12.0.2-canary.11.tgz?cache=0&sync_timestamp=1635597049685&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-darwin-arm64%2Fdownload%2F%40next%2Fswc-darwin-arm64-12.0.2-canary.11.tgz#fe3547bb29f4897bcf7182b4f3cee08bf33e72d6"
+  integrity sha1-/jVHuyn0iXvPcYK0887gi/M+ctY=
 
 "@next/swc-darwin-x64@12.0.1":
   version "12.0.1"
   resolved "https://registry.npmmirror.com/@next/swc-darwin-x64/download/@next/swc-darwin-x64-12.0.1.tgz?cache=0&sync_timestamp=1635306213453&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-darwin-x64%2Fdownload%2F%40next%2Fswc-darwin-x64-12.0.1.tgz#a0bdcbcf11b8b62190ec8e0406cecbbcc810b7fc"
   integrity sha1-oL3LzxG4tiGQ7I4EBs7LvMgQt/w=
 
+"@next/swc-darwin-x64@12.0.2-canary.11":
+  version "12.0.2-canary.11"
+  resolved "https://registry.npmmirror.com/@next/swc-darwin-x64/download/@next/swc-darwin-x64-12.0.2-canary.11.tgz?cache=0&sync_timestamp=1635597051370&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-darwin-x64%2Fdownload%2F%40next%2Fswc-darwin-x64-12.0.2-canary.11.tgz#e3bd79086ef5aaf12145c6797629e03bbdc41206"
+  integrity sha1-4715CG71qvEhRcZ5dingO73EEgY=
+
 "@next/swc-linux-arm-gnueabihf@12.0.1":
   version "12.0.1"
   resolved "https://registry.npmmirror.com/@next/swc-linux-arm-gnueabihf/download/@next/swc-linux-arm-gnueabihf-12.0.1.tgz?cache=0&sync_timestamp=1635306209432&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-linux-arm-gnueabihf%2Fdownload%2F%40next%2Fswc-linux-arm-gnueabihf-12.0.1.tgz#d0132637288f452ad5c6a6161e42aebcd4355f82"
   integrity sha1-0BMmNyiPRSrVxqYWHkKuvNQ1X4I=
+
+"@next/swc-linux-arm-gnueabihf@12.0.2-canary.11":
+  version "12.0.2-canary.11"
+  resolved "https://registry.npmmirror.com/@next/swc-linux-arm-gnueabihf/download/@next/swc-linux-arm-gnueabihf-12.0.2-canary.11.tgz?cache=0&sync_timestamp=1635597030790&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-linux-arm-gnueabihf%2Fdownload%2F%40next%2Fswc-linux-arm-gnueabihf-12.0.2-canary.11.tgz#b39dac1be6fc3066083d09aa308ce38783d48541"
+  integrity sha1-s52sG+b8MGYIPQmqMIzjh4PUhUE=
 
 "@next/swc-linux-arm64-gnu@12.0.1":
   version "12.0.1"
   resolved "https://registry.npmmirror.com/@next/swc-linux-arm64-gnu/download/@next/swc-linux-arm64-gnu-12.0.1.tgz?cache=0&sync_timestamp=1635306209727&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-linux-arm64-gnu%2Fdownload%2F%40next%2Fswc-linux-arm64-gnu-12.0.1.tgz#6b310344b9bac7700eaff8f4c536540b1226e378"
   integrity sha1-azEDRLm6x3AOr/j0xTZUCxIm43g=
 
+"@next/swc-linux-arm64-gnu@12.0.2-canary.11":
+  version "12.0.2-canary.11"
+  resolved "https://registry.npmmirror.com/@next/swc-linux-arm64-gnu/download/@next/swc-linux-arm64-gnu-12.0.2-canary.11.tgz?cache=0&sync_timestamp=1635597019434&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-linux-arm64-gnu%2Fdownload%2F%40next%2Fswc-linux-arm64-gnu-12.0.2-canary.11.tgz#eb2adf3407e326cd147729e5da8344f21bbac97c"
+  integrity sha1-6yrfNAfjJs0Udynl2oNE8hu6yXw=
+
 "@next/swc-linux-arm64-musl@12.0.1":
   version "12.0.1"
   resolved "https://registry.npmmirror.com/@next/swc-linux-arm64-musl/download/@next/swc-linux-arm64-musl-12.0.1.tgz?cache=0&sync_timestamp=1635306210352&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-linux-arm64-musl%2Fdownload%2F%40next%2Fswc-linux-arm64-musl-12.0.1.tgz#8ab1fc81d18bbb70bb15bcc4250382257bba6298"
   integrity sha1-irH8gdGLu3C7FbzEJQOCJXu6Ypg=
 
+"@next/swc-linux-arm64-musl@12.0.2-canary.11":
+  version "12.0.2-canary.11"
+  resolved "https://registry.npmmirror.com/@next/swc-linux-arm64-musl/download/@next/swc-linux-arm64-musl-12.0.2-canary.11.tgz?cache=0&sync_timestamp=1635597031794&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-linux-arm64-musl%2Fdownload%2F%40next%2Fswc-linux-arm64-musl-12.0.2-canary.11.tgz#1e673d7c8e316f1d51ac8b08de0189a96f350a3a"
+  integrity sha1-Hmc9fI4xbx1RrIsI3gGJqW81Cjo=
+
 "@next/swc-linux-x64-gnu@12.0.1":
   version "12.0.1"
   resolved "https://registry.npmmirror.com/@next/swc-linux-x64-gnu/download/@next/swc-linux-x64-gnu-12.0.1.tgz?cache=0&sync_timestamp=1635306210690&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-linux-x64-gnu%2Fdownload%2F%40next%2Fswc-linux-x64-gnu-12.0.1.tgz#a664268aedec402da5df34efac1b337d9b0e492e"
   integrity sha1-pmQmiu3sQC2l3zTvrBszfZsOSS4=
+
+"@next/swc-linux-x64-gnu@12.0.2-canary.11":
+  version "12.0.2-canary.11"
+  resolved "https://registry.npmmirror.com/@next/swc-linux-x64-gnu/download/@next/swc-linux-x64-gnu-12.0.2-canary.11.tgz?cache=0&sync_timestamp=1635597039555&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-linux-x64-gnu%2Fdownload%2F%40next%2Fswc-linux-x64-gnu-12.0.2-canary.11.tgz#4dcca8aac62ba03f0ce765575ded237e0e6dbfb5"
+  integrity sha1-TcyoqsYroD8M52VXXe0jfg5tv7U=
 
 "@next/swc-linux-x64-musl@12.0.1":
   version "12.0.1"
@@ -2040,15 +2107,30 @@
   resolved "https://registry.npmmirror.com/@next/swc-win32-arm64-msvc/download/@next/swc-win32-arm64-msvc-12.0.1.tgz?cache=0&sync_timestamp=1635306211261&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-win32-arm64-msvc%2Fdownload%2F%40next%2Fswc-win32-arm64-msvc-12.0.1.tgz#9ff0c2a2f00f41d40bd44d6da195bdf649d807c6"
   integrity sha1-n/DCovAPQdQL1E1toZW99knYB8Y=
 
+"@next/swc-win32-arm64-msvc@12.0.2-canary.11":
+  version "12.0.2-canary.11"
+  resolved "https://registry.npmmirror.com/@next/swc-win32-arm64-msvc/download/@next/swc-win32-arm64-msvc-12.0.2-canary.11.tgz?cache=0&sync_timestamp=1635597050103&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-win32-arm64-msvc%2Fdownload%2F%40next%2Fswc-win32-arm64-msvc-12.0.2-canary.11.tgz#d33fb3e165f7d2430d739b77351c8f5a4127190e"
+  integrity sha1-0z+z4WX30kMNc5t3NRyPWkEnGQ4=
+
 "@next/swc-win32-ia32-msvc@12.0.1":
   version "12.0.1"
   resolved "https://registry.npmmirror.com/@next/swc-win32-ia32-msvc/download/@next/swc-win32-ia32-msvc-12.0.1.tgz?cache=0&sync_timestamp=1635306211547&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-win32-ia32-msvc%2Fdownload%2F%40next%2Fswc-win32-ia32-msvc-12.0.1.tgz#5a927ec832b184ce2e35f8ec668daa34175e47d0"
   integrity sha1-WpJ+yDKxhM4uNfjsZo2qNBdeR9A=
 
+"@next/swc-win32-ia32-msvc@12.0.2-canary.11":
+  version "12.0.2-canary.11"
+  resolved "https://registry.npmmirror.com/@next/swc-win32-ia32-msvc/download/@next/swc-win32-ia32-msvc-12.0.2-canary.11.tgz?cache=0&sync_timestamp=1635597045878&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-win32-ia32-msvc%2Fdownload%2F%40next%2Fswc-win32-ia32-msvc-12.0.2-canary.11.tgz#db727d757b06ef220d07b765f382f1fcae079889"
+  integrity sha1-23J9dXsG7yINB7dl84Lx/K4HmIk=
+
 "@next/swc-win32-x64-msvc@12.0.1":
   version "12.0.1"
   resolved "https://registry.npmmirror.com/@next/swc-win32-x64-msvc/download/@next/swc-win32-x64-msvc-12.0.1.tgz?cache=0&sync_timestamp=1635306211873&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-win32-x64-msvc%2Fdownload%2F%40next%2Fswc-win32-x64-msvc-12.0.1.tgz#fe145cf7baf79564159a87a545e430f96c835578"
   integrity sha1-/hRc97r3lWQVmoelReQw+WyDVXg=
+
+"@next/swc-win32-x64-msvc@12.0.2-canary.11":
+  version "12.0.2-canary.11"
+  resolved "https://registry.npmmirror.com/@next/swc-win32-x64-msvc/download/@next/swc-win32-x64-msvc-12.0.2-canary.11.tgz?cache=0&sync_timestamp=1635597052430&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40next%2Fswc-win32-x64-msvc%2Fdownload%2F%40next%2Fswc-win32-x64-msvc-12.0.2-canary.11.tgz#d70f1472e9e6cc9d9d6e362f1ed117888d186a6a"
+  integrity sha1-1w8UcunmzJ2dbjYvHtEXiI0Yamo=
 
 "@node-rs/helper@1.2.1":
   version "1.2.1"
@@ -6495,6 +6577,73 @@ next-transpile-modules@^9.0.0:
     enhanced-resolve "^5.7.0"
     escalade "^3.1.1"
 
+next@12.0.2-canary.11:
+  version "12.0.2-canary.11"
+  resolved "https://registry.npmmirror.com/next/download/next-12.0.2-canary.11.tgz?cache=0&sync_timestamp=1635596599146&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fnext%2Fdownload%2Fnext-12.0.2-canary.11.tgz#434b004e6e114b857d0e866a55420df80639cabc"
+  integrity sha1-Q0sATm4RS4V9DoZqVUIN+AY5yrw=
+  dependencies:
+    "@babel/runtime" "7.15.4"
+    "@hapi/accept" "5.0.2"
+    "@napi-rs/triples" "1.0.3"
+    "@next/env" "12.0.2-canary.11"
+    "@next/polyfill-module" "12.0.2-canary.11"
+    "@next/react-dev-overlay" "12.0.2-canary.11"
+    "@next/react-refresh-utils" "12.0.2-canary.11"
+    acorn "8.5.0"
+    assert "2.0.0"
+    browserify-zlib "0.2.0"
+    browserslist "4.16.6"
+    buffer "5.6.0"
+    caniuse-lite "^1.0.30001228"
+    chalk "2.4.2"
+    chokidar "3.5.1"
+    constants-browserify "1.0.0"
+    crypto-browserify "3.12.0"
+    cssnano-simple "3.0.0"
+    domain-browser "4.19.0"
+    encoding "0.1.13"
+    etag "1.8.1"
+    events "3.3.0"
+    find-cache-dir "3.3.1"
+    get-orientation "1.1.2"
+    https-browserify "1.0.0"
+    image-size "1.0.0"
+    jest-worker "27.0.0-next.5"
+    node-fetch "2.6.1"
+    node-html-parser "1.4.9"
+    os-browserify "0.3.0"
+    p-limit "3.1.0"
+    path-browserify "1.0.1"
+    postcss "8.2.15"
+    process "0.11.10"
+    querystring-es3 "0.2.1"
+    raw-body "2.4.1"
+    react-is "17.0.2"
+    react-refresh "0.8.3"
+    regenerator-runtime "0.13.4"
+    stream-browserify "3.0.0"
+    stream-http "3.1.1"
+    string_decoder "1.3.0"
+    styled-jsx "5.0.0-beta.3"
+    timers-browserify "2.0.12"
+    tty-browserify "0.0.1"
+    use-subscription "1.5.1"
+    util "0.12.4"
+    vm-browserify "1.1.2"
+    watchpack "2.1.1"
+  optionalDependencies:
+    "@next/swc-android-arm64" "12.0.2-canary.11"
+    "@next/swc-darwin-arm64" "12.0.2-canary.11"
+    "@next/swc-darwin-x64" "12.0.2-canary.11"
+    "@next/swc-linux-arm-gnueabihf" "12.0.2-canary.11"
+    "@next/swc-linux-arm64-gnu" "12.0.2-canary.11"
+    "@next/swc-linux-arm64-musl" "12.0.2-canary.11"
+    "@next/swc-linux-x64-gnu" "12.0.2-canary.11"
+    "@next/swc-linux-x64-musl" "12.0.1"
+    "@next/swc-win32-arm64-msvc" "12.0.2-canary.11"
+    "@next/swc-win32-ia32-msvc" "12.0.2-canary.11"
+    "@next/swc-win32-x64-msvc" "12.0.2-canary.11"
+
 next@^12.0.1:
   version "12.0.1"
   resolved "https://registry.npmmirror.com/next/download/next-12.0.1.tgz#7b82a73bc185bfda7372e7e8309f9b38e6be9cb0"
@@ -7522,6 +7671,11 @@ shell-quote@1.7.2:
   version "1.7.2"
   resolved "https://registry.nlark.com/shell-quote/download/shell-quote-1.7.2.tgz#67a7d02c76c9da24f99d20808fcaded0e0e04be2"
   integrity sha1-Z6fQLHbJ2iT5nSCAj8re0ODgS+I=
+
+shell-quote@1.7.3:
+  version "1.7.3"
+  resolved "https://registry.npmmirror.com/shell-quote/download/shell-quote-1.7.3.tgz?cache=0&sync_timestamp=1634798333958&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fshell-quote%2Fdownload%2Fshell-quote-1.7.3.tgz#aa40edac170445b9a431e17bb62c0b881b9c4123"
+  integrity sha1-qkDtrBcERbmkMeF7tiwLiBucQSM=
 
 shelljs@^0.8.4:
   version "0.8.4"

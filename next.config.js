@@ -112,7 +112,7 @@ const nextConfig = withTM(
     esmExternals: 'loose',
   },
   swcMinify: true,
-  outputFileTracing: false,
+  outputFileTracing: true,
   compress: false,
   poweredByHeader: false,
   pageExtensions: ['ts', 'tsx'],
