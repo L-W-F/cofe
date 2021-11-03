@@ -71,7 +71,7 @@
     "@types/jest": "^27.0.2",
     "@types/json-schema": "^7.0.9",
     "@types/lodash": "^4.14.176",
-    "@types/react": "^17.0.33",
+    "@types/react": "^17.0.34",
     "@types/shallowequal": "^1.1.1",
     "babel-jest": "^27.3.1",
     "babel-preset-cofe": "^0.0.1",
