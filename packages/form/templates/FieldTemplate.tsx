@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Flex,
   FormControl,
   FormErrorIcon,
   FormErrorMessage,
@@ -9,36 +10,46 @@ import {
   ListIcon,
   ListItem,
 } from '@chakra-ui/react';
+import { FieldTemplateProps } from '@rjsf/core';
 
 export const FieldTemplate = ({
   id,
   disabled,
+  readonly,
   hidden,
   label,
   required,
   rawDescription,
+  rawHelp,
   children,
   rawErrors,
-}) => {
+}: FieldTemplateProps) => {
   return hidden ? null : (
     <FormControl
       isDisabled={disabled}
+      isReadOnly={readonly}
       isRequired={required}
       isInvalid={Boolean(rawErrors)}
+      id={id}
+      as={Flex}
+      flexDirection="column"
     >
-      {label && <FormLabel htmlFor={id}>{label}</FormLabel>}
+      {label && <FormLabel>{label}</FormLabel>}
       {children}
-      <FormErrorMessage>
-        <List>
-          {rawErrors?.map((message, index) => (
-            <ListItem key={index}>
-              <ListIcon as={FormErrorIcon} />
-              {message}
-            </ListItem>
-          ))}
-        </List>
-      </FormErrorMessage>
-      <FormHelperText>{rawDescription}</FormHelperText>
+      {Boolean(rawErrors) && (
+        <FormErrorMessage>
+          <List>
+            {rawErrors?.map((message, index) => (
+              <ListItem key={index}>
+                <ListIcon as={FormErrorIcon} />
+                {message}
+              </ListItem>
+            ))}
+          </List>
+        </FormErrorMessage>
+      )}
+      {rawDescription && <FormHelperText>{rawDescription}</FormHelperText>}
+      {rawHelp && <FormHelperText>{rawHelp}</FormHelperText>}
     </FormControl>
   );
 };

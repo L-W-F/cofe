@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ViewIcon, ViewOffIcon } from '@cofe/icons';
 import {
   IconButton,
   Input,
@@ -9,6 +8,7 @@ import {
   useDisclosure,
   useMergeRefs,
 } from '@chakra-ui/react';
+import { ViewIcon, ViewOffIcon } from '@cofe/icons';
 
 export const PasswordField = React.forwardRef<HTMLInputElement, InputProps>(
   (props, ref) => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AccordionButton,
   AccordionIcon,
@@ -12,8 +12,9 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronRightIcon } from '@cofe/icons';
-import { useDispatch, useStore } from '@cofe/store';
+import { useDispatch } from '@cofe/store';
 import { CofeTree } from '@cofe/types';
+import { useSelectedPath } from '@/hooks/useSelectedPath';
 import { useSelectedTree } from '@/hooks/useSelectedTree';
 
 interface TreeItemTagProps extends BoxProps {
@@ -60,12 +61,16 @@ interface TreeItemProps extends Partial<CofeTree> {
 }
 
 const TreeItem = ({ level = 0, type, id, children }: TreeItemProps) => {
-  const selected = useStore('dnd.selected');
+  const selectedPath = useSelectedPath();
   const [isCollapsed, setIsCollapsed] = useState(true);
   const dispatch = useDispatch();
 
   const ChevronIcon = isCollapsed ? ChevronRightIcon : ChevronDownIcon;
-  const isSelected = selected?.id === id;
+  const isSelected = selectedPath[0]?.id === id;
+
+  useEffect(() => {
+    setIsCollapsed(selectedPath.findIndex((node) => node.id === id) === -1);
+  }, [id, selectedPath]);
 
   return (
     <ListItem

@@ -1,5 +1,5 @@
 import { RefCallback, useEffect, useRef, useState } from 'react';
-import { Schema } from '@cofe/core';
+import { Schema, Tree } from '@cofe/core';
 import { useDispatch, useStore } from '@cofe/store';
 import { CofeDndAdjacent, CofeDndIdentity, CofeDndPayload } from '@cofe/types';
 import { isEqual } from 'lodash';
@@ -48,7 +48,7 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
 
           onDrop({
             dragging:
-              dragging.id ?? Schema.createNode(schemas[dragging.type], schemas),
+              dragging.id ?? Tree.createNode(schemas[dragging.type], schemas),
             reference: reference?.id,
             container: container?.id,
             adjacent,

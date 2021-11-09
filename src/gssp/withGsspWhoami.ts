@@ -5,12 +5,16 @@ import { supabase } from '@/utils/supabase';
 import { user2whoami } from '@/utils/user2whoami';
 
 export const withGsspWhoami =
-  (next?) => async (context: GetServerSidePropsContext) => {
+  (options?) => (next?) => async (context: GetServerSidePropsContext) => {
     debug('gssp')('withGsspWhoami');
 
     const { user } = await supabase.auth.api.getUserByCookie(context.req);
 
     if (!user) {
+      if (options?.loose) {
+        return next(context);
+      }
+
       return {
         redirect: {
           destination: '/login',

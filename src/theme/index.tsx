@@ -23,6 +23,16 @@ export const theme = extendTheme({
   fonts,
   breakpoints,
   components: {
+    Accordion: {
+      baseStyle: {
+        container: {
+          borderTopWidth: 0,
+          _last: {
+            borderBottomWidth: 0,
+          },
+        },
+      },
+    },
     // Link: {
     //   baseStyle: {
     //     color: 'red.500',

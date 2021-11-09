@@ -12,7 +12,7 @@ const ServiceError = ({ error }) => {
   );
 };
 
-export const getServerSideProps = compose([withGsspColorMode], async () => {
+export const getServerSideProps = compose([withGsspColorMode()], async () => {
   const error = errorCache.get('id') ?? 'unknown';
 
   errorCache.delete('id');

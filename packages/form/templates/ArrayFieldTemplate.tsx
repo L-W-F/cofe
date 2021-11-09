@@ -1,48 +1,79 @@
 import React from 'react';
-import { Box, Flex, IconButton } from '@chakra-ui/react';
-import { AddIcon, DeleteIcon } from '@cofe/icons';
+import {
+  Button,
+  ButtonGroup,
+  Flex,
+  IconButton,
+  VStack,
+} from '@chakra-ui/react';
+import { AddIcon, ArrowDownIcon, ArrowUpIcon, DeleteIcon } from '@cofe/icons';
 import { ArrayFieldTemplateProps } from '@rjsf/core';
 
 export const ArrayFieldTemplate = ({
-  title,
   items,
   canAdd,
   onAddClick,
 }: ArrayFieldTemplateProps) => {
   return (
-    <>
-      {/* {title} */}
-      <Box>
-        {items.map(({ key, index, hasRemove, onDropIndexClick, children }) => (
-          <Flex key={key} gridGap={2}>
-            <Box flex={1}>{children}</Box>
-            {hasRemove && (
-              <IconButton
-                aria-label="移除此项"
-                icon={<DeleteIcon />}
-                size="xs"
-                variant="solid"
-                colorScheme="red"
-                onClick={onDropIndexClick(index)}
-              />
+    <Flex flexDirection="column" alignItems="stretch" gridGap={4}>
+      {items.map(
+        ({
+          key,
+          index,
+          hasToolbar,
+          hasMoveUp,
+          hasMoveDown,
+          hasRemove,
+          disabled,
+          readonly,
+          onReorderClick,
+          onDropIndexClick,
+          children,
+        }) => (
+          <VStack key={key} spacing={4}>
+            {children}
+            {hasToolbar && (
+              <ButtonGroup isAttached variant="outline">
+                {(hasMoveUp || hasMoveDown) && (
+                  <IconButton
+                    aria-label="上移"
+                    icon={<ArrowUpIcon />}
+                    tabIndex={-1}
+                    disabled={disabled || readonly || !hasMoveUp}
+                    onClick={onReorderClick(index, index - 1)}
+                  />
+                )}
+
+                {(hasMoveUp || hasMoveDown) && (
+                  <IconButton
+                    aria-label="下移"
+                    icon={<ArrowDownIcon />}
+                    tabIndex={-1}
+                    disabled={disabled || readonly || !hasMoveDown}
+                    onClick={onReorderClick(index, index + 1)}
+                  />
+                )}
+
+                {hasRemove && (
+                  <IconButton
+                    aria-label="移除此项"
+                    icon={<DeleteIcon />}
+                    tabIndex={-1}
+                    // colorScheme="red"
+                    onClick={onDropIndexClick(index)}
+                  />
+                )}
+              </ButtonGroup>
             )}
-          </Flex>
-        ))}
-        <Flex gridGap={2}>
-          <Box flex={1} />
-          {canAdd && (
-            <IconButton
-              aria-label="新增选项"
-              icon={<AddIcon />}
-              size="xs"
-              variant="solid"
-              colorScheme="teal"
-              onClick={onAddClick}
-            />
-          )}
-        </Flex>
-      </Box>
-    </>
+          </VStack>
+        ),
+      )}
+      {canAdd && (
+        <Button leftIcon={<AddIcon />} variant="outline" onClick={onAddClick}>
+          新增选项
+        </Button>
+      )}
+    </Flex>
   );
 };
 

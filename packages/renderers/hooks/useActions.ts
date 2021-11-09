@@ -10,7 +10,7 @@ export const useActions = (actions) => {
   return useMemo(
     () =>
       actions?.reduce(
-        (o, { type, action, params }) => ({
+        (o, { type, payload: { action, params } }) => ({
           ...o,
           [type]: () => {
             toast({

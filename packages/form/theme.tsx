@@ -8,10 +8,10 @@ import { TextWidget } from './widgets/TextWidget';
 
 export const theme: ThemeProps = {
   children: ' ',
-  liveOmit: true,
   liveValidate: true,
   omitExtraData: true,
   showErrorList: false,
+  transformErrors: (errors) => errors,
   FieldTemplate,
   ArrayFieldTemplate,
   ObjectFieldTemplate,

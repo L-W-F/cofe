@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { HamburgerIcon } from '@cofe/icons';
 import {
   IconButton,
   Menu,
@@ -9,11 +8,13 @@ import {
   MenuList,
   useToast,
 } from '@chakra-ui/react';
+import { HamburgerIcon } from '@cofe/icons';
 import { post } from '@cofe/io';
 import { useStore } from '@cofe/store';
 import { isMac } from '@cofe/utils';
 import { SaveTemplate } from './SaveTemplate';
 import { ShowHistory } from './ShowHistory';
+import { AppManager } from '@/components/AppManager';
 import { EditorState } from '@/store/editor';
 
 export const DropMenu = () => {
@@ -23,7 +24,7 @@ export const DropMenu = () => {
     duration: 1000,
     position: 'bottom-left',
   });
-  const [open, setOpen] = useState<'template' | 'history'>(null);
+  const [open, setOpen] = useState<'template' | 'history' | 'appManager'>(null);
 
   const saveCurrent = useCallback(async () => {
     if (stack.length > 1) {
@@ -41,6 +42,10 @@ export const DropMenu = () => {
 
   const showHistory = useCallback(() => {
     setOpen('history');
+  }, []);
+
+  const showAppManager = useCallback(() => {
+    setOpen('appManager');
   }, []);
 
   const keydown = useCallback(
@@ -94,14 +99,24 @@ export const DropMenu = () => {
             保存
           </MenuItem>
           <MenuItem command="⌘⇧S" onClick={saveTemplate}>
-            保存为模板
+            另存为模板
           </MenuItem>
           <MenuDivider />
           <MenuItem command="⌘H" onClick={showHistory}>
-            历史版本
+            查看历史版本
+          </MenuItem>
+          <MenuDivider />
+          <MenuItem command="⌘⇧A" onClick={showAppManager}>
+            管理应用
           </MenuItem>
         </MenuList>
       </Menu>
+      <AppManager
+        isOpen={open === 'appManager'}
+        onClose={() => {
+          setOpen(null);
+        }}
+      />
       <ShowHistory
         isOpen={open === 'history'}
         onClose={() => {

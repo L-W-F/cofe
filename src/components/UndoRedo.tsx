@@ -11,7 +11,7 @@ export const UndoRedo = () => {
 
   useEffect(() => {
     const keydown = (e) => {
-      // ctrl+z, ctrl+shift+z, ⌘+z, ⌘+shift+z
+      // ctrl+z, ctrl+shift+z, ⌘+z, ⌘+⇧+z
       if ((!isMac && e.ctrlKey) || (isMac && e.metaKey)) {
         if (e.key.toLowerCase() === 'z') {
           e.preventDefault();
@@ -33,7 +33,8 @@ export const UndoRedo = () => {
   return (
     <>
       <IconButton
-        aria-label="undo"
+        aria-label="撤销（⌘z）"
+        title="撤销（⌘z）"
         variant="ghost"
         icon={<ChevronLeftIcon />}
         disabled={cursor === stack.length - 1}
@@ -42,7 +43,8 @@ export const UndoRedo = () => {
         }}
       />
       <IconButton
-        aria-label="redo"
+        aria-label="重做（⌘⇧z）"
+        title="重做（⌘⇧z）"
         variant="ghost"
         icon={<ChevronRightIcon />}
         disabled={cursor === 0}

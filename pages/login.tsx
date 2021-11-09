@@ -7,8 +7,9 @@ import { GithubIcon, GitlabIcon } from '@cofe/icons';
 import { post } from '@cofe/io';
 import { withGsspColorMode } from 'gssp/withGsspColorMode';
 import { Header } from 'components/Header';
+import { ColorModeSwitch } from '@/components/ColorModeSwitch';
 import { Footer } from '@/components/Footer';
-import { Logo } from '@/components/Logo';
+import { HomeEntry } from '@/components/HomeEntry';
 import { Root } from '@/components/Root';
 import { supabase } from '@/utils/supabase';
 
@@ -34,7 +35,7 @@ const Login = (
       await post('/api/login', { event, session });
 
       if (session) {
-        push('/');
+        push('/studio');
       }
     };
 
@@ -69,8 +70,9 @@ const Login = (
 
   return (
     <Root>
-      <Header display="flex" justifyContent="center">
-        <Logo />
+      <Header justifyContent="space-between">
+        <HomeEntry />
+        <ColorModeSwitch />
       </Header>
       <VStack
         flex={1}
@@ -83,12 +85,13 @@ const Login = (
         {loading ? (
           <Spinner />
         ) : (
-          <VStack alignItems="stretch" justifyContent="center" gridGap={1}>
+          <VStack alignItems="stretch" justifyContent="center" gridGap={4}>
             <Button
               variant="outline"
               colorScheme="blue"
               flexDirection="column"
-              py={8}
+              px={10}
+              py={10}
               onClick={() => {
                 handleSignIn('github');
               }}
@@ -100,7 +103,8 @@ const Login = (
               variant="outline"
               colorScheme="orange"
               flexDirection="column"
-              py={8}
+              px={10}
+              py={10}
               onClick={() => {
                 handleSignIn('gitlab');
               }}
@@ -117,7 +121,7 @@ const Login = (
 };
 
 export const getServerSideProps = compose(
-  [withGsspColorMode],
+  [withGsspColorMode()],
   async (context: GetServerSidePropsContext) => {
     if (context.req.cookies['sb:token']) {
       const { user } = await supabase.auth.api.getUserByCookie(context.req);
@@ -125,7 +129,7 @@ export const getServerSideProps = compose(
       if (user) {
         return {
           redirect: {
-            destination: '/',
+            destination: '/studio',
             permanent: false,
           },
         };

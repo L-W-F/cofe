@@ -5,7 +5,7 @@ import { makeId } from '@cofe/utils';
 export const errorCache = new Map();
 
 export const withGsspCatch =
-  (next?) => async (context: GetServerSidePropsContext) => {
+  (options?) => (next?) => async (context: GetServerSidePropsContext) => {
     debug('gssp')('withGsspCatch');
 
     if (next) {

@@ -1,7 +1,6 @@
 import React from 'react';
-import { ViewIcon } from '@cofe/icons';
 import { ButtonGroup, IconButton } from '@chakra-ui/react';
-import { DesignIcon, JsonIcon } from '@cofe/icons';
+import { DesignIcon, JsonIcon, ViewIcon } from '@cofe/icons';
 import { useDispatch, useStore } from '@cofe/store';
 import {
   EditorState,
@@ -15,7 +14,7 @@ export const ModeSwitch = () => {
   const dispatch = useDispatch();
 
   return (
-    <ButtonGroup isAttached variant="outline">
+    <ButtonGroup size="xs" isAttached variant="outline">
       <IconButton
         aria-label="设计模式"
         title="设计模式"

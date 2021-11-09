@@ -1,6 +1,19 @@
 {
-  "extends": ["cofe/next"],
+  "extends": ["cofe/next", "plugin:mdx/recommended"],
   "rules": {
     "react/react-in-jsx-scope": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": "*.{md,mdx}",
+      "rules": {
+        "react/jsx-filename-extension": ["error", { "extensions": [".md", ".mdx", ".ts", ".tsx"] }],
+        "react/jsx-indent": "off",
+        "prettier/prettier": "off",
+        "semi": ["error", "never"]
+      },
+      "settings": {
+        "mdx/code-blocks": true
+      }
+    }]
 }

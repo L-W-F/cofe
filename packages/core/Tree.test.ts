@@ -107,4 +107,11 @@ describe('Tree', () => {
     expect(t2).toHaveProperty('children');
     expect(t2.children[0]).toHaveProperty('parent');
   });
+
+  test('#createNode', () => {
+    const node = Tree.createNode({ type: 'foo' });
+
+    expect(node).toHaveProperty('type', 'foo');
+    expect(node).toHaveProperty('id');
+  });
 });

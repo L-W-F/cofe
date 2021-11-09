@@ -21,7 +21,7 @@ import { AvatarUpload } from '@/components/AvatarUpload';
 import { ColorModeSwitch } from '@/components/ColorModeSwitch';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
-import { Logo } from '@/components/Logo';
+import { HomeEntry } from '@/components/HomeEntry';
 import { Root } from '@/components/Root';
 import { Whoami } from '@/components/Whoami';
 import { withGsspCatch } from '@/gssp/withGsspCatch';
@@ -45,7 +45,7 @@ const Profile = (
   return !user.username ? null : (
     <Root>
       <Header>
-        <Logo />
+        <HomeEntry />
         <Box flex={1} />
         <ColorModeSwitch />
         <Whoami />
@@ -125,9 +125,9 @@ const Profile = (
 };
 
 export const getServerSideProps = compose([
-  withGsspCatch,
-  withGsspWhoami,
-  withGsspColorMode,
+  withGsspCatch(),
+  withGsspWhoami(),
+  withGsspColorMode(),
 ]);
 
 export default Profile;

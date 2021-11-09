@@ -33,15 +33,23 @@ const createError = (json) => {
 const wrap = (url: string, init: RequestInit) => {
   fireStart(url, init);
 
+  function getBody(response) {
+    if (response.headers.get('Content-Type')!.includes('application/json')) {
+      return response.json();
+    }
+
+    return response.text();
+  }
+
   return fetch(url, init)
     .then(async (response) => {
       if (response.ok) {
         try {
-          return await response.json();
+          return await getBody(response);
         } catch (error) {}
       } else {
         try {
-          return Promise.reject(createError(await response.json()));
+          return Promise.reject(createError(await getBody(response)));
         } catch (error) {
           throw Error(response.statusText);
         }

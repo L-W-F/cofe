@@ -9,7 +9,7 @@ import { Paper } from '@cofe/ui';
 import { ColorModeSwitch } from '@/components/ColorModeSwitch';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
-import { Logo } from '@/components/Logo';
+import { HomeEntry } from '@/components/HomeEntry';
 import { Root } from '@/components/Root';
 import { Whoami } from '@/components/Whoami';
 import { withGsspCatch } from '@/gssp/withGsspCatch';
@@ -37,7 +37,7 @@ const CreateApp = (
   return (
     <Root>
       <Header>
-        <Logo />
+        <HomeEntry />
         <Box flex={1} />
         <ColorModeSwitch />
         <Whoami />
@@ -96,7 +96,7 @@ const CreateApp = (
 };
 
 export const getServerSideProps = compose(
-  [withGsspCatch, withGsspWhoami, withGsspColorMode],
+  [withGsspCatch(), withGsspWhoami(), withGsspColorMode()],
   async (context: GetServerSidePropsContext) => {
     return {
       props: {

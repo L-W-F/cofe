@@ -1,9 +1,10 @@
-import { CofeTree } from '@cofe/types';
-import { makeId } from '@cofe/utils';
+import { CofeSchema, CofeTree } from '@cofe/types';
+import { extractDefaults, makeId } from '@cofe/utils';
 import { isEqual, isEqualWith, merge } from 'lodash';
 import { u } from 'unist-builder';
 import { map } from 'unist-util-map';
 import { parents } from 'unist-util-parents';
+import { Schema } from './Schema';
 
 export const cache = new WeakMap<object, CofeTree>();
 
@@ -70,5 +71,56 @@ export class Tree {
     }
 
     return cache.get(tree);
+  }
+
+  private static createCompositeNode(
+    { type, properties, actions, children }: CofeSchema,
+    schemas?: Record<string, CofeSchema>,
+  ): CofeTree {
+    const atomicNode = Tree.createAtomicNode(schemas[type]);
+
+    if (properties) {
+      Object.assign(atomicNode.properties, properties);
+    }
+
+    if (actions) {
+      Object.assign(atomicNode.actions, actions);
+    }
+
+    if (children) {
+      atomicNode.children = children?.map((c) =>
+        Tree.createCompositeNode(c, schemas),
+      );
+    }
+
+    return atomicNode;
+  }
+
+  private static createAtomicNode({
+    type,
+    properties,
+    actions,
+  }: CofeSchema): CofeTree {
+    const props = {
+      id: makeId(),
+    };
+
+    if (properties) {
+      Object.assign(props, { properties: extractDefaults(properties) });
+    }
+
+    if (actions) {
+      Object.assign(props, { actions: extractDefaults(actions) });
+    }
+
+    return u(type, props);
+  }
+
+  static createNode(schema: CofeSchema, schemas?: Record<string, CofeSchema>) {
+    if (Schema.isTemplate(schema)) {
+      return Tree.createCompositeNode(schema.template, schemas);
+    }
+
+    return Tree.createAtomicNode(schema);
   }
 }

@@ -14,6 +14,6 @@ const Forbidden = () => {
   );
 };
 
-export const getServerSideProps = withGsspColorMode();
+export const getServerSideProps = withGsspColorMode()();
 
 export default Forbidden;

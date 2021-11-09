@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox } from '@chakra-ui/react';
+import { Switch } from '@chakra-ui/react';
 import { WidgetProps } from '@rjsf/core';
 
 export const CheckboxWidget = ({
@@ -16,7 +16,8 @@ export const CheckboxWidget = ({
   onChange,
 }: WidgetProps) => {
   return (
-    <Checkbox
+    <Switch
+      aria-label={label}
       id={id}
       autoFocus={autofocus}
       isReadOnly={readonly}
@@ -34,9 +35,7 @@ export const CheckboxWidget = ({
       onChange={(e) => {
         onChange(e.target.checked);
       }}
-    >
-      {label}
-    </Checkbox>
+    />
   );
 };
 

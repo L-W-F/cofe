@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { debug } from '@cofe/logger';
 
 export const withGsspPanelSize =
-  (next?) => async (context: GetServerSidePropsContext) => {
+  (options?) => (next?) => async (context: GetServerSidePropsContext) => {
     debug('gssp')('withGsspPanelSize');
 
     const { left_pane_size = '240', right_pane_size = '240' } =

@@ -1,0 +1,103 @@
+import { Center } from '@chakra-ui/react'
+import { Carousel } from './Carousel'
+
+## use case
+
+### Carousel
+
+<Carousel
+  autoplay
+  distance={500}
+  controlPlacement="bottom"
+>
+  <Center h={100} w={50} style={{ background: 'rgb(200, 0, 0)' }}>1</Center>
+  <Center h={100} w={50} style={{ background: 'rgb(0, 200, 0)' }}>2</Center>
+  <Center h={100} w={50} style={{ background: 'rgb(0, 0, 200)' }}>3</Center>
+  <Center h={100} w={50} style={{ background: 'rgb(200, 200, 0)' }}>4</Center>
+  <Center h={100} w={50} style={{ background: 'rgb(200, 0, 200)' }}>5</Center>
+  <Center h={100} w={50} style={{ background: 'rgb(0, 200, 200)' }}>6</Center>
+  <Center h={100} w={50} style={{ background: 'rgb(0, 200, 200)' }}>6</Center>
+</Carousel>
+
+### number
+
+<Carousel
+  schema={{
+    type: 'number',
+    title: '年龄',
+    description: '请输入年龄',
+  }}
+/>
+
+### boolean
+
+<Carousel
+  schema={{
+    type: 'boolean',
+    title: '婚否',
+    description: '请输入婚否',
+  }}
+/>
+
+### array
+
+<Carousel
+  schema={{
+    type: 'array',
+    items: {
+      type: 'string',
+      title: '别名',
+      description: '请输入别名',
+    },
+  }}
+/>
+
+### object
+
+<Carousel
+  schema={{
+    type: 'object',
+    properties: {
+      name: {
+        type: 'string',
+        title: '姓名',
+        description: '请输入姓名',
+      },
+      age: {
+        type: 'number',
+        title: '年龄',
+        description: '请输入年龄',
+      },
+      marital: {
+        type: 'boolean',
+        title: '婚否',
+        description: '请输入婚否',
+      },
+    },
+  }}
+/>
+
+### array + object
+
+<Carousel
+  schema={{
+    type: 'array',
+    title: '标题',
+    description: '描述',
+    items: {
+      type: 'object',
+      properties: {
+        x: {
+          type: 'number',
+          title: '横坐标',
+          description: '请输入横坐标',
+        },
+        y: {
+          type: 'number',
+          title: '纵坐标',
+          description: '请输入纵坐标',
+        },
+      },
+    },
+  }}
+/>

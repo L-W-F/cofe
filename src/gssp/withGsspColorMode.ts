@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { debug } from '@cofe/logger';
 
 export const withGsspColorMode =
-  (next?) => async (context: GetServerSidePropsContext) => {
+  (options?) => (next?) => async (context: GetServerSidePropsContext) => {
     debug('gssp')('withGsspColorMode');
 
     const colorModeKey = process.env.KEY_OF_COLOR_MODE_COOKIE;
