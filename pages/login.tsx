@@ -28,9 +28,7 @@ const Login = (
     if (window.location.hash) {
       setLoading(true);
     }
-  }, []);
 
-  useEffect(() => {
     const callback = async (event, session) => {
       await post('/api/login', { event, session });
 
