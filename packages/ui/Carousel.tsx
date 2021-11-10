@@ -1,4 +1,10 @@
-import React, { Children, useCallback, useEffect, useState } from 'react';
+import React, {
+  Children,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Box, useColorModeValue } from '@chakra-ui/react';
 import { CarouselCore, CarouselCoreProps } from './CarouselCore';
 
@@ -18,6 +24,7 @@ export const Carousel = ({
 }: CarouselProps) => {
   const [value, setValue] = useState(0);
   const childrenCount = Children.count(children);
+  const hoveringRef = useRef(false);
 
   const dotColors = useColorModeValue(
     [
@@ -39,9 +46,19 @@ export const Carousel = ({
 
   useEffect(() => {
     if (autoplay) {
-      const timeout = setTimeout(() => {
-        setValueClamped(value + 1);
-      }, autoplayTimeout * 1000);
+      let timeout: any;
+
+      const handleTimeout = () => {
+        timeout = setTimeout(() => {
+          if (hoveringRef.current) {
+            handleTimeout();
+          } else {
+            setValueClamped(value + 1);
+          }
+        }, autoplayTimeout * 1000);
+      };
+
+      handleTimeout();
 
       return () => {
         clearTimeout(timeout);
@@ -54,6 +71,12 @@ export const Carousel = ({
       position="relative"
       duration={duration}
       value={value}
+      onMouseEnter={() => {
+        hoveringRef.current = true;
+      }}
+      onMouseLeave={() => {
+        hoveringRef.current = false;
+      }}
       controls={
         <Box
           position="absolute"

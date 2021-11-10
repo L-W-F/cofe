@@ -67,7 +67,7 @@ export const CarouselCore = ({
         }}
       >
         {Children.map(children, (child) => (
-          <Box role="banner" w={distance}>
+          <Box role="banner" w={distance ?? 'initial'}>
             {child}
           </Box>
         ))}
