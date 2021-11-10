@@ -16,7 +16,7 @@ import { supabase } from '@/utils/supabase';
 const Login = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => {
-  const { push } = useRouter();
+  const { push, query } = useRouter();
   const toast = useToast({
     status: 'error',
     duration: 1000,
@@ -52,9 +52,14 @@ const Login = (
 
   const handleSignIn = async (provider) => {
     try {
-      const { error } = await supabase.auth.signIn({
-        provider,
-      });
+      const { error } = await supabase.auth.signIn(
+        {
+          provider,
+        },
+        {
+          redirectTo: `${process.env.NEXT_PUBLIC_ORIGIN}${query.backUrl}`,
+        },
+      );
 
       if (error) {
         throw error;

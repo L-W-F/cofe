@@ -17,7 +17,7 @@ export const withGsspWhoami =
 
       return {
         redirect: {
-          destination: '/login',
+          destination: `/login?backUrl=${context.req.url}`,
           permanent: false,
         },
       };

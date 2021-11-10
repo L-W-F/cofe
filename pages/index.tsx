@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { Box, Button, Flex, Grid, Text } from '@chakra-ui/react';
 import { compose } from '@cofe/gssp';
 import { ArrowForwardIcon } from '@cofe/icons';
-import { post } from '@cofe/io';
 import { Carousel } from '@cofe/ui';
 import bannerCloud from '../public/banner-cloud.png';
 import bannerConfig from '../public/banner-config.png';
@@ -20,40 +18,10 @@ import { Whoami } from '@/components/Whoami';
 import { withGsspCatch } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspWhoami } from '@/gssp/withGsspWhoami';
-import { supabase } from '@/utils/supabase';
 
 const Index = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => {
-  const { push } = useRouter();
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (window.location.hash) {
-      setLoading(true);
-
-      const callback = async (event, session) => {
-        await post('/api/login', { event, session });
-
-        if (session) {
-          push('/studio');
-        }
-      };
-
-      const _session = supabase.auth.session();
-
-      if (_session) {
-        callback('SIGNED_IN', _session);
-      }
-
-      const { data: authListener } = supabase.auth.onAuthStateChange(callback);
-
-      return () => {
-        authListener.unsubscribe();
-      };
-    }
-  }, [push]);
-
   return (
     <Root>
       <Header>
@@ -145,8 +113,6 @@ const Index = (
             size="lg"
             rightIcon={<ArrowForwardIcon />}
             href="/studio"
-            isLoading={loading}
-            loadingText="即刻体验！"
           >
             即刻体验！
           </Button>
