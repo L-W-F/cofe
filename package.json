@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@chakra-ui/react": "^1.6.12",
-    "@chakra-ui/theme-tools": "^1.2.3",
+    "@chakra-ui/theme-tools": "^1.3.0",
     "@cofe/api": "^0.1.0",
     "@cofe/core": "^0.1.0",
     "@cofe/form": "^0.1.0",
