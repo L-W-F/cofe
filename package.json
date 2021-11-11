@@ -28,7 +28,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@chakra-ui/react": "^1.6.12",
+    "@chakra-ui/react": "^1.7.0",
     "@chakra-ui/theme-tools": "^1.2.3",
     "@cofe/api": "^0.1.0",
     "@cofe/core": "^0.1.0",
