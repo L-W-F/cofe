@@ -80,7 +80,7 @@
     "babel-jest": "^27.3.1",
     "babel-preset-cofe": "^0.0.1",
     "commitizen": "^4.2.4",
-    "concurrently": "^6.3.0",
+    "concurrently": "^6.4.0",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.32.0",
     "eslint-config-cofe": "^0.0.2",
