@@ -1,59 +1,42 @@
 import { AnyAction } from '@cofe/store';
-import { CofeDbApp, CofeDbPage } from '@cofe/types';
-import { omit } from 'lodash';
-import { a2m } from '@/utils/a2m';
+import { CofeApp } from '@cofe/types';
+import { omit } from 'lodash-es';
 
-export type AppState = Record<
-  string,
-  CofeDbApp & {
-    pages?: Record<string, CofeDbPage>;
-  }
->;
+export type AppState = CofeApp;
 
-export const initialState: AppState = {};
+export const initialState: AppState = null;
 
 export const reducer = (state = initialState, { type, payload }: AnyAction) => {
   switch (type) {
-    case 'FETCH_APPS':
-      return a2m(payload);
-
     case 'CREATE_APP':
+      return payload;
+
     case 'UPDATE_APP':
       return {
         ...state,
-        [payload.id]: {
-          ...state[payload.id],
-          ...payload,
-        },
+        ...payload,
       };
 
     case 'DELETE_APP':
-      return omit(state, payload.id ?? payload);
+      return null;
 
-    case 'FETCH_PAGES':
-      if (!payload?.length) {
-        return state;
-      }
-
+    case 'CREATE_PAGE':
       return {
         ...state,
-        [payload[0].app_id]: {
-          ...state[payload[0].app_id],
-          pages: a2m(payload),
+        pages: {
+          ...state.pages,
+          [payload.id]: payload,
         },
       };
 
     case 'UPDATE_PAGE':
       return {
         ...state,
-        [payload.app_id]: {
-          ...state[payload.app_id],
-          pages: {
-            ...state[payload.app_id].pages,
-            [payload.id]: {
-              ...state[payload.app_id].pages[payload.id],
-              ...payload,
-            },
+        pages: {
+          ...state.pages,
+          [payload.id]: {
+            ...state.pages[payload.id],
+            ...payload,
           },
         },
       };
@@ -61,22 +44,7 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
     case 'DELETE_PAGE':
       return {
         ...state,
-        [payload.app_id]: {
-          ...state[payload.app_id],
-          pages: omit(state[payload.app_id].pages, payload.id),
-        },
-      };
-
-    case 'CREATE_PAGE':
-      return {
-        ...state,
-        [payload.app_id]: {
-          ...state[payload.app_id],
-          pages: {
-            ...state[payload.app_id].pages,
-            [payload.id]: payload,
-          },
-        },
+        pages: omit(state.pages, payload.id ?? payload),
       };
 
     default:

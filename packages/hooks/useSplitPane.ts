@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { clamp } from 'lodash';
+import { clamp } from 'lodash-es';
 
 export interface UseSplitPaneOptions {
   direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse';
@@ -78,7 +78,9 @@ export const useSplitPane = (
   }, [isHorizontal, isReversed, maxSize, minSize, onEnd, onResize, step]);
 
   useEffect(() => {
-    onInit?.(clamp(initialSize, minSize, maxSize), paneRef.current);
+    if (paneRef.current) {
+      onInit?.(clamp(initialSize, minSize, maxSize), paneRef.current);
+    }
   }, [initialSize, maxSize, minSize, onInit]);
 
   return {

@@ -8,12 +8,12 @@
   "author": "crossjs <liwenfu@crossjs.com>",
   "dependencies": {
     "@cofe/icons": "^0.1.0",
-    "@chakra-ui/react": "^1.7.1",
+    "@chakra-ui/react": "^1.7.2",
     "@rjsf/core": "^3.2.0",
     "react": "^17.0.2"
   },
   "devDependencies": {
     "@types/json-schema": "^7.0.9",
-    "@types/react": "^17.0.34"
+    "@types/react": "^17.0.35"
   }
 }

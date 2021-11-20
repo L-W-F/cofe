@@ -1,3 +1,4 @@
+import { Schema } from '@cofe/core';
 import { button } from './button';
 import { fragment } from './fragment';
 import { grid } from './grid';
@@ -6,7 +7,7 @@ import { link } from './link';
 import { mixins } from './mixins';
 import { text } from './text';
 
-export const schemas = {
+Schema.register({
   ...mixins,
   [button.type]: button,
   [fragment.type]: fragment,
@@ -14,4 +15,4 @@ export const schemas = {
   [icon.type]: icon,
   [link.type]: link,
   [text.type]: text,
-};
+});

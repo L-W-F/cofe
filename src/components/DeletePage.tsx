@@ -10,27 +10,17 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@cofe/icons';
-import { del } from '@cofe/io';
-import { useDispatch } from '@cofe/store';
-import { useIsLoading } from '@/hooks/useIsLoading';
+import { useAppActions } from '@/hooks/useApp';
 import { AppState } from '@/store/app';
 
 interface DeletePageProps {
-  page: AppState[string]['pages'][string];
+  page: AppState['pages'][string];
 }
 
 export const DeletePage = ({ page }: DeletePageProps) => {
-  const is_loading = useIsLoading();
-  const dispatch = useDispatch();
+  const { deletePage } = useAppActions();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
-
-  const handleDelete = async () => {
-    await del(`/api/pages/${page.id}`);
-
-    onClose();
-    dispatch('DELETE_PAGE')(page);
-  };
 
   return (
     <>
@@ -40,7 +30,6 @@ export const DeletePage = ({ page }: DeletePageProps) => {
         icon={<DeleteIcon />}
         variant="ghost"
         colorScheme="red"
-        isDisabled={is_loading}
         onClick={onOpen}
       />
       <AlertDialog
@@ -59,11 +48,12 @@ export const DeletePage = ({ page }: DeletePageProps) => {
               取消
             </Button>
             <Button
-              isLoading={is_loading}
-              isDisabled={is_loading}
               loadingText="删除"
               colorScheme="red"
-              onClick={handleDelete}
+              onClick={() => {
+                deletePage(page);
+                onClose();
+              }}
               ml={3}
             >
               删除

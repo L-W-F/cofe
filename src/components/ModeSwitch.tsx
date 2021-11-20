@@ -1,27 +1,22 @@
 import React from 'react';
 import { ButtonGroup, IconButton } from '@chakra-ui/react';
 import { DesignIcon, JsonIcon, ViewIcon } from '@cofe/icons';
-import { useDispatch, useStore } from '@cofe/store';
-import {
-  EditorState,
-  MODE_DESIGN,
-  MODE_PREVIEW,
-  MODE_SOURCE,
-} from '@/store/editor';
+import { useEditor } from '@/hooks/useEditor';
+import { MODE_DESIGN, MODE_PREVIEW, MODE_SOURCE } from '@/store/editor';
 
 export const ModeSwitch = () => {
-  const mode = useStore<EditorState['mode']>('editor.mode');
-  const dispatch = useDispatch();
+  const { mode, switchMode } = useEditor();
 
   return (
-    <ButtonGroup size="xs" isAttached variant="outline">
+    <ButtonGroup isAttached variant="outline">
       <IconButton
         aria-label="设计模式"
         title="设计模式"
         icon={<DesignIcon />}
         isDisabled={mode === MODE_DESIGN}
+        mr="-1px"
         onClick={() => {
-          dispatch('SET_MODE')(MODE_DESIGN);
+          switchMode(MODE_DESIGN);
         }}
       />
       <IconButton
@@ -29,8 +24,9 @@ export const ModeSwitch = () => {
         title="源码模式"
         icon={<JsonIcon />}
         isDisabled={mode === MODE_SOURCE}
+        mr="-1px"
         onClick={() => {
-          dispatch('SET_MODE')(MODE_SOURCE);
+          switchMode(MODE_SOURCE);
         }}
       />
       <IconButton
@@ -39,7 +35,7 @@ export const ModeSwitch = () => {
         icon={<ViewIcon />}
         isDisabled={mode === MODE_PREVIEW}
         onClick={() => {
-          dispatch('SET_MODE')(MODE_PREVIEW);
+          switchMode(MODE_PREVIEW);
         }}
       />
     </ButtonGroup>

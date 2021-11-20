@@ -6,18 +6,17 @@ import {
   AccordionPanel,
   Text,
 } from '@chakra-ui/react';
+import { Schema } from '@cofe/core';
 import { Form, Ui } from '@cofe/form';
-import { useDispatch } from '@cofe/store';
 import { Empty } from '@cofe/ui';
-import { useSchema } from '@/hooks/useSchema';
+import { useEditorActions } from '@/hooks/useEditor';
 import { useSelectedNode } from '@/hooks/useSelectedNode';
 
 export const ActionPanel = () => {
   const selectedNode = useSelectedNode();
-  const dispatch = useDispatch();
-  const schema = useSchema(selectedNode?.type);
+  const { updateNode } = useEditorActions();
 
-  const aSchema = schema?.actions;
+  const aSchema = Schema.get(selectedNode?.type)?.actions;
 
   return (
     <AccordionItem>
@@ -33,7 +32,7 @@ export const ActionPanel = () => {
             uiSchema={Ui.get(selectedNode.type)?.actions}
             idPrefix="actions"
             onChange={(e) => {
-              dispatch('UPDATE_NODE')({
+              updateNode({
                 ...selectedNode,
                 actions: e.formData,
               });

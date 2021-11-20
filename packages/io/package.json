@@ -6,8 +6,11 @@
   "main": "index.ts",
   "license": "MIT",
   "author": "crossjs <liwenfu@crossjs.com>",
-  "devDependencies": {
+  "dependencies": {
     "@cofe/logger": "^0.1.0",
-    "lodash": "^4.17.21"
+    "lodash-es": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.5"
   }
 }

@@ -1,5 +1,5 @@
 import { RefCallback, useEffect, useState } from 'react';
-import { useDispatch } from '@cofe/store';
+import { useDndActions } from './useDnd';
 
 interface DragOptions {
   type?: string;
@@ -19,7 +19,7 @@ export const useDrag = ({
   id,
   effectAllowed = 'copyMove',
 }: DragOptions): DragReturns => {
-  const dispatch = useDispatch();
+  const { reset, setDragging } = useDndActions();
   const [isDragging, setIsDragging] = useState(false);
   const [dragHandle, setDragHandle] = useState<HTMLElement>(null);
 
@@ -29,7 +29,7 @@ export const useDrag = ({
         e.stopPropagation();
         e.dataTransfer.effectAllowed = effectAllowed;
 
-        dispatch('DRAGGING')({ type, id });
+        setDragging({ type, id });
         setIsDragging(true);
 
         document.addEventListener('dragend', end);
@@ -38,10 +38,7 @@ export const useDrag = ({
       const end = () => {
         setIsDragging(false);
 
-        dispatch('DRAGGING')(null);
-        dispatch('ADJACENT')(null);
-        dispatch('REFERENCE')(null);
-        dispatch('CONTAINER')(null);
+        reset();
 
         document.removeEventListener('dragend', end);
       };
@@ -54,7 +51,7 @@ export const useDrag = ({
         dragHandle.setAttribute('draggable', 'false');
       };
     }
-  }, [dispatch, dragHandle, effectAllowed, id, type]);
+  }, [dragHandle, effectAllowed, id, reset, setDragging, type]);
 
   return [
     {

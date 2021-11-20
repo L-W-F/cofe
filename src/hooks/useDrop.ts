@@ -1,12 +1,12 @@
 import { RefCallback, useEffect, useRef, useState } from 'react';
 import { Schema, Tree } from '@cofe/core';
-import { useDispatch, useStore } from '@cofe/store';
+import { useValue } from '@cofe/store';
 import { CofeDndAdjacent, CofeDndIdentity, CofeDndPayload } from '@cofe/types';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 import { select } from 'unist-util-select';
+import { useDndActions } from './useDnd';
 import { useSelectedTree } from './useSelectedTree';
 import { DndState } from '@/store/dnd';
-import { SchemaState } from '@/store/schema';
 
 interface DropOptions {
   onDrop: (payload: CofeDndPayload) => void;
@@ -16,9 +16,8 @@ type DropReturns = [{}, RefCallback<HTMLElement>];
 
 export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
   const selectedTree = useSelectedTree();
-  const schemas = useStore<SchemaState>('schema');
-  const dragging = useStore<DndState['dragging']>('dnd.dragging');
-  const dispatch = useDispatch();
+  const dragging = useValue<DndState['dragging']>('dnd.dragging');
+  const { reset, setAdjacent, setReference, setContainer } = useDndActions();
   const [dropHandle, setDropHandle] = useState<HTMLElement>(null);
   const referenceRef = useRef<CofeDndIdentity>();
   const containerRef = useRef<CofeDndIdentity>();
@@ -47,14 +46,13 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
           }
 
           onDrop({
-            dragging:
-              dragging.id ?? Tree.createNode(schemas[dragging.type], schemas),
+            dragging: dragging.id ?? Tree.createNode(dragging.type),
             reference: reference?.id,
             container: container?.id,
             adjacent,
           });
 
-          dispatch('RESET_DND')(null);
+          reset();
         }
       };
 
@@ -70,7 +68,7 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
               .querySelector(`[data-id=${reference.id}]`)
               .getBoundingClientRect();
 
-            const { isInline } = schemas[reference.type];
+            const { isInline } = Schema.get(reference.type);
 
             adjacent = (
               isInline ? e.clientX > x + width / 2 : e.clientY > y + height / 2
@@ -80,12 +78,12 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
 
             if (adjacentRef.current !== adjacent) {
               adjacentRef.current = adjacent;
-              dispatch('ADJACENT')(adjacent);
+              setAdjacent(adjacent);
             }
           } else {
             if (adjacentRef.current !== null) {
               adjacentRef.current = null;
-              dispatch('ADJACENT')(null);
+              setAdjacent(null);
             }
           }
         } else {
@@ -101,17 +99,16 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
           [reference, container] = getAcceptChain(
             select(`[id=${e.target.dataset?.id}]`, selectedTree as any),
             dragging.type,
-            schemas,
           );
 
           if (!isEqual(referenceRef.current, reference)) {
             referenceRef.current = reference;
-            dispatch('REFERENCE')(reference);
+            setReference(reference);
           }
 
           if (!isEqual(containerRef.current, container)) {
             containerRef.current = container;
-            dispatch('CONTAINER')(container);
+            setContainer(container);
           }
         }
       };
@@ -138,7 +135,16 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
 
       return removeListeners;
     }
-  }, [selectedTree, dispatch, dragging, dropHandle, onDrop, schemas]);
+  }, [
+    selectedTree,
+    dragging,
+    dropHandle,
+    onDrop,
+    reset,
+    setAdjacent,
+    setReference,
+    setContainer,
+  ]);
 
   return [{}, setDropHandle];
 };
@@ -146,13 +152,13 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
 /**
  * @returns [相邻的节点?, 将要插入的父级节点?]
  */
-function getAcceptChain(node: any, type: string, map: any) {
+function getAcceptChain(node: any, type: string) {
   const chain = [null, null];
 
   while (node) {
     chain.push({ type: node.type, id: node.id });
 
-    if (Schema.isAccepted(map[node.type].accept, type)) {
+    if (Schema.isAccepted(Schema.get(node.type)?.accept, type)) {
       return chain.slice(-2) as [
         {
           type: string;

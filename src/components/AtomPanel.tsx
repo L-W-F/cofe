@@ -8,13 +8,10 @@ import {
   List,
   Text,
 } from '@chakra-ui/react';
-import { useStore } from '@cofe/store';
+import { Schema } from '@cofe/core';
 import { DragItem } from './DragItem';
-import { SchemaState } from '@/store/schema';
 
 export const AtomPanel = () => {
-  const schemas = useStore<SchemaState>('schema');
-
   return (
     <AccordionItem isFocusable={false}>
       <AccordionButton>
@@ -23,8 +20,8 @@ export const AtomPanel = () => {
       </AccordionButton>
       <AccordionPanel>
         <List as={Flex} flexDirection="column" gridGap={2}>
-          {Object.keys(schemas).map((type) => {
-            if (type.indexOf(':') !== -1) {
+          {Schema.map(([type, schema]) => {
+            if (!Schema.isAtom(schema)) {
               return null;
             }
 

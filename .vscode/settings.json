@@ -5,12 +5,12 @@
     "coord",
     "gssp",
     "hocs",
+    "keyval",
     "Menlo",
     "middlewares",
     "monospace",
     "rjsf",
     "shallowequal",
-    "supabase",
     "unist",
     "upsert",
     "vercel"

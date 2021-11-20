@@ -1,7 +1,7 @@
 import { Tree } from '@cofe/core';
 import { AnyAction } from '@cofe/store';
 import { CofeDndPayload, CofeEditor, CofeTree } from '@cofe/types';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { filter } from 'unist-util-filter';
 import { EXIT, visit } from 'unist-util-visit';
 
@@ -12,16 +12,15 @@ export const MODE_PREVIEW = 3;
 export interface EditorState extends CofeEditor {}
 
 export const initialState: EditorState = {
-  app_id: 0,
-  page_id: 0,
-  stack: [],
+  id: 0,
+  stack: [Tree.create('fragment')],
   cursor: 0,
   mode: 1,
 };
 
 export const reducer = (state = initialState, { type, payload }: AnyAction) => {
   switch (type) {
-    case 'SET_MODE':
+    case 'SWITCH_MODE':
       if (state.mode === payload) {
         return state;
       }
@@ -31,10 +30,11 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
         mode: payload,
       };
 
-    case 'SET_PAGE':
+    case 'SWITCH_PAGE':
       return {
         ...state,
-        ...payload,
+        id: payload.id,
+        stack: [payload.tree ?? Tree.create('fragment')],
         cursor: 0,
       };
 
@@ -74,12 +74,12 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
         cursor: 0,
       };
 
-    case 'DUPLICATE_NODE':
+    case 'UPDATE_NODE':
       return {
         ...state,
-        stack: [
-          duplicateNodeById(state.stack[state.cursor], payload.id),
-        ].concat(state.stack.slice(state.cursor)),
+        stack: [updateNode(state.stack[state.cursor], payload)].concat(
+          state.stack.slice(state.cursor),
+        ),
         cursor: 0,
       };
 
@@ -92,12 +92,12 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
         cursor: 0,
       };
 
-    case 'UPDATE_NODE':
+    case 'DUPLICATE_NODE':
       return {
         ...state,
-        stack: [updateNode(state.stack[state.cursor], payload)].concat(
-          state.stack.slice(state.cursor),
-        ),
+        stack: [
+          duplicateNodeById(state.stack[state.cursor], payload.id),
+        ].concat(state.stack.slice(state.cursor)),
         cursor: 0,
       };
 

@@ -1,0 +1,39 @@
+{
+  "name": "@cofe/eslint-config-cofe",
+  "version": "0.0.2",
+  "description": "eslint config",
+  "keywords": [
+    "eslint",
+    "config"
+  ],
+  "repository": "git@github.com:crossjs/cofe.git",
+  "license": "MIT",
+  "author": "crossjs <liwenfu@crossjs.com>",
+  "sideEffects": false,
+  "main": "index.js",
+  "files": [
+    "rules",
+    "base.js",
+    "next.js",
+    "react.js",
+    "typescript.js"
+  ],
+  "dependencies": {
+    "@next/eslint-plugin-next": "^12.0.4",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "babel-eslint": "^10.1.0",
+    "confusing-browser-globals": "^1.0.10",
+    "eslint-config-next": "^12.0.4",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.27.0",
+    "eslint-plugin-react-hooks": "^4.3.0"
+  },
+  "peerDependencies": {
+    "eslint": "^7.32.0",
+    "prettier": "^2.4.1",
+    "typescript": "^4.5.2"
+  }
+}

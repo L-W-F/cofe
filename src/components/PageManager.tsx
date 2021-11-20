@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import {
   Box,
   Button,
@@ -6,6 +6,7 @@ import {
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
+  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   HStack,
@@ -14,114 +15,81 @@ import {
   ListItem,
   useDisclosure,
 } from '@chakra-ui/react';
-import {
-  AddIcon,
-  ChevronRightIcon,
-  DesignIcon,
-  SpinnerIcon,
-} from '@cofe/icons';
-import { get } from '@cofe/io';
-import { useDispatch } from '@cofe/store';
-import { Empty, Toolbar } from '@cofe/ui';
+import { AddIcon, DesignIcon, EditIcon, PagesIcon } from '@cofe/icons';
 import { DeletePage } from './DeletePage';
+import { EditApp } from './EditApp';
 import { EditPage } from './EditPage';
-import { useIsLoading } from '@/hooks/useIsLoading';
-import { AppState } from '@/store/app';
+import { useAppValue } from '@/hooks/useApp';
+import { useEditor } from '@/hooks/useEditor';
+import {
+  CHAR_COMMAND_KEY,
+  CHAR_SHIFT_KEY,
+  useShortcut,
+} from '@/hooks/useShortcut';
 
-interface PageManagerProps {
-  app: AppState[string];
-  closeParent: () => void;
-}
-
-export const PageManager = ({ app, closeParent }: PageManagerProps) => {
-  const is_loading = useIsLoading();
-  const dispatch = useDispatch();
+export const PageManager = () => {
+  const { pages } = useAppValue();
+  const { id, switchPage } = useEditor();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { id: app_id, pages = {} } = app;
-  const isEmpty = !pages || Object.keys(pages).length === 0;
+  useShortcut(
+    `${CHAR_COMMAND_KEY}${CHAR_SHIFT_KEY}M`,
+    useCallback(
+      (e) => {
+        e.preventDefault();
+        onOpen();
+      },
+      [onOpen],
+    ),
+  );
 
-  const fetchPages = useCallback(() => {
-    dispatch('FETCH_PAGES')(get(`/api/apps/${app_id}/pages`));
-  }, [app_id, dispatch]);
-
-  useEffect(() => {
-    if (isEmpty && isOpen) {
-      fetchPages();
-    }
-  }, [fetchPages, isEmpty, isOpen]);
+  const entries = Object.entries(pages);
+  const canDelete = entries.length > 1;
 
   return (
     <>
       <IconButton
-        aria-label="查看页面"
-        size="xs"
-        icon={<ChevronRightIcon boxSize="6" />}
-        variant="ghost"
-        isDisabled={is_loading}
+        aria-label="应用与页面"
+        title={`应用与页面 [${CHAR_COMMAND_KEY}${CHAR_SHIFT_KEY}M]`}
+        icon={<PagesIcon />}
         onClick={onOpen}
+        variant="ghost"
       />
       <Drawer isOpen={isOpen} onClose={onClose} placement="left">
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>页面</DrawerHeader>
-          <DrawerBody>
-            <Toolbar size="sm" px={0}>
-              <IconButton
-                aria-label="刷新"
-                icon={<SpinnerIcon />}
-                variant="outline"
-                size="sm"
-                isLoading={is_loading}
-                isDisabled={is_loading}
-                onClick={fetchPages}
-              />
-              <Box flex={1} />
-              <EditPage
-                trigger={
-                  <Button leftIcon={<AddIcon />} variant="outline" size="sm">
-                    创建新页面
-                  </Button>
-                }
-                page={{ title: '', description: '' }}
-              />
-            </Toolbar>
-            {isEmpty ? (
-              is_loading ? null : (
-                <Empty my={8} />
-              )
-            ) : (
-              <List mt={3} spacing={3}>
-                {Object.entries(pages).map(([id, page]) => (
-                  <ListItem key={id} as={HStack}>
-                    <Box flex={1}>{page.title}</Box>
-                    <EditPage page={page} />
-                    <DeletePage page={page} />
-                    <IconButton
-                      aria-label="设计"
-                      icon={<DesignIcon />}
-                      variant="ghost"
-                      size="xs"
-                      isDisabled={is_loading}
-                      onClick={() => {
-                        get(`/api/pages/${id}/tree`).then((tree) => {
-                          dispatch('SET_PAGE')({
-                            app_id: app.id,
-                            page_id: id,
-                            stack: [tree],
-                          });
+          <DrawerHeader>应用与页面</DrawerHeader>
+          <DrawerBody as={List} spacing={3}>
+            {entries.map(([_id, page]) => (
+              <ListItem key={_id} as={HStack}>
+                <Box flex={1}>{page.title}</Box>
+                <EditPage page={page} />
+                {canDelete && <DeletePage page={page} />}
+                <IconButton
+                  aria-label="设计"
+                  title="设计"
+                  icon={<DesignIcon />}
+                  variant="ghost"
+                  isDisabled={id === _id}
+                  onClick={() => {
+                    switchPage(page);
 
-                          onClose();
-                          closeParent();
-                        });
-                      }}
-                    />
-                  </ListItem>
-                ))}
-              </List>
-            )}
+                    onClose();
+                  }}
+                />
+              </ListItem>
+            ))}
           </DrawerBody>
+          <DrawerFooter as={HStack} justifyContent="space-between">
+            <EditApp
+              trigger={<Button leftIcon={<EditIcon />}>编辑应用</Button>}
+            />
+            <EditPage
+              trigger={<Button leftIcon={<AddIcon />}>创建页面</Button>}
+              page={{ title: '', description: '' }}
+            />
+          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>

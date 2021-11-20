@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Button,
   Drawer,
@@ -8,94 +8,101 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  useToast,
+  IconButton,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
-import { post } from '@cofe/io';
-import { useDispatch } from '@cofe/store';
+import { SaveTemplateIcon } from '@cofe/icons';
 import { CofeTree } from '@cofe/types';
-import { map } from 'lodash';
 import { u } from 'unist-builder';
-import { useIsLoading } from '@/hooks/useIsLoading';
+import { map } from 'unist-util-map';
 import { useSelectedTree } from '@/hooks/useSelectedTree';
+import {
+  CHAR_COMMAND_KEY,
+  CHAR_SHIFT_KEY,
+  useShortcut,
+} from '@/hooks/useShortcut';
+import { useTemplateActions } from '@/hooks/useTemplate';
 
-export const SaveTemplate = ({ isOpen, onClose }) => {
-  const is_loading = useIsLoading();
+export const SaveTemplate = () => {
   const selectedTree = useSelectedTree();
-  const dispatch = useDispatch();
-  const toast = useToast({
-    status: 'success',
-    duration: 1000,
-    position: 'bottom-left',
-  });
+  const { createTemplate } = useTemplateActions();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [formData, setFormData] = useState(null);
 
+  useShortcut(
+    `${CHAR_COMMAND_KEY}${CHAR_SHIFT_KEY}S`,
+    useCallback(
+      (e) => {
+        e.preventDefault();
+        onOpen();
+      },
+      [onOpen],
+    ),
+  );
+
   return (
-    <Drawer isOpen={isOpen} onClose={onClose}>
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerCloseButton />
-        <DrawerHeader>另存为模板</DrawerHeader>
-        <DrawerBody>
-          <Form
-            formData={formData}
-            schema={{
-              type: 'object',
-              properties: {
-                type: {
-                  type: 'string',
-                  title: '类型',
+    <>
+      <IconButton
+        aria-label="另存为模板"
+        title={`另存为模板 [${CHAR_COMMAND_KEY}${CHAR_SHIFT_KEY}S]`}
+        icon={<SaveTemplateIcon />}
+        variant="ghost"
+        onClick={onOpen}
+      />
+      <Drawer isOpen={isOpen} onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>另存为模板</DrawerHeader>
+          <DrawerBody>
+            <Form
+              formData={formData}
+              schema={{
+                type: 'object',
+                properties: {
+                  type: {
+                    type: 'string',
+                    title: '类型',
+                  },
+                  description: {
+                    type: 'string',
+                    title: '描述',
+                  },
                 },
-                description: {
-                  type: 'string',
-                  title: '描述',
-                },
-              },
-              required: ['type'],
-            }}
-            onChange={(e) => {
-              setFormData(e.formData);
-            }}
-          />
-        </DrawerBody>
-        <DrawerFooter>
-          <Button
-            colorScheme="teal"
-            isLoading={is_loading}
-            isDisabled={is_loading}
-            loadingText="保存"
-            onClick={async () => {
-              try {
-                const template = await post('/api/templates', {
-                  ...formData,
-                  template: map(
-                    selectedTree,
-                    ({ type, properties }: CofeTree) => {
-                      return u(type, { properties });
-                    },
-                  ),
-                });
-
-                toast({
-                  title: '已保存为模板',
-                });
-
-                dispatch('CREATE_SCHEMA')({
-                  type: `template:${template.type}`,
-                  schema: {
-                    type: `template:${template.type}`,
-                    template: template.template,
+                required: ['type'],
+              }}
+              onChange={(e) => {
+                setFormData(e.formData);
+              }}
+            />
+          </DrawerBody>
+          <DrawerFooter>
+            <Button
+              isFullWidth
+              colorScheme="teal"
+              loadingText="保存"
+              onClick={() => {
+                createTemplate({
+                  [`template:${formData.type}`]: {
+                    type: `template:${formData.type}`,
+                    template: map(
+                      selectedTree,
+                      ({ type, properties }: CofeTree) => {
+                        return u(type, { properties });
+                      },
+                    ),
                   },
                 });
 
                 onClose();
-              } catch (error) {}
-            }}
-          >
-            保存
-          </Button>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+              }}
+            >
+              保存
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </>
   );
 };

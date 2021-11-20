@@ -6,16 +6,10 @@
 
 ## 开始开发
 
-### 配置环境变量
+### 安装依赖
 
-本应用依赖 [supabase](https://supabase.io)
-
-```ini
-; .env.development.local 或 .env.production.local
-NEXT_PUBLIC_SUPABASE_URL=https://?.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=?
-SUPABASE_SECRET_KEY=?
-SUPABASE_JWT_SECRET=?
+```bash
+yarn
 ```
 
 ### 启动应用

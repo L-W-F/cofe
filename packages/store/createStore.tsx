@@ -1,6 +1,7 @@
 import React, { ReactNode, useCallback, useMemo } from 'react';
 import { isPromise } from '@cofe/utils';
-import { get, identity, isEqual, mergeWith } from 'lodash';
+import { get, identity, isEqual } from 'lodash-es';
+import { Provider } from 'react-redux';
 import {
   AnyAction,
   applyMiddleware,
@@ -12,29 +13,36 @@ import {
 } from 'redux';
 import shallowequal from 'shallowequal';
 import { create } from './create';
+import { merge } from './merge';
 
-type StoreModules<S extends unknown = any> = {
+export type StoreModules<S extends unknown = any> = {
   [name: string]: {
     initialState: S;
     reducer: Reducer<S, AnyAction>;
   };
 };
 
-type StoreStates = {
+export type StoreStates = {
   [K in keyof StoreModules]: StoreModules[K]['initialState'];
 };
 
-type StoreReducers = {
+export type StoreReducers = {
   [K in keyof StoreModules]: StoreModules[K]['reducer'];
 };
 
-export const createStore = (middlewares: Middleware[] = []) => {
-  const enhancer = applyMiddleware(...middlewares);
+export type StoreApi = ReturnType<typeof createStore>;
+
+export const createStore = (
+  middlewares: Middleware[] = [],
+  reducers: StoreReducers = {},
+  states: StoreStates = {},
+) => {
+  const enhancers = applyMiddleware(...middlewares);
 
   const {
     StoreContext,
     useDispatch: useDispatch_,
-    useMappedState,
+    useSelector,
   } = create({
     defaultEqualityCheck: shallowequal,
   });
@@ -43,19 +51,14 @@ export const createStore = (middlewares: Middleware[] = []) => {
   let currentModules: StoreModules;
   let currentInitialStates: StoreStates;
 
-  const _states: StoreStates = {};
-  const _reducers: StoreReducers = {};
+  const _states = states;
+  const _reducers = reducers;
 
   /**
    * 1. 不可以直接修改 states
    * 2. 碰到数组直接覆盖
    */
-  const createStates = (states?: StoreStates) =>
-    mergeWith({}, _states, states, (objValue: any, srcValue: any) => {
-      if (Array.isArray(objValue)) {
-        return srcValue;
-      }
-    });
+  const createStates = (__states?: StoreStates) => merge(_states, __states);
 
   const initializeStore = (
     modules?: StoreModules,
@@ -83,38 +86,29 @@ export const createStore = (middlewares: Middleware[] = []) => {
       currentInitialStates = initialStates;
     }
 
+    // For SSG and SSR always create a new store
     if (!store || typeof window === 'undefined') {
-      /**
-       * 1. 未初始化
-       * 2. 服务端渲染
-       * 2.1 总是生成新 store，避免跨用户、跨页面数据冲突
-       */
       store = createReduxStore(
         combineReducers(_reducers),
         createStates(initialStates),
-        enhancer,
+        enhancers,
       );
     } else if (isInitialStatesChanged) {
-      /**
-       * 1. 肯定是客户端渲染
-       * 2. states 浅合并，以避免类似情况发生
-       *       { user: { name: 'x', permissions: { a: 1 } } }
-       *     + { user: { name: 'y', permissions: { b: 1 } } }
-       *    => { user: { name: 'y', permissions: { a: 1, b: 1 } } }
-       */
       store = createReduxStore(
         combineReducers(_reducers),
         createStates({
+          /**
+           * 浅合并，以避免类似情况发生：
+           *     { user: { name: 'x', permissions: { a: 1 } } }
+           *   + { user: { name: 'y', permissions: { b: 1 } } }
+           *  => { user: { name: 'y', permissions: { a: 1, b: 1 } } }
+           */
           ...store.getState(),
           ...initialStates,
         }),
-        enhancer,
+        enhancers,
       );
     } else if (isModulesChanged) {
-      /**
-       * 1. 肯定是客户端渲染
-       * 2. 直接替换 reducer
-       */
       store.replaceReducer(combineReducers(_reducers));
     }
 
@@ -136,19 +130,21 @@ export const createStore = (middlewares: Middleware[] = []) => {
     );
 
     return (
-      <StoreContext.Provider value={contextValue}>
+      <Provider store={contextValue} context={StoreContext}>
         {children}
-      </StoreContext.Provider>
+      </Provider>
     );
   };
 
   const getState = () => store?.getState() ?? null;
 
-  function useStore<T extends unknown = any>(
+  const subscribe = (listener: () => void) => store?.subscribe(listener);
+
+  function useValue<T extends unknown = any>(
     key: string | ((state: any) => any) = identity,
     deps: any[] = [],
   ): T {
-    return useMappedState(
+    return useSelector(
       /* eslint-disable react-hooks/exhaustive-deps */
       useCallback(
         typeof key === 'string' ? (storeState) => get(storeState, key) : key,
@@ -184,8 +180,10 @@ export const createStore = (middlewares: Middleware[] = []) => {
 
   return {
     Store,
+    subscribe,
     getState,
-    useStore,
+    useValue,
+    useSelector,
     useDispatch,
   };
 };

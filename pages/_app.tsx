@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import Script from 'next/script';
 import { ChakraProvider, cookieStorageManager } from '@chakra-ui/react';
 import { Store } from '@cofe/store';
 import { modules } from 'store';
@@ -40,6 +41,9 @@ const MyApp = ({
           />
         </ChakraProvider>
       </Store>
+      <Script
+        src={`http://sdk.talkingdata.com/app/h5/v1?appid=${process.env.NEXT_PUBLIC_TALKINGDATA_APPID}`}
+      />
     </>
   );
 };

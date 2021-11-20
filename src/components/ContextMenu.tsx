@@ -1,12 +1,13 @@
 import React from 'react';
 import { Box, Menu, MenuItem, MenuList } from '@chakra-ui/react';
 import { DeleteIcon, DuplicateIcon } from '@cofe/icons';
-import { useDispatch, useStore } from '@cofe/store';
+import { useValue } from '@cofe/store';
+import { useEditorActions } from '@/hooks/useEditor';
 import { DndState } from '@/store/dnd';
 
 export const ContextMenu = ({ isOpen, onClose, x, y }) => {
-  const selected = useStore<DndState['selected']>('dnd.selected');
-  const dispatch = useDispatch();
+  const selected = useValue<DndState['selected']>('dnd.selected');
+  const { deleteNode, duplicateNode } = useEditorActions();
 
   return (
     <Box pos="fixed" left={x} top={y}>
@@ -15,7 +16,7 @@ export const ContextMenu = ({ isOpen, onClose, x, y }) => {
           <MenuItem
             icon={<DuplicateIcon />}
             onClick={() => {
-              dispatch('DUPLICATE_NODE')(selected);
+              duplicateNode(selected);
             }}
           >
             复制
@@ -23,7 +24,7 @@ export const ContextMenu = ({ isOpen, onClose, x, y }) => {
           <MenuItem
             icon={<DeleteIcon />}
             onClick={() => {
-              dispatch('DELETE_NODE')(selected);
+              deleteNode(selected);
             }}
           >
             删除

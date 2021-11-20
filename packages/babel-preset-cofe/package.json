@@ -1,0 +1,32 @@
+{
+  "name": "@cofe/babel-preset-cofe",
+  "version": "0.0.1",
+  "description":"babel preset",
+  "keywords": [
+    "babel",
+    "preset"
+  ],
+  "repository": "git@github.com:crossjs/cofe.git",
+  "license": "MIT",
+  "author": "crossjs <liwenfu@crossjs.com>",
+  "sideEffects": false,
+  "main": "index.js",
+  "files": [
+    "base.js",
+    "next.js",
+    "react.js",
+    "typescript.js"
+  ],
+  "dependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "@babel/preset-react": "^7.16.0",
+    "@babel/preset-typescript": "^7.16.0",
+    "babel-plugin-inline-react-svg": "^2.0.1",
+    "babel-plugin-root-import": "^6.6.0",
+    "core-js": "^3.19.1"
+  },
+  "peerDependencies": {
+    "next": "^12.0.4"
+  }
+}

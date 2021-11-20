@@ -1,6 +1,6 @@
 import { AnyAction } from '@cofe/store';
 import { CofeDndAdjacent, CofeDndIdentity } from '@cofe/types';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 
 export interface DndState {
   dragging?: CofeDndIdentity;

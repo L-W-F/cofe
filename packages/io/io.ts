@@ -1,5 +1,5 @@
 import { debug } from '@cofe/logger';
-import { merge } from 'lodash';
+import { merge } from 'lodash-es';
 
 export type Listener = (
   type: 'start' | 'end',

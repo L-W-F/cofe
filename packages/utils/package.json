@@ -8,6 +8,9 @@
   "author": "crossjs <liwenfu@crossjs.com>",
   "dependencies": {
     "dayjs": "^1.10.7",
-    "lodash": "^4.17.21"
+    "lodash-es": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.5"
   }
 }

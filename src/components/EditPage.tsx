@@ -10,29 +10,21 @@ import {
   DrawerOverlay,
   IconButton,
   useDisclosure,
-  useToast,
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
 import { EditIcon } from '@cofe/icons';
-import { patch, post } from '@cofe/io';
-import { useDispatch } from '@cofe/store';
-import { CofeDbPage } from '@cofe/types';
-import { useIsLoading } from '@/hooks/useIsLoading';
+import { makeId } from '@cofe/utils';
+import { useAppActions } from '@/hooks/useApp';
+import { AppState } from '@/store/app';
 
 interface EditPageProps {
   trigger?: ReactElement;
-  page: Partial<CofeDbPage>;
+  page: Partial<AppState['pages'][string]>;
 }
 
 export const EditPage = ({ trigger, page }: EditPageProps) => {
-  const is_loading = useIsLoading();
-  const dispatch = useDispatch();
+  const { createPage, updatePage } = useAppActions();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const toast = useToast({
-    status: 'success',
-    duration: 1000,
-    position: 'bottom-left',
-  });
   const [formData, setFormData] = useState(page);
 
   return (
@@ -40,15 +32,12 @@ export const EditPage = ({ trigger, page }: EditPageProps) => {
       {trigger ? (
         cloneElement(trigger, {
           onClick: onOpen,
-          isDisabled: is_loading,
         })
       ) : (
         <IconButton
-          aria-label={page.id ? '编辑页面' : '创建新页面'}
-          size="xs"
+          aria-label={page.id ? '编辑页面' : '创建页面'}
           icon={<EditIcon />}
           variant="ghost"
-          isDisabled={is_loading}
           onClick={onOpen}
         />
       )}
@@ -56,7 +45,7 @@ export const EditPage = ({ trigger, page }: EditPageProps) => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>{page.id ? '编辑页面' : '创建新页面'}</DrawerHeader>
+          <DrawerHeader>{page.id ? '编辑页面' : '创建页面'}</DrawerHeader>
           <DrawerBody>
             <Form
               formData={formData}
@@ -81,27 +70,13 @@ export const EditPage = ({ trigger, page }: EditPageProps) => {
           </DrawerBody>
           <DrawerFooter>
             <Button
-              colorScheme="teal"
-              isLoading={is_loading}
-              isDisabled={is_loading}
+              isFullWidth
               loadingText="保存"
-              onClick={async () => {
+              onClick={() => {
                 if (page.id) {
-                  const page_ = await patch(`/api/pages/${page.id}`, formData);
-
-                  toast({
-                    title: '保存成功',
-                  });
-
-                  dispatch('UPDATE_PAGE')(page_);
+                  updatePage({ ...page, ...formData });
                 } else {
-                  const page_ = await post('/api/pages', formData);
-
-                  toast({
-                    title: '创建成功',
-                  });
-
-                  dispatch('CREATE_PAGE')(page_);
+                  createPage({ id: makeId(), ...formData });
                 }
 
                 onClose();

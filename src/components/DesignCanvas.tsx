@@ -1,17 +1,16 @@
 import React from 'react';
 import { Box, BoxProps, useColorModeValue } from '@chakra-ui/react';
-import { Renderer } from '@cofe/core';
-import { useDispatch, useStore } from '@cofe/store';
-import { CofeDndAdjacent, CofeDndIdentity, CofeTree } from '@cofe/types';
+import { Renderer, Schema } from '@cofe/core';
+import { CofeDndAdjacent, CofeTree } from '@cofe/types';
 import { isMac } from '@cofe/utils';
-import { pick } from 'lodash';
+import { pick } from 'lodash-es';
 import { ContextMenu } from './ContextMenu';
 import { useContextMenu } from '@/hooks/useContextMenu';
+import { useDnd } from '@/hooks/useDnd';
 import { useDrag } from '@/hooks/useDrag';
 import { useDrop } from '@/hooks/useDrop';
-import { useSchema } from '@/hooks/useSchema';
+import { useEditorActions } from '@/hooks/useEditor';
 import { useSelectedTree } from '@/hooks/useSelectedTree';
-import { DndState } from '@/store/dnd';
 
 const getAdjacentProps = (adjacent?: CofeDndAdjacent, isInline?: boolean) => {
   return {
@@ -74,6 +73,7 @@ interface DnDHandleProps extends BoxProps {
   id: string;
 }
 
+// container -> reference -> select
 const outlineColors = ['red.400', 'yellow.400', 'blue.400', 'gray.400'];
 
 const DnDHandle = ({
@@ -83,9 +83,7 @@ const DnDHandle = ({
   id,
   ...props
 }: DnDHandleProps) => {
-  const selected = useStore<CofeDndIdentity>('dnd.selected');
-  const { dragging, reference, container, adjacent } =
-    useStore<DndState>('dnd');
+  const { dragging, selected, reference, container, adjacent } = useDnd();
   const [{ isDragging }, dragRef] = useDrag({
     type,
     id,
@@ -96,7 +94,7 @@ const DnDHandle = ({
   const isReference = dragging?.id !== reference?.id && reference?.id === id;
   const isContainer = dragging?.id !== container?.id && container?.id === id;
 
-  const schema = useSchema(type);
+  const schema = Schema.get(type);
 
   const adjacentProps = getAdjacentProps(
     isReference ? adjacent : undefined,
@@ -179,22 +177,22 @@ interface DesignCanvasProps extends BoxProps {}
 
 export const DesignCanvas = (props: DesignCanvasProps) => {
   const tree = useSelectedTree();
-  const selected = useStore<DndState['selected']>('dnd.selected');
-  const dispatch = useDispatch();
+  const { selected, setSelected } = useDnd();
+  const { appendNode, deleteNode } = useEditorActions();
   const { triggerProps, ...contextMenuProps } = useContextMenu();
 
   const handleKeyDown = async (e) => {
     // Delete
     // ⌘+Backspace
     if (e.key === 'Delete' || (e.key === 'Backspace' && isMac && e.metaKey)) {
-      dispatch('DELETE_NODE')(selected);
+      deleteNode(selected);
 
       e.currentTarget.focus();
     }
 
     // Escape
     if (e.key === 'Escape') {
-      dispatch('SELECTED')(null);
+      setSelected(null);
 
       e.currentTarget.focus();
     }
@@ -202,9 +200,9 @@ export const DesignCanvas = (props: DesignCanvasProps) => {
 
   const handleFocus = (e) => {
     if (e.target.dataset) {
-      dispatch('SELECTED')(pick(e.target.dataset, ['type', 'id']));
+      setSelected(pick(e.target.dataset, ['type', 'id']));
     } else {
-      dispatch('SELECTED')(null);
+      setSelected(null);
     }
   };
 
@@ -214,9 +212,7 @@ export const DesignCanvas = (props: DesignCanvasProps) => {
   );
 
   const [, dropRef] = useDrop({
-    onDrop: (payload) => {
-      dispatch('APPEND_NODE')(payload);
-    },
+    onDrop: appendNode,
   });
 
   return (

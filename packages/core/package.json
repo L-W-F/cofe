@@ -9,9 +9,12 @@
   "dependencies": {
     "@cofe/types": "^0.1.0",
     "@cofe/utils": "^0.1.0",
-    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21",
     "unist-builder": "^3.0.0",
     "unist-util-map": "^3.0.0",
     "unist-util-parents": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.5"
   }
 }

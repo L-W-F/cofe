@@ -12,8 +12,8 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronRightIcon } from '@cofe/icons';
-import { useDispatch } from '@cofe/store';
 import { CofeTree } from '@cofe/types';
+import { useDndActions } from '@/hooks/useDnd';
 import { useSelectedPath } from '@/hooks/useSelectedPath';
 import { useSelectedTree } from '@/hooks/useSelectedTree';
 
@@ -62,8 +62,8 @@ interface TreeItemProps extends Partial<CofeTree> {
 
 const TreeItem = ({ level = 0, type, id, children }: TreeItemProps) => {
   const selectedPath = useSelectedPath();
+  const { setSelected } = useDndActions();
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const dispatch = useDispatch();
 
   const ChevronIcon = isCollapsed ? ChevronRightIcon : ChevronDownIcon;
   const isSelected = selectedPath[0]?.id === id;
@@ -76,7 +76,7 @@ const TreeItem = ({ level = 0, type, id, children }: TreeItemProps) => {
     <ListItem
       onClick={(e) => {
         e.stopPropagation();
-        dispatch('SELECTED')({ type, id });
+        setSelected({ type, id });
       }}
     >
       {children ? (

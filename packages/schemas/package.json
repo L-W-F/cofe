@@ -2,11 +2,12 @@
   "name": "@cofe/schemas",
   "version": "0.1.0",
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": true,
   "main": "index.ts",
   "license": "MIT",
   "author": "crossjs <liwenfu@crossjs.com>",
   "dependencies": {
+    "@cofe/core": "^0.1.0",
     "@cofe/types": "^0.1.0"
   }
 }

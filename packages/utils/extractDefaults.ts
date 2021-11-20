@@ -1,4 +1,4 @@
-import { clone } from 'lodash';
+import { clone } from 'lodash-es';
 
 export const extractDefaults = (
   { default: dft, type, properties = {} } = {} as any,
