@@ -42,7 +42,7 @@ const MyApp = ({
         </ChakraProvider>
       </Store>
       <Script
-        src={`http://sdk.talkingdata.com/app/h5/v1?appid=${process.env.NEXT_PUBLIC_TALKINGDATA_APPID}`}
+        src={`https://sdk.talkingdata.com/app/h5/v1?appid=${process.env.NEXT_PUBLIC_TALKINGDATA_APPID}`}
       />
     </>
   );

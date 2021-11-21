@@ -19,11 +19,14 @@ export const CanvasPanel = (props: PaperProps) => {
       ? SourceCanvas
       : PreviewCanvas;
 
-  // 自动保存当前编辑器数据到页面
+  // 自动保存页面
   useEffect(() => {
-    updatePage({ id, tree: stack[cursor] });
+    if (id) {
+      updatePage({ id, tree: stack[cursor] });
+    }
   }, [updatePage, id, stack, cursor]);
 
+  // 自动切换页面
   useEffect(() => {
     if (!pages[id]) {
       for (const key in pages) {

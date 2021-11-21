@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const store = createPersist({
   dbKey: 'global',
-  logger: debug('persist'),
+  logger: process.env.NODE_ENV === 'development' ? debug('persist') : undefined,
 })(createStore(middlewares));
 
 export const {
