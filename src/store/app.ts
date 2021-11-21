@@ -1,10 +1,28 @@
 import { AnyAction } from '@cofe/store';
 import { CofeApp } from '@cofe/types';
+import { makeId } from '@cofe/utils';
 import { omit } from 'lodash-es';
 
 export type AppState = CofeApp;
 
-export const initialState: AppState = null;
+export const initialState: AppState = {
+  id: makeId(),
+  title: '默认应用',
+  pages: (() => {
+    const id = makeId();
+
+    return {
+      [id]: {
+        id,
+        title: '默认页面',
+        tree: {
+          type: 'fragment',
+          id: makeId(),
+        },
+      },
+    };
+  })(),
+};
 
 export const reducer = (state = initialState, { type, payload }: AnyAction) => {
   switch (type) {

@@ -27,7 +27,7 @@ import {
   useShortcut,
 } from '@/hooks/useShortcut';
 
-export const PageManager = () => {
+export const AppSettings = () => {
   const { pages } = useAppValue();
   const { id, switchPage } = useEditor();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -49,8 +49,8 @@ export const PageManager = () => {
   return (
     <>
       <IconButton
-        aria-label="应用与页面"
-        title={`应用与页面 [${CHAR_COMMAND_KEY}${CHAR_SHIFT_KEY}M]`}
+        aria-label="应用设置"
+        title={`应用设置 [${CHAR_COMMAND_KEY}${CHAR_SHIFT_KEY}M]`}
         icon={<PagesIcon />}
         onClick={onOpen}
         variant="ghost"
@@ -59,7 +59,7 @@ export const PageManager = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>应用与页面</DrawerHeader>
+          <DrawerHeader>应用设置</DrawerHeader>
           <DrawerBody as={List} spacing={3}>
             {entries.map(([_id, page]) => (
               <ListItem key={_id} as={HStack}>

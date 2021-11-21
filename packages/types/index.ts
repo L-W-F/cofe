@@ -16,8 +16,6 @@ export interface CofeTree {
   actions?: CofeTreeActions;
   parent?: CofeTree;
   children?: CofeTree[];
-  createdAt?: number;
-  updatedAt?: number;
 }
 
 export interface CofePage {
@@ -27,9 +25,6 @@ export interface CofePage {
   keywords?: string[];
   tree?: CofeTree;
   pages?: Record<CofePage['id'], CofePage>;
-  state: number;
-  createdAt?: number;
-  updatedAt?: number;
 }
 
 export interface CofeApp {
@@ -37,9 +32,6 @@ export interface CofeApp {
   title: string;
   description?: string;
   pages?: Record<CofePage['id'], CofePage>;
-  state: number;
-  createdAt?: number;
-  updatedAt?: number;
 }
 
 export interface CofeTemplate {
@@ -47,8 +39,6 @@ export interface CofeTemplate {
   type: string;
   template: CofeTree;
   description?: string;
-  createdAt?: number;
-  updatedAt?: number;
 }
 
 export interface CofeSchema {

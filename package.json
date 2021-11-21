@@ -3,12 +3,17 @@
   "version": "0.1.0",
   "description": "No-Code System",
   "keywords": [
+    "react",
     "chakra-ui",
+    "json-schema",
     "jsonschema",
+    "dsl",
     "low-code",
-    "next.js",
     "no-code",
-    "unified"
+    "lowcode",
+    "nocode",
+    "next.js",
+    "unist"
   ],
   "private": true,
   "workspaces": [

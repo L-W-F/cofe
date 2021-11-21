@@ -1,9 +1,9 @@
 import { GetServerSidePropsContext } from 'next';
 import { debug } from '@cofe/logger';
 
-export const withGsspPanelSize =
+export const withGsspPaneSize =
   (options?) => (next?) => async (context: GetServerSidePropsContext) => {
-    debug('gssp')('withGsspPanelSize');
+    debug('gssp')('withGsspPaneSize');
 
     const { left_pane_size = '240', right_pane_size = '240' } =
       context.req.cookies;

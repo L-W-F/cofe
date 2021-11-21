@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { InferGetServerSidePropsType } from 'next';
-import { useRouter } from 'next/router';
 import { Accordion, Flex } from '@chakra-ui/react';
 import { compose } from '@cofe/gssp';
 import { useSplitPane } from '@cofe/hooks';
-import { isEmpty } from 'lodash-es';
 import { ActionPanel } from '@/components/ActionPanel';
 import { AtomPanel } from '@/components/AtomPanel';
 import { CanvasPanel } from '@/components/CanvasPanel';
@@ -20,13 +18,12 @@ import { TemplatePanel } from '@/components/TemplatePanel';
 import { TreePanel } from '@/components/TreePanel';
 import { withGsspCatch } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
-import { withGsspPanelSize } from '@/gssp/withGsspPanelSize';
-import { useApp } from '@/hooks/useApp';
+import { withGsspPaneSize } from '@/gssp/withGsspPaneSize';
 
 import '@cofe/renderers';
 import '@cofe/schemas';
 
-const Studio = ({
+const Index = ({
   leftPaneSize,
   rightPaneSize,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
@@ -105,29 +102,10 @@ const Studio = ({
   );
 };
 
-const Index = (
-  props: InferGetServerSidePropsType<typeof getServerSideProps>,
-) => {
-  const { id, pages } = useApp();
-  const { push } = useRouter();
-  const isAppEmpty = !id;
-  const isPagesEmpty = isEmpty(pages);
-
-  useEffect(() => {
-    if (isAppEmpty) {
-      push('/createApp');
-    } else if (isPagesEmpty) {
-      push('/createPage');
-    }
-  }, [isAppEmpty, isPagesEmpty, push]);
-
-  return !isPagesEmpty ? <Studio {...props} /> : null;
-};
-
 export const getServerSideProps = compose([
   withGsspCatch(),
   withGsspColorMode(),
-  withGsspPanelSize(),
+  withGsspPaneSize(),
 ]);
 
 export default Index;
