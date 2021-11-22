@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
-import { useDispatch, useValue } from '@cofe/store';
+import { studioStore } from '@/store';
 import { EditorState } from '@/store/editor';
 
-type K = Parameters<typeof useValue>[0];
+type K = Parameters<typeof studioStore.useValue>[0];
 
-type D = Parameters<typeof useValue>[1];
+type D = Parameters<typeof studioStore.useValue>[1];
 
-export const useEditor = (...args: Parameters<typeof useValue>) => {
+export const useEditor = (...args: Parameters<typeof studioStore.useValue>) => {
   const data = useEditorValue(...args);
   const actions = useEditorActions();
 
@@ -20,11 +20,11 @@ export const useEditorValue = <T = EditorState>(
   key: K = 'editor',
   deps?: D,
 ) => {
-  return useValue<T>(key, deps);
+  return studioStore.useValue<T>(key, deps);
 };
 
 export const useEditorActions = () => {
-  const dispatch = useDispatch();
+  const dispatch = studioStore.useDispatch();
 
   const switchMode = useCallback(
     (payload) => {

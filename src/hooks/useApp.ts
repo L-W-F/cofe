@@ -1,13 +1,13 @@
 import { useCallback } from 'react';
-import { useDispatch, useValue } from '@cofe/store';
 import { makeId } from '@cofe/utils';
+import { appStore } from '@/store';
 import { AppState } from '@/store/app';
 
-type K = Parameters<typeof useValue>[0];
+type K = Parameters<typeof appStore.useValue>[0];
 
-type D = Parameters<typeof useValue>[1];
+type D = Parameters<typeof appStore.useValue>[1];
 
-export const useApp = (...args: Parameters<typeof useValue>) => {
+export const useApp = (...args: Parameters<typeof appStore.useValue>) => {
   const data = useAppValue(...args);
   const actions = useAppActions();
 
@@ -18,11 +18,11 @@ export const useApp = (...args: Parameters<typeof useValue>) => {
 };
 
 export const useAppValue = <T = AppState>(key: K = 'app', deps?: D) => {
-  return useValue<T>(key, deps);
+  return appStore.useValue<T>(key, deps);
 };
 
 export const useAppActions = () => {
-  const dispatch = useDispatch();
+  const dispatch = appStore.useDispatch();
 
   const createApp = useCallback(
     (payload) => {

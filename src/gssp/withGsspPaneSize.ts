@@ -5,8 +5,7 @@ export const withGsspPaneSize =
   (options?) => (next?) => async (context: GetServerSidePropsContext) => {
     debug('gssp')('withGsspPaneSize');
 
-    const { left_pane_size = '240', right_pane_size = '240' } =
-      context.req.cookies;
+    const { lps = '240', rps = '240' } = context.req.cookies;
 
     if (next) {
       const { props, ...rest } = await next(context);
@@ -19,16 +18,16 @@ export const withGsspPaneSize =
         ...rest,
         props: {
           ...props,
-          leftPaneSize: +left_pane_size,
-          rightPaneSize: +right_pane_size,
+          lps: +lps,
+          rps: +rps,
         },
       };
     }
 
     return {
       props: {
-        leftPaneSize: +left_pane_size,
-        rightPaneSize: +right_pane_size,
+        lps: +lps,
+        rps: +rps,
       },
     };
   };

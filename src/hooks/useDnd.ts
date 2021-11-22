@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
-import { useDispatch, useValue } from '@cofe/store';
+import { studioStore } from '@/store';
 import { DndState } from '@/store/dnd';
 
 export const useDnd = () => {
-  const data = useValue<DndState>('dnd');
+  const data = studioStore.useValue<DndState>('dnd');
   const actions = useDndActions();
 
   return {
@@ -13,7 +13,7 @@ export const useDnd = () => {
 };
 
 export const useDndActions = () => {
-  const dispatch = useDispatch();
+  const dispatch = studioStore.useDispatch();
 
   const reset = useCallback(() => {
     dispatch('RESET_DND')(null);

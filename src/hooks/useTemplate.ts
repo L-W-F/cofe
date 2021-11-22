@@ -1,15 +1,11 @@
 import { useCallback, useEffect } from 'react';
 import { Schema } from '@cofe/core';
-import { useDispatch, useValue } from '@cofe/store';
+import { templateStore } from '@/store';
 import { TemplateState } from '@/store/template';
 
 export const useTemplate = () => {
-  const schemas = useValue<TemplateState>('template');
+  const schemas = useTemplateValues();
   const actions = useTemplateActions();
-
-  useEffect(() => {
-    Schema.register(schemas);
-  }, [schemas]);
 
   return {
     schemas,
@@ -17,8 +13,18 @@ export const useTemplate = () => {
   };
 };
 
+export const useTemplateValues = () => {
+  const schemas = templateStore.useValue<TemplateState>('template');
+
+  useEffect(() => {
+    Schema.register(schemas);
+  }, [schemas]);
+
+  return schemas;
+};
+
 export const useTemplateActions = () => {
-  const dispatch = useDispatch();
+  const dispatch = templateStore.useDispatch();
 
   const createTemplate = useCallback(
     (payload) => {

@@ -40,8 +40,7 @@ const merge = (v1: StoreStates, v2: StoreStates) =>
 
 export const createStore = (
   middlewares: Middleware[] = [],
-  reducers: StoreReducers = {},
-  states: StoreStates = {},
+  initialModules: StoreModules = {},
 ) => {
   const enhancers = applyMiddleware(...middlewares);
 
@@ -54,11 +53,14 @@ export const createStore = (
   });
 
   let store: ReduxStore;
-  let currentModules: StoreModules;
+  let currentModules: StoreModules = initialModules;
   let currentInitialStates: StoreStates;
 
-  const _states = states;
-  const _reducers = reducers;
+  const _reducers: StoreReducers = {};
+  const _states: StoreStates = {};
+
+  const listeners = [];
+  const unsubscribes = new WeakMap<Function, Function>();
 
   /**
    * 1. 不可以直接修改 states
@@ -118,6 +120,12 @@ export const createStore = (
       store.replaceReducer(combineReducers(_reducers));
     }
 
+    let listener: () => void;
+
+    while ((listener = listeners.pop())) {
+      unsubscribes.set(listener, store.subscribe(listener));
+    }
+
     return store;
   };
 
@@ -144,7 +152,18 @@ export const createStore = (
 
   const getState = () => store?.getState() ?? null;
 
-  const subscribe = (listener: () => void) => store?.subscribe(listener);
+  const subscribe = (listener: () => void) => {
+    if (store) {
+      return store.subscribe(listener);
+    }
+
+    listeners.push(listener);
+
+    return () => {
+      unsubscribes.get(listener)?.();
+      listeners.splice(listeners.indexOf(listener), 1);
+    };
+  };
 
   function useValue<T extends unknown = any>(
     key: string | ((state: any) => any) = identity,

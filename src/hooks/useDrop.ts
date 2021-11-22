@@ -1,11 +1,11 @@
 import { RefCallback, useEffect, useRef, useState } from 'react';
 import { Schema, Tree } from '@cofe/core';
-import { useValue } from '@cofe/store';
 import { CofeDndAdjacent, CofeDndIdentity, CofeDndPayload } from '@cofe/types';
 import { isEqual } from 'lodash-es';
 import { select } from 'unist-util-select';
 import { useDndActions } from './useDnd';
 import { useSelectedTree } from './useSelectedTree';
+import { studioStore } from '@/store';
 import { DndState } from '@/store/dnd';
 
 interface DropOptions {
@@ -16,7 +16,7 @@ type DropReturns = [{}, RefCallback<HTMLElement>];
 
 export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
   const selectedTree = useSelectedTree();
-  const dragging = useValue<DndState['dragging']>('dnd.dragging');
+  const dragging = studioStore.useValue<DndState['dragging']>('dnd.dragging');
   const { reset, setAdjacent, setReference, setContainer } = useDndActions();
   const [dropHandle, setDropHandle] = useState<HTMLElement>(null);
   const referenceRef = useRef<CofeDndIdentity>();

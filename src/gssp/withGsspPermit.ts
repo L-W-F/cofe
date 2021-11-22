@@ -8,8 +8,8 @@ export const withGsspPermit =
     if (context.req.headers['user-agent'].indexOf('Mobi') !== -1) {
       return {
         props: {
-          error: {
-            message: '暂不支持触屏设备',
+          err: {
+            message: '暂不支持触屏设备，请使用桌面浏览器访问。',
           },
         },
       };

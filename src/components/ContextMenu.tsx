@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Menu, MenuItem, MenuList } from '@chakra-ui/react';
 import { DeleteIcon, DuplicateIcon } from '@cofe/icons';
-import { useValue } from '@cofe/store';
+import { useValue } from '@/store';
 import { useEditorActions } from '@/hooks/useEditor';
 import { DndState } from '@/store/dnd';
 

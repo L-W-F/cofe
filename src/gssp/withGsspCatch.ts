@@ -8,13 +8,13 @@ export const withGsspCatch =
     if (next) {
       try {
         return await next(context);
-      } catch (error) {
-        warn('gssp')('[error] %j', error.message);
-        debug('gssp')('[stack] %j', error.stack);
+      } catch (err) {
+        warn('gssp')('[error] %j', err.message);
+        debug('gssp')('[stack] %j', err.stack);
 
         return {
           props: {
-            error,
+            err,
           },
         };
       }
