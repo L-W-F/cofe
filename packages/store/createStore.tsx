@@ -94,15 +94,17 @@ export const createStore = (
       currentInitialStates = initialStates;
     }
 
+    let newStore: ReduxStore;
+
     // For SSG and SSR always create a new store
     if (!store || typeof window === 'undefined') {
-      store = createReduxStore(
+      newStore = createReduxStore(
         combineReducers(_reducers),
         createStates(initialStates),
         enhancers,
       );
     } else if (isInitialStatesChanged) {
-      store = createReduxStore(
+      newStore = createReduxStore(
         combineReducers(_reducers),
         createStates({
           /**
@@ -120,10 +122,18 @@ export const createStore = (
       store.replaceReducer(combineReducers(_reducers));
     }
 
-    let listener: () => void;
+    if (newStore !== store) {
+      if (store) {
+        listeners.forEach((listener) => {
+          unsubscribes.get(listener)?.();
+        });
+      }
 
-    while ((listener = listeners.pop())) {
-      unsubscribes.set(listener, store.subscribe(listener));
+      store = newStore;
+
+      listeners.forEach((listener) => {
+        unsubscribes.set(listener, store.subscribe(listener));
+      });
     }
 
     return store;
