@@ -19,6 +19,7 @@ import { TreePanel } from '@/components/TreePanel';
 import { withGsspCatch } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspPaneSize } from '@/gssp/withGsspPaneSize';
+import { withGsspPermit } from '@/gssp/withGsspPermit';
 
 import '@cofe/renderers';
 import '@cofe/schemas';
@@ -103,6 +104,7 @@ const Index = ({
 };
 
 export const getServerSideProps = compose([
+  withGsspPermit(),
   withGsspCatch(),
   withGsspColorMode(),
   withGsspPaneSize(),

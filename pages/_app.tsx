@@ -2,7 +2,12 @@ import React from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import Script from 'next/script';
-import { ChakraProvider, cookieStorageManager } from '@chakra-ui/react';
+import {
+  Alert,
+  AlertIcon,
+  ChakraProvider,
+  cookieStorageManager,
+} from '@chakra-ui/react';
 import { Store } from '@cofe/store';
 import { modules } from 'store';
 import { theme } from 'theme';
@@ -14,12 +19,14 @@ if (process.env.NEXT_PUBLIC_DEBUG && typeof localStorage !== 'undefined') {
 
 const MyApp = ({
   Component,
-  pageProps: { colorModeCookie, ...pageProps },
+  pageProps: { colorModeCookie, error, ...pageProps },
 }: AppProps<{
   colorModeCookie: string;
   initialStates: any;
 }>) => {
   const colorModeManager = cookieStorageManager(colorModeCookie);
+
+  console.log(error);
 
   return (
     <>
@@ -35,6 +42,12 @@ const MyApp = ({
           theme={theme}
           colorModeManager={colorModeManager}
         >
+          {error ? (
+            <Alert status="error">
+              <AlertIcon />
+              {error.message}
+            </Alert>
+          ) : null}
           <Component
             // suppressHydrationWarning
             {...pageProps}
