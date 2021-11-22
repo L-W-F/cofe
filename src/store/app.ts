@@ -5,24 +5,7 @@ import { omit } from 'lodash-es';
 
 export type AppState = CofeApp;
 
-export const initialState: AppState = {
-  id: makeId(),
-  title: '默认应用',
-  pages: (() => {
-    const id = makeId();
-
-    return {
-      [id]: {
-        id,
-        title: '默认页面',
-        tree: {
-          type: 'fragment',
-          id: makeId(),
-        },
-      },
-    };
-  })(),
-};
+export const initialState: AppState = null;
 
 export const reducer = (state = initialState, { type, payload }: AnyAction) => {
   switch (type) {
@@ -69,3 +52,22 @@ export const reducer = (state = initialState, { type, payload }: AnyAction) => {
       return state;
   }
 };
+
+export const createDefaultValues = () => ({
+  id: makeId(),
+  title: '默认应用',
+  pages: (() => {
+    const id = makeId();
+
+    return {
+      [id]: {
+        id,
+        title: '默认页面',
+        tree: {
+          type: 'fragment',
+          id: makeId(),
+        },
+      },
+    };
+  })(),
+});

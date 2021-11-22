@@ -9,7 +9,6 @@
   "dependencies": {
     "@cofe/logger": "^0.1.0",
     "@cofe/utils": "^0.1.0",
-    "idb-keyval": "^6.0.3",
     "lodash-es": "^4.17.21",
     "react": "^17.0.2",
     "react-redux": "^7.2.6",

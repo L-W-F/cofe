@@ -1,6 +1,6 @@
 import React, { ReactNode, useCallback, useMemo } from 'react';
 import { isPromise } from '@cofe/utils';
-import { get, identity, isEqual } from 'lodash-es';
+import { get, identity, isEqual, mergeWith } from 'lodash-es';
 import { Provider } from 'react-redux';
 import {
   AnyAction,
@@ -13,7 +13,6 @@ import {
 } from 'redux';
 import shallowequal from 'shallowequal';
 import { create } from './create';
-import { merge } from './merge';
 
 export type StoreModules<S extends unknown = any> = {
   [name: string]: {
@@ -31,6 +30,13 @@ export type StoreReducers = {
 };
 
 export type StoreApi = ReturnType<typeof createStore>;
+
+const merge = (v1: StoreStates, v2: StoreStates) =>
+  mergeWith({}, v1, v2, (objValue: any, srcValue: any) => {
+    if (Array.isArray(objValue)) {
+      return srcValue;
+    }
+  });
 
 export const createStore = (
   middlewares: Middleware[] = [],

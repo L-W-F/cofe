@@ -2,32 +2,13 @@ import React from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import Script from 'next/script';
-import {
-  Alert,
-  AlertIcon,
-  ChakraProvider,
-  cookieStorageManager,
-} from '@chakra-ui/react';
-import { Store } from '@cofe/store';
-import { modules } from 'store';
-import { theme } from 'theme';
 
 // https://github.com/visionmedia/debug#browser-support
 if (process.env.NEXT_PUBLIC_DEBUG && typeof localStorage !== 'undefined') {
   localStorage.setItem('debug', process.env.NEXT_PUBLIC_DEBUG);
 }
 
-const MyApp = ({
-  Component,
-  pageProps: { colorModeCookie, error, ...pageProps },
-}: AppProps<{
-  colorModeCookie: string;
-  initialStates: any;
-}>) => {
-  const colorModeManager = cookieStorageManager(colorModeCookie);
-
-  console.log(error);
-
+const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Head>
@@ -36,24 +17,10 @@ const MyApp = ({
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="icon" href="/public/favicon.svg" />
       </Head>
-      <Store modules={modules} initialStates={pageProps.initialStates}>
-        <ChakraProvider
-          resetCSS
-          theme={theme}
-          colorModeManager={colorModeManager}
-        >
-          {error ? (
-            <Alert status="error">
-              <AlertIcon />
-              {error.message}
-            </Alert>
-          ) : null}
-          <Component
-            // suppressHydrationWarning
-            {...pageProps}
-          />
-        </ChakraProvider>
-      </Store>
+      <Component
+        // suppressHydrationWarning
+        {...pageProps}
+      />
       <Script
         src={`https://jic.talkingdata.com/app/h5/v1?appid=${process.env.NEXT_PUBLIC_TALKINGDATA_APPID}`}
       />

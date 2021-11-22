@@ -1,14 +1,6 @@
 import debug from 'debug';
 
-export interface CreateLoggerOptions {
-  output?: (...args: any[]) => void;
-  enhancer?: (_: debug.Debugger & { useColors?: boolean }) => void;
-}
-
-export const createLogger = (
-  level: string,
-  { output = debug.log, enhancer }: CreateLoggerOptions = {},
-) => {
+export const createLogger = (level: string) => {
   const logger = debug('c').extend(level);
 
   const cache = new Map<string, debug.Debugger>();
@@ -30,10 +22,8 @@ export const createLogger = (
           }
         });
 
-        output(formatter, ...args);
+        debug.log(formatter, ...args);
       };
-
-      enhancer?.(instance);
 
       cache.set(service, instance);
     }
