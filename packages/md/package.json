@@ -8,7 +8,7 @@
   "author": "crossjs <liwenfu@crossjs.com>",
   "dependencies": {
     "hast-util-to-html": "^8.0.3",
-    "mdast-util-from-markdown": "^1.1.0",
+    "mdast-util-from-markdown": "^1.1.1",
     "mdast-util-gfm": "^2.0.0",
     "mdast-util-to-hast": "^12.0.0",
     "micromark-extension-gfm": "^2.0.0",

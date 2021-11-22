@@ -5866,10 +5866,10 @@ mdast-util-find-and-replace@^2.0.0:
     unist-util-is "^5.0.0"
     unist-util-visit-parents "^4.0.0"
 
-mdast-util-from-markdown@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/mdast-util-from-markdown/-/mdast-util-from-markdown-1.1.0.tgz#534e75b4d4ef93e8aee3f51aba0a7592849e4b32"
-  integrity sha512-Mex7IIeIKRpGYNNywpxTfPhfFBTxBL5IVacPMU6GjYF+EkIvy++19cBgxVFyHVd2JpC/chG2IKGqZLffoo7Q1g==
+mdast-util-from-markdown@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/mdast-util-from-markdown/-/mdast-util-from-markdown-1.1.1.tgz#45cf8937d3cf85c2ae457e1200fff8a9d6aeb4bd"
+  integrity sha512-vbyjZgUlmRv8AaggCkgXF2zuRRoRtLYJt6G1tALZCW4q5VFedSgAe2QXeNTkoPBhvc5MZk6j93fcoCQqgxL4Hg==
   dependencies:
     "@types/mdast" "^3.0.0"
     "@types/unist" "^2.0.0"
