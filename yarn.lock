@@ -2333,6 +2333,15 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
+"@types/react@^17.0.36":
+  version "17.0.36"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.36.tgz#0d81e0e2419e6a8e9ba6af5e3a0608e70835d7d1"
+  integrity sha512-CUFUp01OdfbpN/76v4koqgcpcRGT3sYOq3U3N6q0ZVGcyeP40NUdVU+EWe3hs34RNaTefiYyBzOpxBBidCc5zw==
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/scheduler" "*"
+    csstype "^3.0.2"
+
 "@types/scheduler@*":
   version "0.16.2"
   resolved "https://registry.nlark.com/@types/scheduler/download/@types/scheduler-0.16.2.tgz?cache=0&sync_timestamp=1629709152024&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fscheduler%2Fdownload%2F%40types%2Fscheduler-0.16.2.tgz#1a62f89525723dde24ba1b01b092bf5df8ad4d39"
@@ -3599,6 +3608,13 @@ decimal.js@^10.2.1:
   version "10.3.1"
   resolved "https://registry.nlark.com/decimal.js/download/decimal.js-10.3.1.tgz#d8c3a444a9c6774ba60ca6ad7261c3a94fd5e783"
   integrity sha1-2MOkRKnGd0umDKatcmHDqU/V54M=
+
+decode-named-character-reference@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/decode-named-character-reference/-/decode-named-character-reference-1.0.0.tgz#334409015275c33fb1a3b55654866bb6cd108d29"
+  integrity sha512-KTiXDlRp9MMm/nlgI8rDGKoNNKiTJBl0RPjnBM680m2HlgJEA4JTASspK44lsvE4GQJildMRFp2HdEBiG+nqng==
+  dependencies:
+    character-entities "^2.0.0"
 
 dedent@0.7.0, dedent@^0.7.0:
   version "0.7.0"
@@ -5866,13 +5882,14 @@ mdast-util-find-and-replace@^2.0.0:
     unist-util-is "^5.0.0"
     unist-util-visit-parents "^4.0.0"
 
-mdast-util-from-markdown@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/mdast-util-from-markdown/-/mdast-util-from-markdown-1.1.0.tgz#534e75b4d4ef93e8aee3f51aba0a7592849e4b32"
-  integrity sha512-Mex7IIeIKRpGYNNywpxTfPhfFBTxBL5IVacPMU6GjYF+EkIvy++19cBgxVFyHVd2JpC/chG2IKGqZLffoo7Q1g==
+mdast-util-from-markdown@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/mdast-util-from-markdown/-/mdast-util-from-markdown-1.2.0.tgz#84df2924ccc6c995dec1e2368b2b208ad0a76268"
+  integrity sha512-iZJyyvKD1+K7QX1b5jXdE7Sc5dtoTry1vzV28UZZe8Z1xVnB/czKntJ7ZAkG0tANqRnBF6p3p7GpU1y19DTf2Q==
   dependencies:
     "@types/mdast" "^3.0.0"
     "@types/unist" "^2.0.0"
+    decode-named-character-reference "^1.0.0"
     mdast-util-to-string "^3.1.0"
     micromark "^3.0.0"
     micromark-util-decode-numeric-character-reference "^1.0.0"
@@ -5880,7 +5897,6 @@ mdast-util-from-markdown@^1.1.0:
     micromark-util-normalize-identifier "^1.0.0"
     micromark-util-symbol "^1.0.0"
     micromark-util-types "^1.0.0"
-    parse-entities "^3.0.0"
     unist-util-stringify-position "^3.0.0"
     uvu "^0.5.0"
 
