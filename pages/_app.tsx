@@ -21,9 +21,12 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         // suppressHydrationWarning
         {...pageProps}
       />
-      <Script
+      {process.env.NEXT_PUBLIC_TALKINGDATA_APPID ? <Script
         src={`https://jic.talkingdata.com/app/h5/v1?appid=${process.env.NEXT_PUBLIC_TALKINGDATA_APPID}`}
-      />
+      /> : null}
+      {process.env.NEXT_PUBLIC_BAIDUTONGJI_APPID ? <Script
+        src={`https://hm.baidu.com/hm.js?${process.env.NEXT_PUBLIC_BAIDUTONGJI_APPID}`}
+      /> : null}
     </>
   );
 };
