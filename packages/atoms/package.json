@@ -1,0 +1,12 @@
+{
+  "name": "@cofe/atoms",
+  "version": "0.1.0",
+  "type": "module",
+  "sideEffects": true,
+  "main": "index.ts",
+  "license": "MIT",
+  "author": "crossjs <liwenfu@crossjs.com>",
+  "dependencies": {
+    "@cofe/core": "^0.1.0"
+  }
+}

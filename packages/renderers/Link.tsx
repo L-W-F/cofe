@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, LinkProps } from '@chakra-ui/react';
+import { Renderer } from '@cofe/core';
 import { CofeRendererProps, CofeTreeActions } from '@cofe/types';
 import { useActions } from './hooks/useActions';
 
@@ -34,3 +35,8 @@ export const LinkRenderer = ({
     />
   );
 };
+
+Renderer.add({
+  type: 'link',
+  renderer: LinkRenderer,
+});

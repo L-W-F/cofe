@@ -17,7 +17,9 @@ export const useTemplateValues = () => {
   const schemas = templateStore.useValue<TemplateState>('template');
 
   useEffect(() => {
-    Schema.register(schemas);
+    Object.values(schemas).forEach((schema) => {
+      Schema.add(schema);
+    });
   }, [schemas]);
 
   return schemas;
@@ -30,7 +32,7 @@ export const useTemplateActions = () => {
     (payload) => {
       dispatch('CREATE_TEMPLATE')(payload);
 
-      Schema.register(payload);
+      Schema.add(payload);
     },
     [dispatch],
   );

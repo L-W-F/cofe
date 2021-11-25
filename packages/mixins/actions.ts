@@ -1,6 +1,6 @@
-import { CofeSchema } from '@cofe/types';
+import { Schema } from '@cofe/core';
 
-export const actions: CofeSchema = {
+Schema.add({
   type: 'mixin:actions',
   actions: {
     type: 'array',
@@ -54,4 +54,4 @@ export const actions: CofeSchema = {
       required: ['type', 'payload'],
     },
   },
-};
+});

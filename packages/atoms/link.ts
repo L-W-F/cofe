@@ -1,6 +1,6 @@
-import { CofeSchema } from '@cofe/types';
+import { Schema } from '@cofe/core';
 
-export const link: CofeSchema = {
+Schema.add({
   type: 'link',
   extends: ['mixin:actions'],
   accept: ['text', 'icon'],
@@ -19,4 +19,4 @@ export const link: CofeSchema = {
       },
     },
   },
-};
+});

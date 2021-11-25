@@ -32,8 +32,10 @@ import { withGsspPermit } from '@/gssp/withGsspPermit';
 import { appStore, studioStore, templateStore } from '@/store';
 import { createDefaultValues } from '@/store/app';
 import { theme } from '@/theme';
+
+import '@cofe/atoms';
+import '@cofe/mixins';
 import '@cofe/renderers';
-import '@cofe/schemas';
 
 const Index = ({
   cmc,
@@ -45,7 +47,8 @@ const Index = ({
 
   const sp1 = useSplitPane({
     initialSize: lps,
-    maxSize: 400,
+    maxSize: 240,
+    step: 240,
     onInit: (size, pane) => {
       pane.style.width = `${size}px`;
       pane.style.display = size ? 'block' : 'none';

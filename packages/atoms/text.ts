@@ -1,6 +1,6 @@
-import { CofeSchema } from '@cofe/types';
+import { Schema } from '@cofe/core';
 
-export const text: CofeSchema = {
+Schema.add({
   type: 'text',
   isInline: true,
   properties: {
@@ -14,4 +14,4 @@ export const text: CofeSchema = {
     },
     required: ['content'],
   },
-};
+});

@@ -1,15 +1,13 @@
 import React, { Children, Fragment, ReactNode } from 'react';
 import { Box } from '@chakra-ui/react';
+import { Renderer } from '@cofe/core';
 import { CofeRendererProps } from '@cofe/types';
 
 interface FragmentRendererProps extends CofeRendererProps {
   children?: ReactNode;
 }
 
-export const FragmentRenderer = ({
-  isDesign,
-  children,
-}: FragmentRendererProps) => {
+const FragmentRenderer = ({ isDesign, children }: FragmentRendererProps) => {
   return (
     <Fragment>
       {isDesign ? (
@@ -26,3 +24,8 @@ export const FragmentRenderer = ({
     </Fragment>
   );
 };
+
+Renderer.add({
+  type: 'fragment',
+  renderer: FragmentRenderer,
+});

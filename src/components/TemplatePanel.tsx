@@ -4,8 +4,7 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Flex,
-  List,
+  Grid,
   Text,
 } from '@chakra-ui/react';
 import { DragItem } from './DragItem';
@@ -21,11 +20,11 @@ export const TemplatePanel = () => {
         <Text as="h2">模板</Text>
       </AccordionButton>
       <AccordionPanel>
-        <List as={Flex} flexDirection="column" gridGap={2}>
+        <Grid gridTemplateColumns="1fr 1fr" gridGap={2}>
           {Object.entries(schemas).map(([type, schema]) => {
             return <DragItem key={type} type={type} />;
           })}
-        </List>
+        </Grid>
       </AccordionPanel>
     </AccordionItem>
   );

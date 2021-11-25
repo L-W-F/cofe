@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, ButtonProps } from '@chakra-ui/react';
+import { Renderer } from '@cofe/core';
 import { CofeRendererProps, CofeTreeActions } from '@cofe/types';
 import { useActions } from './hooks/useActions';
 
@@ -8,7 +9,7 @@ interface ButtonRendererProps extends CofeRendererProps, ButtonProps {
   actions?: CofeTreeActions;
 }
 
-export const ButtonRenderer = ({
+const ButtonRenderer = ({
   isDesign,
   autoFocus = false,
   disabled: isDisabled,
@@ -39,3 +40,8 @@ export const ButtonRenderer = ({
     />
   );
 };
+
+Renderer.add({
+  type: 'button',
+  renderer: ButtonRenderer,
+});

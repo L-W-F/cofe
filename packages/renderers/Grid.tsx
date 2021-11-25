@@ -1,5 +1,6 @@
 import React, { Children } from 'react';
 import { Box, Grid, GridProps } from '@chakra-ui/react';
+import { Renderer } from '@cofe/core';
 import { CofeRendererProps } from '@cofe/types';
 
 interface GridRendererProps extends CofeRendererProps, GridProps {
@@ -7,7 +8,7 @@ interface GridRendererProps extends CofeRendererProps, GridProps {
   columns?: number;
 }
 
-export const GridRenderer = ({
+const GridRenderer = ({
   isDesign,
   rows,
   columns,
@@ -37,3 +38,8 @@ function createChildren(rows, columns, count) {
       </Box>
     ));
 }
+
+Renderer.add({
+  type: 'grid',
+  renderer: GridRenderer,
+});

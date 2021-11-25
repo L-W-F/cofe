@@ -4,8 +4,7 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Flex,
-  List,
+  Grid,
   Text,
 } from '@chakra-ui/react';
 import { Schema } from '@cofe/core';
@@ -19,15 +18,11 @@ export const AtomPanel = () => {
         <Text as="h2">组件</Text>
       </AccordionButton>
       <AccordionPanel>
-        <List as={Flex} flexDirection="column" gridGap={2}>
-          {Schema.map(([type, schema]) => {
-            if (!Schema.isAtom(schema)) {
-              return null;
-            }
-
+        <Grid gridTemplateColumns="1fr 1fr" gridGap={2}>
+          {Schema.getAtomKeys().map((type) => {
             return <DragItem key={type} type={type} />;
           })}
-        </List>
+        </Grid>
       </AccordionPanel>
     </AccordionItem>
   );

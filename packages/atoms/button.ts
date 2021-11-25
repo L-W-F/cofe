@@ -1,6 +1,6 @@
-import { CofeSchema } from '@cofe/types';
+import { Schema } from '@cofe/core';
 
-export const button: CofeSchema = {
+Schema.add({
   type: 'button',
   extends: ['mixin:actions'],
   accept: ['text', 'icon'],
@@ -13,4 +13,4 @@ export const button: CofeSchema = {
       },
     },
   },
-};
+});

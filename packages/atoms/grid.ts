@@ -1,6 +1,6 @@
-import { CofeSchema } from '@cofe/types';
+import { Schema } from '@cofe/core';
 
-export const grid: CofeSchema = {
+Schema.add({
   type: 'grid',
   accept: ['!fragment'],
   properties: {
@@ -34,4 +34,4 @@ export const grid: CofeSchema = {
       },
     },
   },
-};
+});

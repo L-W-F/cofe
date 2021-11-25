@@ -1,6 +1,6 @@
-import { CofeSchema } from '@cofe/types';
+import { Schema } from '@cofe/core';
 
-export const icon: CofeSchema = {
+Schema.add({
   type: 'icon',
   isInline: true,
   properties: {
@@ -29,4 +29,4 @@ export const icon: CofeSchema = {
     },
     required: ['path'],
   },
-};
+});
