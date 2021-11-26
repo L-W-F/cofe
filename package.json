@@ -48,7 +48,7 @@
     "@cofe/types": "^0.1.0",
     "@cofe/ui": "^0.1.0",
     "@cofe/utils": "^0.1.0",
-    "@emotion/react": "^11.6.0",
+    "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
     "cookie": "^0.4.1",
     "framer-motion": "^5.3.1",
