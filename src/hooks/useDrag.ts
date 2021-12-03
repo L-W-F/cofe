@@ -1,5 +1,5 @@
 import { RefCallback, useEffect, useState } from 'react';
-import { useDndActions } from './useDnd';
+import { useDndState } from '@/store/dnd';
 
 interface DragOptions {
   type?: string;
@@ -7,20 +7,12 @@ interface DragOptions {
   effectAllowed?: DataTransfer['effectAllowed'];
 }
 
-type DragReturns = [
-  {
-    isDragging: boolean;
-  },
-  RefCallback<HTMLElement>,
-];
-
 export const useDrag = ({
   type,
   id,
   effectAllowed = 'copyMove',
-}: DragOptions): DragReturns => {
-  const { reset, setDragging } = useDndActions();
-  const [isDragging, setIsDragging] = useState(false);
+}: DragOptions): RefCallback<HTMLElement> => {
+  const { reset, drag } = useDndState();
   const [dragHandle, setDragHandle] = useState<HTMLElement>(null);
 
   useEffect(() => {
@@ -29,15 +21,12 @@ export const useDrag = ({
         e.stopPropagation();
         e.dataTransfer.effectAllowed = effectAllowed;
 
-        setDragging({ type, id });
-        setIsDragging(true);
+        drag({ type, id });
 
         document.addEventListener('dragend', end);
       };
 
       const end = () => {
-        setIsDragging(false);
-
         reset();
 
         document.removeEventListener('dragend', end);
@@ -51,12 +40,7 @@ export const useDrag = ({
         dragHandle.setAttribute('draggable', 'false');
       };
     }
-  }, [dragHandle, effectAllowed, id, reset, setDragging, type]);
+  }, [dragHandle, effectAllowed, id, reset, drag, type]);
 
-  return [
-    {
-      isDragging,
-    },
-    setDragHandle,
-  ];
+  return setDragHandle;
 };

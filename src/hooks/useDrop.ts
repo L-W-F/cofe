@@ -3,21 +3,17 @@ import { Schema, Tree } from '@cofe/core';
 import { CofeDndAdjacent, CofeDndIdentity, CofeDndPayload } from '@cofe/types';
 import { isEqual } from 'lodash-es';
 import { select } from 'unist-util-select';
-import { useDndActions } from './useDnd';
-import { useSelectedTree } from './useSelectedTree';
-import { studioStore } from '@/store';
-import { DndState } from '@/store/dnd';
+import { useDndState } from '@/store/dnd';
+import { useSelectedTree } from '@/store/editor';
 
 interface DropOptions {
   onDrop: (payload: CofeDndPayload) => void;
 }
 
-type DropReturns = [{}, RefCallback<HTMLElement>];
-
-export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
+export const useDrop = ({ onDrop }: DropOptions): RefCallback<HTMLElement> => {
   const selectedTree = useSelectedTree();
-  const dragging = studioStore.useValue<DndState['dragging']>('dnd.dragging');
-  const { reset, setAdjacent, setReference, setContainer } = useDndActions();
+  const { dragging, reset, setAdjacent, setReference, setContainer } =
+    useDndState();
   const [dropHandle, setDropHandle] = useState<HTMLElement>(null);
   const referenceRef = useRef<CofeDndIdentity>();
   const containerRef = useRef<CofeDndIdentity>();
@@ -46,7 +42,7 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
           }
 
           onDrop({
-            dragging: dragging.id ?? Tree.createNode(dragging.type),
+            dragging: dragging.id ?? Tree.create(dragging.type),
             reference: reference?.id,
             container: container?.id,
             adjacent,
@@ -146,7 +142,7 @@ export const useDrop = ({ onDrop }: DropOptions): DropReturns => {
     setContainer,
   ]);
 
-  return [{}, setDropHandle];
+  return setDropHandle;
 };
 
 /**

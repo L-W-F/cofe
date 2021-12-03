@@ -1,13 +1,12 @@
 import React, { useMemo, useRef } from 'react';
 import { Textarea, useToast } from '@chakra-ui/react';
-import { useEditorActions } from '@/hooks/useEditor';
-import { useSelectedTree } from '@/hooks/useSelectedTree';
+import { useSelectedTree, useStackActions } from '@/store/editor';
 
 interface SourceCanvasProps {}
 
 export const SourceCanvas = (props: SourceCanvasProps) => {
   const tree = useSelectedTree();
-  const { push } = useEditorActions();
+  const { push } = useStackActions();
   const toast = useToast({
     status: 'error',
     position: 'top',
@@ -19,6 +18,7 @@ export const SourceCanvas = (props: SourceCanvasProps) => {
       fontFamily="mono"
       height="100%"
       resize="none"
+      whiteSpace="pre"
       defaultValue={useMemo(() => JSON.stringify(tree, null, 4), [tree])}
       onChange={(e) => {
         if (timeoutRef.current) {

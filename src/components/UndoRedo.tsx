@@ -1,15 +1,15 @@
 import React, { useCallback } from 'react';
 import { IconButton } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@cofe/icons';
-import { useEditor } from '@/hooks/useEditor';
 import {
   CHAR_COMMAND_KEY,
   CHAR_SHIFT_KEY,
   useShortcut,
 } from '@/hooks/useShortcut';
+import { useStackActions } from '@/store/editor';
 
 export const UndoRedo = () => {
-  const { stack, cursor, undo, redo } = useEditor();
+  const { canUndo, canRedo, undo, redo } = useStackActions();
 
   useShortcut(
     `${CHAR_COMMAND_KEY}Z`,
@@ -40,7 +40,7 @@ export const UndoRedo = () => {
         title={`撤销 [${CHAR_COMMAND_KEY}Z]`}
         variant="ghost"
         icon={<ChevronLeftIcon />}
-        disabled={cursor === stack.length - 1}
+        disabled={!canUndo}
         onClick={undo}
       />
       <IconButton
@@ -48,7 +48,7 @@ export const UndoRedo = () => {
         title={`重做 [${CHAR_COMMAND_KEY}${CHAR_SHIFT_KEY}Z]`}
         variant="ghost"
         icon={<ChevronRightIcon />}
-        disabled={cursor === 0}
+        disabled={!canRedo}
         onClick={redo}
       />
     </>

@@ -11,29 +11,29 @@ import { Form, Ui } from '@cofe/form';
 import { Empty } from '@cofe/ui';
 import { useSelectedNode, useTreeNodeActions } from '@/store/editor';
 
-export const ActionPanel = () => {
+export const ThemePanel = () => {
   const selectedNode = useSelectedNode();
   const { update } = useTreeNodeActions();
 
-  const aSchema = Schema.get(selectedNode?.type)?.actions;
+  const pSchema = Schema.get(selectedNode?.type)?.properties;
 
   return (
     <AccordionItem>
       <AccordionButton>
         <AccordionIcon />
-        <Text as="h2">方法</Text>
+        <Text as="h2">主题</Text>
       </AccordionButton>
       <AccordionPanel>
-        {aSchema ? (
+        {pSchema ? (
           <Form
-            formData={selectedNode.actions ?? []}
-            schema={aSchema}
-            uiSchema={Ui.get(selectedNode.type)?.actions}
-            idPrefix="actions"
+            formData={selectedNode.properties}
+            schema={pSchema}
+            uiSchema={Ui.get(selectedNode.type)?.properties}
+            idPrefix="properties"
             onChange={(e) => {
               update({
                 ...selectedNode,
-                actions: e.formData,
+                properties: e.formData,
               });
             }}
           />
@@ -46,5 +46,5 @@ export const ActionPanel = () => {
 };
 
 if (process.env.NODE_ENV === 'development') {
-  ActionPanel.displayName = 'ActionPanel';
+  ThemePanel.displayName = 'ThemePanel';
 }

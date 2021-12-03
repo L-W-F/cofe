@@ -18,11 +18,17 @@ export interface CofeTree {
   children?: CofeTree[];
 }
 
+export interface CofeTheme {
+  colors?: Record<string, string>;
+  shapes?: Record<string, string>;
+}
+
 export interface CofePage {
   id: string;
   title: string;
   description?: string;
   keywords?: string[];
+  theme?: CofeTheme;
   tree?: CofeTree;
   pages?: Record<CofePage['id'], CofePage>;
 }
@@ -31,6 +37,7 @@ export interface CofeApp {
   id: string;
   title: string;
   description?: string;
+  theme?: CofeTheme;
   pages?: Record<CofePage['id'], CofePage>;
 }
 

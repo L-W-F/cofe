@@ -8,7 +8,12 @@ module.exports = {
   },
 
   rules: {
-    'react-hooks/exhaustive-deps': 'error',
+    'react-hooks/exhaustive-deps': [
+      'warn',
+      {
+        additionalHooks: 'useRecoilCallback',
+      },
+    ],
     'react-hooks/rules-of-hooks': 'error',
   },
 };

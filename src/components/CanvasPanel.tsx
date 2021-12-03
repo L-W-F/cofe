@@ -3,15 +3,23 @@ import { Paper, PaperProps } from '@cofe/ui';
 import { DesignCanvas } from './DesignCanvas';
 import { PreviewCanvas } from './PreviewCanvas';
 import { SourceCanvas } from './SourceCanvas';
-import { useAppActions, useAppValue } from '@/hooks/useApp';
-import { useEditor } from '@/hooks/useEditor';
-import { MODE_DESIGN, MODE_SOURCE } from '@/store/editor';
+import { useAppActions, useAppValue } from '@/store/app';
+import {
+  MODE_DESIGN,
+  MODE_SOURCE,
+  useEditorId,
+  useEditorMode,
+  useSelectedTree,
+  useSwitchPage,
+} from '@/store/editor';
 
 export const CanvasPanel = (props: PaperProps) => {
   const { pages } = useAppValue();
   const { updatePage } = useAppActions();
-  const { mode, id, stack, cursor, switchPage } = useEditor();
-
+  const switchPage = useSwitchPage();
+  const tree = useSelectedTree();
+  const id = useEditorId();
+  const mode = useEditorMode();
   const Canvas =
     mode === MODE_DESIGN
       ? DesignCanvas
@@ -21,10 +29,10 @@ export const CanvasPanel = (props: PaperProps) => {
 
   // 自动保存页面
   useEffect(() => {
-    if (id) {
-      updatePage({ id, tree: stack[cursor] });
+    if (id && tree) {
+      updatePage({ id, tree });
     }
-  }, [updatePage, id, stack, cursor]);
+  }, [updatePage, id, tree]);
 
   // 自动切换页面
   useEffect(() => {
@@ -41,3 +49,7 @@ export const CanvasPanel = (props: PaperProps) => {
     </Paper>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  CanvasPanel.displayName = 'CanvasPanel';
+}

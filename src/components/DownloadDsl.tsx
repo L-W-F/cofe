@@ -15,15 +15,15 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { DownloadIcon } from '@cofe/icons';
-import { useApp } from '@/hooks/useApp';
 import {
   CHAR_COMMAND_KEY,
   CHAR_SHIFT_KEY,
   useShortcut,
 } from '@/hooks/useShortcut';
+import { useAppValue } from '@/store/app';
 
 export const DownloadDsl = () => {
-  const { id, title, description, pages } = useApp();
+  const { id, title, description, pages } = useAppValue();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [format, setFormat] = useState(true);
 
@@ -110,3 +110,7 @@ export const DownloadDsl = () => {
     </>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  DownloadDsl.displayName = 'DownloadDsl';
+}

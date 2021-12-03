@@ -16,17 +16,17 @@ import { SaveTemplateIcon } from '@cofe/icons';
 import { CofeTree } from '@cofe/types';
 import { u } from 'unist-builder';
 import { map } from 'unist-util-map';
-import { useSelectedTree } from '@/hooks/useSelectedTree';
 import {
   CHAR_COMMAND_KEY,
   CHAR_SHIFT_KEY,
   useShortcut,
 } from '@/hooks/useShortcut';
-import { useTemplateActions } from '@/hooks/useTemplate';
+import { useSelectedTree } from '@/store/editor';
+import { useTemplateActions } from '@/store/template';
 
 export const SaveTemplate = () => {
   const selectedTree = useSelectedTree();
-  const { createTemplate } = useTemplateActions();
+  const { create } = useTemplateActions();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [formData, setFormData] = useState(null);
 
@@ -83,7 +83,7 @@ export const SaveTemplate = () => {
               colorScheme="teal"
               loadingText="保存"
               onClick={() => {
-                createTemplate({
+                create({
                   [`template:${formData.type}`]: {
                     type: `template:${formData.type}`,
                     template: map(

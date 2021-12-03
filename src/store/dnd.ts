@@ -1,6 +1,7 @@
-import { AnyAction } from '@cofe/store';
+import { useCallback } from 'react';
 import { CofeDndAdjacent, CofeDndIdentity } from '@cofe/types';
 import { isEqual } from 'lodash-es';
+import { atom, useRecoilState } from 'recoil';
 
 export interface DndState {
   dragging?: CofeDndIdentity;
@@ -10,76 +11,95 @@ export interface DndState {
   adjacent?: CofeDndAdjacent;
 }
 
-export const initialState: DndState = {
-  dragging: null,
-  reference: null,
-  container: null,
-  adjacent: null,
-};
+export const dndState = atom<DndState>({
+  key: 'dnd',
+  default: {
+    dragging: null,
+    reference: null,
+    container: null,
+    adjacent: null,
+  },
+});
 
-export const reducer = (state = initialState, { type, payload }: AnyAction) => {
-  switch (type) {
-    case 'RESET_DND':
-      return initialState;
+export const useDndState = () => {
+  const [dnd, setDnd] = useRecoilState(dndState);
 
-    case 'DRAGGING':
-      if (isEqual(state.dragging, payload)) {
-        return state;
-      }
-
-      return {
-        ...state,
-        dragging: payload,
-      };
-
-    case 'SELECTED':
-      if (state.selected?.id === payload?.id) {
-        return state;
-      }
-
-      return {
-        ...state,
-        selected: payload,
-      };
-
-    case 'REFERENCE':
-      if (payload) {
-        if (isEqual(payload, state.reference)) {
-          return state;
-        }
-      }
-
-      return {
-        ...state,
-        adjacent: payload ? state.adjacent : null,
-        reference: payload,
-      };
-
-    case 'CONTAINER':
-      if (payload) {
-        if (isEqual(payload, state.container)) {
-          return state;
-        }
-      }
-
-      return {
-        ...state,
-        container: payload,
-      };
-
-    case 'ADJACENT':
-      if (payload) {
-        if (payload === state.adjacent) {
-          return state;
-        }
-      }
-
-      return {
-        ...state,
-        adjacent: payload,
-      };
-
-    default:
-      return state;
-  }
+  return {
+    ...dnd,
+    reset: useCallback(
+      () =>
+        setDnd({
+          dragging: null,
+          reference: null,
+          container: null,
+          adjacent: null,
+        }),
+      [setDnd],
+    ),
+    drag: useCallback(
+      (payload) => {
+        setDnd((state) =>
+          isEqual(state.dragging, payload)
+            ? state
+            : {
+                ...state,
+                dragging: payload,
+              },
+        );
+      },
+      [setDnd],
+    ),
+    select: useCallback(
+      (payload) => {
+        setDnd((state) =>
+          state.selected?.id === payload?.id
+            ? state
+            : {
+                ...state,
+                selected: payload,
+              },
+        );
+      },
+      [setDnd],
+    ),
+    setReference: useCallback(
+      (payload) => {
+        setDnd((state) =>
+          isEqual(state.reference, payload)
+            ? state
+            : {
+                ...state,
+                reference: payload,
+              },
+        );
+      },
+      [setDnd],
+    ),
+    setContainer: useCallback(
+      (payload) => {
+        setDnd((state) =>
+          isEqual(state.container, payload)
+            ? state
+            : {
+                ...state,
+                container: payload,
+              },
+        );
+      },
+      [setDnd],
+    ),
+    setAdjacent: useCallback(
+      (payload) => {
+        setDnd((state) =>
+          state.adjacent === payload
+            ? state
+            : {
+                ...state,
+                adjacent: payload,
+              },
+        );
+      },
+      [setDnd],
+    ),
+  };
 };

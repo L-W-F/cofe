@@ -1,27 +1,6 @@
 import { Tree } from './Tree';
 
 describe('Tree', () => {
-  test('#create', () => {
-    const t1 = Tree.create('foo');
-
-    expect(t1).toHaveProperty('type', 'foo');
-    expect(t1).toHaveProperty('id');
-  });
-
-  test('#create 2', () => {
-    const t1 = Tree.create({ type: 'foo' });
-
-    expect(t1).toHaveProperty('type', 'foo');
-    expect(t1).toHaveProperty('id');
-  });
-
-  test('#create 3', () => {
-    const t1 = Tree.create({ type: 'foo', id: 'fake' });
-
-    expect(t1).toHaveProperty('type', 'foo');
-    expect(t1).toHaveProperty('id');
-  });
-
   test('#append', () => {
     const t1 = Tree.create('foo');
 
@@ -108,10 +87,31 @@ describe('Tree', () => {
     expect(t2.children[0]).toHaveProperty('parent');
   });
 
-  test('#createNode', () => {
-    const node = Tree.createNode({ type: 'foo' });
+  test('#create', () => {
+    const t1 = Tree.create({ type: 'foo' });
 
-    expect(node).toHaveProperty('type', 'foo');
-    expect(node).toHaveProperty('id');
+    expect(t1).toHaveProperty('type', 'foo');
+    expect(t1).toHaveProperty('id');
+  });
+
+  test('#create #', () => {
+    const t1 = Tree.create('foo');
+
+    expect(t1).toHaveProperty('type', 'foo');
+    expect(t1).toHaveProperty('id');
+  });
+
+  test('#create 2', () => {
+    const t1 = Tree.create({ type: 'foo' });
+
+    expect(t1).toHaveProperty('type', 'foo');
+    expect(t1).toHaveProperty('id');
+  });
+
+  test('#create 3', () => {
+    const t1 = Tree.create({ type: 'foo', id: 'fake' });
+
+    expect(t1).toHaveProperty('type', 'foo');
+    expect(t1).toHaveProperty('id');
   });
 });

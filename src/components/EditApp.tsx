@@ -11,14 +11,15 @@ import {
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
 import { EditIcon } from '@cofe/icons';
-import { useApp } from '@/hooks/useApp';
+import { useAppActions, useAppValue } from '@/store/app';
 
 interface EditAppProps {
   trigger?: ReactElement;
 }
 
 export const EditApp = ({ trigger }: EditAppProps) => {
-  const { title, description, updateApp } = useApp();
+  const { title, description } = useAppValue();
+  const { updateApp } = useAppActions();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -68,3 +69,7 @@ export const EditApp = ({ trigger }: EditAppProps) => {
     </>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  EditApp.displayName = 'EditApp';
+}

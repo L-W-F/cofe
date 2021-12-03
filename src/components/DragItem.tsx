@@ -10,6 +10,7 @@ import {
   AtomUnknownIcon,
 } from '@cofe/icons';
 import { useDrag } from '@/hooks/useDrag';
+import { useDndState } from '@/store/dnd';
 
 interface DragItemProps extends StackProps {
   type: string;
@@ -25,23 +26,25 @@ const iconMap = {
 };
 
 export const DragItem = ({ type, ...props }: DragItemProps) => {
-  const [{ isDragging }, drag] = useDrag({
+  const dragRef = useDrag({
     type,
     effectAllowed: 'copy',
   });
+
+  const { dragging } = useDndState();
 
   const DesignerIcon: ComponentType<IconProps> =
     iconMap[type] ?? AtomUnknownIcon;
 
   return (
     <VStack
-      ref={drag}
+      ref={dragRef}
       p={2}
       spacing={0}
       borderWidth="1px"
       borderRadius="md"
       cursor="move"
-      opacity={isDragging ? 0.25 : 1}
+      opacity={dragging?.type === type ? 0.25 : 1}
       {...props}
     >
       <DesignerIcon boxSize={8} />

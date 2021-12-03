@@ -6,8 +6,8 @@ export const withGsspColorMode =
     debug('gssp')('withGsspColorMode');
 
     const colorModeKey = process.env.KEY_OF_COLOR_MODE_COOKIE;
-    const colorMode = context.req.cookies[colorModeKey] ?? '';
-    const cmc = `${colorModeKey}=${colorMode}`;
+    const colorModeValue = context.req.cookies[colorModeKey] ?? '';
+    const colorMode = `${colorModeKey}=${colorModeValue}`;
 
     if (next) {
       const { props, ...rest } = await next(context);
@@ -20,14 +20,14 @@ export const withGsspColorMode =
         ...rest,
         props: {
           ...props,
-          cmc,
+          colorMode,
         },
       };
     }
 
     return {
       props: {
-        cmc,
+        colorMode,
       },
     };
   };

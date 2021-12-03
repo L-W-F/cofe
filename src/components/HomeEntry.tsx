@@ -12,3 +12,7 @@ export const HomeEntry = () => {
     </NextLink>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  HomeEntry.displayName = 'HomeEntry';
+}

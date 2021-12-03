@@ -2,16 +2,14 @@ import { CofeSchema } from '@cofe/types';
 import { merge } from 'lodash-es';
 
 const map = new Map<string, CofeSchema>();
-
+const atomCache = new Map<string, CofeSchema>();
 const atomKeys = new Set<string>();
 const mixinKeys = new Set<string>();
 const templateKeys = new Set<string>();
 
-const atomCache = new Map<string, CofeSchema>();
-
 export class Schema {
-  static map(callback: (v: [string, CofeSchema]) => unknown) {
-    return Array.from(map.entries()).map(callback);
+  static has(type: string) {
+    return map.has(type);
   }
 
   static add(schema: CofeSchema) {
@@ -46,6 +44,10 @@ export class Schema {
 
   static del(type: string) {
     map.delete(type);
+    atomCache.delete(type);
+    atomKeys.delete(type);
+    mixinKeys.delete(type);
+    templateKeys.delete(type);
   }
 
   static getAtomKeys() {

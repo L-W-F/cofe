@@ -20,3 +20,7 @@ export const CanvasToolbar = () => {
     </Toolbar>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  CanvasToolbar.displayName = 'CanvasToolbar';
+}

@@ -14,3 +14,7 @@ export const ColorModeSwitch = () => {
     />
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  ColorModeSwitch.displayName = 'ColorModeSwitch';
+}

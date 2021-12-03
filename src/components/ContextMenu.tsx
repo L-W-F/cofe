@@ -1,13 +1,12 @@
 import React from 'react';
 import { Box, Menu, MenuItem, MenuList } from '@chakra-ui/react';
 import { DeleteIcon, DuplicateIcon } from '@cofe/icons';
-import { useValue } from '@/store';
-import { useEditorActions } from '@/hooks/useEditor';
-import { DndState } from '@/store/dnd';
+import { useDndState } from '@/store/dnd';
+import { useTreeNodeActions } from '@/store/editor';
 
 export const ContextMenu = ({ isOpen, onClose, x, y }) => {
-  const selected = useValue<DndState['selected']>('dnd.selected');
-  const { deleteNode, duplicateNode } = useEditorActions();
+  const { selected } = useDndState();
+  const { remove, duplicate } = useTreeNodeActions();
 
   return (
     <Box pos="fixed" left={x} top={y}>
@@ -16,7 +15,7 @@ export const ContextMenu = ({ isOpen, onClose, x, y }) => {
           <MenuItem
             icon={<DuplicateIcon />}
             onClick={() => {
-              duplicateNode(selected);
+              duplicate(selected);
             }}
           >
             复制
@@ -24,7 +23,7 @@ export const ContextMenu = ({ isOpen, onClose, x, y }) => {
           <MenuItem
             icon={<DeleteIcon />}
             onClick={() => {
-              deleteNode(selected);
+              remove(selected);
             }}
           >
             删除
@@ -34,3 +33,7 @@ export const ContextMenu = ({ isOpen, onClose, x, y }) => {
     </Box>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  ContextMenu.displayName = 'ContextMenu';
+}

@@ -1,11 +1,16 @@
 import React from 'react';
 import { ButtonGroup, IconButton } from '@chakra-ui/react';
 import { DesignIcon, JsonIcon, ViewIcon } from '@cofe/icons';
-import { useEditor } from '@/hooks/useEditor';
-import { MODE_DESIGN, MODE_PREVIEW, MODE_SOURCE } from '@/store/editor';
+import { useRecoilState } from 'recoil';
+import {
+  editorModeState,
+  MODE_DESIGN,
+  MODE_PREVIEW,
+  MODE_SOURCE,
+} from '@/store/editor';
 
 export const ModeSwitch = () => {
-  const { mode, switchMode } = useEditor();
+  const [mode, setMode] = useRecoilState(editorModeState);
 
   return (
     <ButtonGroup isAttached variant="outline">
@@ -16,7 +21,7 @@ export const ModeSwitch = () => {
         isDisabled={mode === MODE_DESIGN}
         mr="-1px"
         onClick={() => {
-          switchMode(MODE_DESIGN);
+          setMode(MODE_DESIGN);
         }}
       />
       <IconButton
@@ -26,7 +31,7 @@ export const ModeSwitch = () => {
         isDisabled={mode === MODE_SOURCE}
         mr="-1px"
         onClick={() => {
-          switchMode(MODE_SOURCE);
+          setMode(MODE_SOURCE);
         }}
       />
       <IconButton
@@ -35,9 +40,13 @@ export const ModeSwitch = () => {
         icon={<ViewIcon />}
         isDisabled={mode === MODE_PREVIEW}
         onClick={() => {
-          switchMode(MODE_PREVIEW);
+          setMode(MODE_PREVIEW);
         }}
       />
     </ButtonGroup>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  ModeSwitch.displayName = 'ModeSwitch';
+}

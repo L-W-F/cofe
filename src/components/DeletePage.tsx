@@ -10,15 +10,15 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@cofe/icons';
-import { useAppActions } from '@/hooks/useApp';
-import { AppState } from '@/store/app';
+import { CofeApp } from '@cofe/types';
+import { useAppActions } from '@/store/app';
 
 interface DeletePageProps {
-  page: AppState['pages'][string];
+  page: CofeApp['pages'][string];
 }
 
 export const DeletePage = ({ page }: DeletePageProps) => {
-  const { deletePage } = useAppActions();
+  const { removePage } = useAppActions();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
 
@@ -51,7 +51,7 @@ export const DeletePage = ({ page }: DeletePageProps) => {
               loadingText="删除"
               colorScheme="red"
               onClick={() => {
-                deletePage(page);
+                removePage(page);
                 onClose();
               }}
               ml={3}
@@ -64,3 +64,7 @@ export const DeletePage = ({ page }: DeletePageProps) => {
     </>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  DeletePage.displayName = 'DeletePage';
+}

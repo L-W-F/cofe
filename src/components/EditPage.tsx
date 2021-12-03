@@ -13,13 +13,13 @@ import {
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
 import { EditIcon } from '@cofe/icons';
+import { CofeApp } from '@cofe/types';
 import { makeId } from '@cofe/utils';
-import { useAppActions } from '@/hooks/useApp';
-import { AppState } from '@/store/app';
+import { useAppActions } from '@/store/app';
 
 interface EditPageProps {
   trigger?: ReactElement;
-  page: Partial<AppState['pages'][string]>;
+  page: Partial<CofeApp['pages'][string]>;
 }
 
 export const EditPage = ({ trigger, page }: EditPageProps) => {
@@ -90,3 +90,7 @@ export const EditPage = ({ trigger, page }: EditPageProps) => {
     </>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  EditPage.displayName = 'EditPage';
+}

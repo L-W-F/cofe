@@ -19,17 +19,18 @@ import { AddIcon, DesignIcon, EditIcon, PagesIcon } from '@cofe/icons';
 import { DeletePage } from './DeletePage';
 import { EditApp } from './EditApp';
 import { EditPage } from './EditPage';
-import { useAppValue } from '@/hooks/useApp';
-import { useEditor } from '@/hooks/useEditor';
 import {
   CHAR_COMMAND_KEY,
   CHAR_SHIFT_KEY,
   useShortcut,
 } from '@/hooks/useShortcut';
+import { useAppValue } from '@/store/app';
+import { useEditorId, useSwitchPage } from '@/store/editor';
 
 export const AppSettings = () => {
   const { pages } = useAppValue();
-  const { id, switchPage } = useEditor();
+  const id = useEditorId();
+  const switchPage = useSwitchPage();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useShortcut(
@@ -95,3 +96,7 @@ export const AppSettings = () => {
     </>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  AppSettings.displayName = 'AppSettings';
+}

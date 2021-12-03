@@ -9,12 +9,11 @@ import {
 import { Schema } from '@cofe/core';
 import { Form, Ui } from '@cofe/form';
 import { Empty } from '@cofe/ui';
-import { useEditorActions } from '@/hooks/useEditor';
-import { useSelectedNode } from '@/hooks/useSelectedNode';
+import { useSelectedNode, useTreeNodeActions } from '@/store/editor';
 
 export const PropertyPanel = () => {
   const selectedNode = useSelectedNode();
-  const { updateNode } = useEditorActions();
+  const { update } = useTreeNodeActions();
 
   const pSchema = Schema.get(selectedNode?.type)?.properties;
 
@@ -32,7 +31,7 @@ export const PropertyPanel = () => {
             uiSchema={Ui.get(selectedNode.type)?.properties}
             idPrefix="properties"
             onChange={(e) => {
-              updateNode({
+              update({
                 ...selectedNode,
                 properties: e.formData,
               });

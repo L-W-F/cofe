@@ -8,10 +8,10 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { DragItem } from './DragItem';
-import { useTemplate } from '@/hooks/useTemplate';
+import { useTemplateValue } from '@/store/template';
 
 export const TemplatePanel = () => {
-  const { schemas } = useTemplate();
+  const schemas = useTemplateValue();
 
   return (
     <AccordionItem>
@@ -21,9 +21,10 @@ export const TemplatePanel = () => {
       </AccordionButton>
       <AccordionPanel>
         <Grid gridTemplateColumns="1fr 1fr" gridGap={2}>
-          {Object.entries(schemas).map(([type, schema]) => {
-            return <DragItem key={type} type={type} />;
-          })}
+          {schemas &&
+            Object.entries(schemas).map(([type, schema]) => {
+              return <DragItem key={type} type={type} />;
+            })}
         </Grid>
       </AccordionPanel>
     </AccordionItem>

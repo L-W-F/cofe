@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, BoxProps } from '@chakra-ui/react';
 import { Renderer } from '@cofe/core';
 import { CofeTree } from '@cofe/types';
-import { useSelectedTree } from '@/hooks/useSelectedTree';
+import { useSelectedTree } from '@/store/editor';
 
 interface NodeRendererProps extends CofeTree {}
 

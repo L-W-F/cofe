@@ -1,113 +1,179 @@
+import { useCallback, useMemo } from 'react';
 import { Tree } from '@cofe/core';
-import { AnyAction } from '@cofe/store';
-import { CofeDndPayload, CofeEditor, CofeTree } from '@cofe/types';
-import { cloneDeep } from 'lodash-es';
+import { CofeDndPayload, CofeTree } from '@cofe/types';
+import {
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from 'recoil';
 import { filter } from 'unist-util-filter';
+import { select } from 'unist-util-select';
 import { EXIT, visit } from 'unist-util-visit';
+import { useDndState } from './dnd';
 
 export const MODE_DESIGN = 1;
 export const MODE_SOURCE = 2;
 export const MODE_PREVIEW = 3;
 
-export interface EditorState extends CofeEditor {}
+export const editorIdState = atom({
+  key: 'editor.id',
+  default: '',
+});
 
-export const initialState: EditorState = {
-  id: 0,
-  stack: [Tree.create('fragment')],
-  cursor: 0,
-  mode: 1,
+export const editorModeState = atom({
+  key: 'editor.mode',
+  default: 1,
+});
+
+export const editorStackState = atom({
+  key: 'editor.stack',
+  default: [Tree.create('fragment')],
+});
+
+export const editorCursorState = atom({
+  key: 'editor.cursor',
+  default: 0,
+});
+
+export const useEditorId = () => useRecoilValue(editorIdState);
+export const useEditorMode = () => useRecoilValue(editorModeState);
+
+export const useSwitchMode = (payload) =>
+  useSetRecoilState(editorModeState)(payload);
+
+export const useSwitchPage = () => {
+  const setStack = useSetRecoilState(editorStackState);
+  const setCursor = useSetRecoilState(editorCursorState);
+  const setId = useSetRecoilState(editorIdState);
+
+  return useCallback(
+    (payload) => {
+      setStack([payload.tree ?? Tree.create('fragment')]);
+      setCursor(0);
+      setId(payload.id);
+    },
+    [setCursor, setId, setStack],
+  );
 };
 
-export const reducer = (state = initialState, { type, payload }: AnyAction) => {
-  switch (type) {
-    case 'SWITCH_MODE':
-      if (state.mode === payload) {
-        return state;
-      }
+export const useStackActions = () => {
+  const [stack, setStack] = useRecoilState(editorStackState);
+  const [cursor, setCursor] = useRecoilState(editorCursorState);
 
-      return {
-        ...state,
-        mode: payload,
-      };
+  return {
+    canUndo: cursor < stack.length - 1,
+    undo: useCallback(() => {
+      setCursor((state) => state + 1);
+    }, [setCursor]),
 
-    case 'SWITCH_PAGE':
-      return {
-        ...state,
-        id: payload.id,
-        stack: [payload.tree ?? Tree.create('fragment')],
-        cursor: 0,
-      };
+    canRedo: cursor > 0,
+    redo: useCallback(() => {
+      setCursor((state) => state - 1);
+    }, [setCursor]),
 
-    case 'UNDO':
-      if (state.cursor >= state.stack.length - 1) {
-        return state;
-      }
+    push: useCallback(
+      (payload) => {
+        setStack((state) => [payload].concat(state));
+        setCursor(0);
+      },
+      [setCursor, setStack],
+    ),
+  };
+};
 
-      return {
-        ...state,
-        cursor: state.cursor + 1,
-      };
+export const useTreeNodeActions = () => {
+  const setStack = useSetRecoilState(editorStackState);
+  const [cursor, setCursor] = useRecoilState(editorCursorState);
 
-    case 'REDO':
-      if (state.cursor <= 0) {
-        return state;
-      }
+  return {
+    append: useCallback(
+      (payload) => {
+        setStack((stack) =>
+          [appendNodeByDnd(stack[cursor], payload)].concat(stack.slice(cursor)),
+        );
+        setCursor(0);
+      },
+      [cursor, setCursor, setStack],
+    ),
+    update: useCallback(
+      (payload) => {
+        setStack((stack) =>
+          [updateNode(stack[cursor], payload)].concat(stack.slice(cursor)),
+        );
+        setCursor(0);
+      },
+      [cursor, setCursor, setStack],
+    ),
+    remove: useCallback(
+      (payload) => {
+        setStack((stack) =>
+          [removeNodeById(stack[cursor], payload.id)].concat(
+            stack.slice(cursor),
+          ),
+        );
+        setCursor(0);
+      },
+      [cursor, setCursor, setStack],
+    ),
+    duplicate: useCallback(
+      (payload) => {
+        setStack((stack) =>
+          [duplicateNodeById(stack[cursor], payload.id)].concat(
+            stack.slice(cursor),
+          ),
+        );
+        setCursor(0);
+      },
+      [cursor, setCursor, setStack],
+    ),
+  };
+};
 
-      return {
-        ...state,
-        cursor: state.cursor - 1,
-      };
+const selectedTreeSelector = selector({
+  key: 'selected.tree.selector',
+  get: ({ get }) => {
+    const stack = get(editorStackState);
+    const cursor = get(editorCursorState);
 
-    case 'PUSH':
-      return {
-        ...state,
-        stack: [payload].concat(state.stack),
-        cursor: 0,
-      };
+    return stack[cursor] ? Tree.hydrate(stack[cursor]) : null;
+  },
+});
 
-    case 'APPEND_NODE':
-      return {
-        ...state,
-        stack: [appendNodeByDnd(state.stack[state.cursor], payload)].concat(
-          state.stack.slice(state.cursor),
-        ),
-        cursor: 0,
-      };
+export const useSelectedTree = () => {
+  return useRecoilValue(selectedTreeSelector);
+};
 
-    case 'UPDATE_NODE':
-      return {
-        ...state,
-        stack: [updateNode(state.stack[state.cursor], payload)].concat(
-          state.stack.slice(state.cursor),
-        ),
-        cursor: 0,
-      };
+export const useSelectedNode = () => {
+  const tree = useSelectedTree();
+  const { selected } = useDndState();
 
-    case 'DELETE_NODE':
-      return {
-        ...state,
-        stack: [deleteNodeById(state.stack[state.cursor], payload.id)].concat(
-          state.stack.slice(state.cursor),
-        ),
-        cursor: 0,
-      };
+  return selected?.id
+    ? (select(`[id=${selected.id}]`, tree as any) as CofeTree)
+    : null;
+};
 
-    case 'DUPLICATE_NODE':
-      return {
-        ...state,
-        stack: [
-          duplicateNodeById(state.stack[state.cursor], payload.id),
-        ].concat(state.stack.slice(state.cursor)),
-        cursor: 0,
-      };
+export const useSelectedPath = () => {
+  const selected = useSelectedNode();
 
-    default:
-      return state;
-  }
+  return useMemo(() => {
+    const nodes = [];
+
+    let current = selected;
+
+    while (current) {
+      nodes.push(current);
+
+      current = current.parent;
+    }
+
+    return nodes;
+  }, [selected]);
 };
 
 function duplicateNodeById(tree: CofeTree, id: string) {
-  tree = cloneDeep(tree);
+  tree = Tree.copy(tree);
 
   visit(tree, { id }, (node, index, parent: any) => {
     parent.children.splice(index, 0, Tree.clone(node)) as [CofeTree];
@@ -115,13 +181,13 @@ function duplicateNodeById(tree: CofeTree, id: string) {
     return EXIT;
   });
 
-  return Tree.create(tree);
+  return tree;
 }
 
-function deleteNodeById(tree: CofeTree, id: string) {
-  return Tree.create(
+function removeNodeById(tree: CofeTree, id: string) {
+  return (
     filter(tree, { cascade: false }, (node: any) => id !== node.id) ??
-      'fragment',
+    Tree.create('fragment')
   );
 }
 
@@ -129,7 +195,7 @@ function appendNodeByDnd(
   tree: CofeTree,
   { dragging, container, reference, adjacent }: CofeDndPayload,
 ) {
-  tree = cloneDeep(tree);
+  tree = Tree.copy(tree);
 
   let child: CofeTree;
 
@@ -167,11 +233,11 @@ function appendNodeByDnd(
     });
   }
 
-  return Tree.create(tree);
+  return tree;
 }
 
 function updateNode(tree: CofeTree, payload: Partial<CofeTree>) {
-  tree = cloneDeep(tree);
+  tree = Tree.copy(tree);
 
   visit(tree, { id: payload.id }, (node, index, parent) => {
     if ('properties' in payload) {
@@ -185,5 +251,5 @@ function updateNode(tree: CofeTree, payload: Partial<CofeTree>) {
     return EXIT;
   });
 
-  return Tree.create(tree);
+  return tree;
 }

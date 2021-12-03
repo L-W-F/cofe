@@ -31,3 +31,7 @@ export const Footer = ({ children, ...props }: StackProps) => {
     </Paper>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  Footer.displayName = 'Footer';
+}

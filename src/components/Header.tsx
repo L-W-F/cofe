@@ -14,3 +14,7 @@ export const Header = ({
     </AppBar>
   );
 };
+
+if (process.env.NODE_ENV === 'development') {
+  Header.displayName = 'Header';
+}

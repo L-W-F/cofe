@@ -11,6 +11,15 @@ Schema.add({
       disabled: {
         type: 'boolean',
       },
+      // fullWidth: {
+      //   type: 'boolean',
+      //   default: false,
+      // },
+      // variant: {
+      //   type: 'string',
+      //   enum: ['contained', 'outlined', 'ghost', 'text'],
+      //   default: 'contained',
+      // },
     },
   },
 });
