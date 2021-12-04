@@ -33,14 +33,14 @@ export const theme = extendTheme({
         },
       },
     },
-    // Link: {
-    //   baseStyle: {
-    //     color: 'red.500',
-    //     _hover: {
-    //       color: 'teal.500',
-    //     },
-    //   },
-    // },
+    Link: {
+      transition: 'color 0.2s',
+      baseStyle: {
+        _hover: {
+          color: 'teal',
+        },
+      },
+    },
     Paper: {
       baseStyle: (props) => ({
         bg: mode('gray.50', 'gray.900')(props),
