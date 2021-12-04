@@ -18,10 +18,10 @@ import { AtomPanel } from '@/components/AtomPanel';
 import { CanvasPanel } from '@/components/CanvasPanel';
 import { CanvasToolbar } from '@/components/CanvasToolbar';
 import { ColorModeSwitch } from '@/components/ColorModeSwitch';
-import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { HomeEntry } from '@/components/HomeEntry';
 import { PropertyPanel } from '@/components/PropertyPanel';
+import { RepoEntry } from '@/components/RepoEntry';
 import { Root } from '@/components/Root';
 import { SplitHandle } from '@/components/SplitHandle';
 import { StateObserver } from '@/components/StateObserver';
@@ -46,7 +46,6 @@ const Studio = (
   const sp1 = useSplitPane({
     initialSize: props.lps,
     maxSize: 240,
-    step: 240,
     onInit: (size, pane) => {
       pane.style.width = `${size}px`;
       pane.style.display = size ? 'block' : 'none';
@@ -83,6 +82,7 @@ const Studio = (
         <HomeEntry />
         <CanvasToolbar />
         <ColorModeSwitch />
+        <RepoEntry />
       </Header>
       <Flex flex={1}>
         <Accordion
@@ -115,7 +115,6 @@ const Studio = (
           </Accordion>
         </Flex>
       </Flex>
-      <Footer />
     </Root>
   );
 };

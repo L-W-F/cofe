@@ -15,7 +15,9 @@ export const AtomPanel = () => {
     <AccordionItem isFocusable={false}>
       <AccordionButton>
         <AccordionIcon />
-        <Text as="h2">组件</Text>
+        <Text as="h2" whiteSpace="nowrap">
+          组件
+        </Text>
       </AccordionButton>
       <AccordionPanel>
         <Grid gridTemplateColumns="1fr 1fr" gridGap={2}>

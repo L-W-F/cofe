@@ -21,7 +21,7 @@ export const ActionPanel = () => {
     <AccordionItem>
       <AccordionButton>
         <AccordionIcon />
-        <Text as="h2">方法</Text>
+        <Text as="h2" whiteSpace="nowrap">方法</Text>
       </AccordionButton>
       <AccordionPanel>
         {aSchema ? (

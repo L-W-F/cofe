@@ -21,7 +21,7 @@ export const PropertyPanel = () => {
     <AccordionItem>
       <AccordionButton>
         <AccordionIcon />
-        <Text as="h2">属性</Text>
+        <Text as="h2" whiteSpace="nowrap">属性</Text>
       </AccordionButton>
       <AccordionPanel>
         {pSchema ? (

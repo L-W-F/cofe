@@ -17,7 +17,7 @@ export const TemplatePanel = () => {
     <AccordionItem>
       <AccordionButton>
         <AccordionIcon />
-        <Text as="h2">模板</Text>
+        <Text as="h2" whiteSpace="nowrap">模板</Text>
       </AccordionButton>
       <AccordionPanel>
         <Grid gridTemplateColumns="1fr 1fr" gridGap={2}>

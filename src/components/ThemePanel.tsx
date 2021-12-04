@@ -21,7 +21,7 @@ export const ThemePanel = () => {
     <AccordionItem>
       <AccordionButton>
         <AccordionIcon />
-        <Text as="h2">主题</Text>
+        <Text as="h2" whiteSpace="nowrap">主题</Text>
       </AccordionButton>
       <AccordionPanel>
         {pSchema ? (

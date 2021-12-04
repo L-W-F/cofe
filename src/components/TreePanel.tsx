@@ -108,7 +108,7 @@ export const TreePanel = () => {
     <AccordionItem>
       <AccordionButton>
         <AccordionIcon />
-        <Text as="h2">组件树</Text>
+        <Text as="h2" whiteSpace="nowrap">组件树</Text>
       </AccordionButton>
       <AccordionPanel>
         <List>
