@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Paper 1`] = `
+Array [
+  <div
+    className="css-15gz6je"
+  >
+    Paper
+  </div>,
+  <span />,
+]
+`;

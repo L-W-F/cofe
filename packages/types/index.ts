@@ -72,12 +72,6 @@ export interface CofeDndPayload {
   container?: CofeDndIdentity['id'];
   adjacent: CofeDndAdjacent;
 }
-export interface CofeEditor {
-  id?: string;
-  stack?: CofeTree[];
-  cursor?: number;
-  mode?: 1 | 2 | 3;
-}
 
 export interface CofeRendererProps {
   isDesign?: boolean;

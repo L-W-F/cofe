@@ -1,23 +1,13 @@
 import React from 'react';
-import { Box, BoxProps, useStyleConfig } from '@chakra-ui/react';
+import { Box, BoxProps } from '@chakra-ui/react';
+import { withSx } from './withSx';
 
 export interface PaperProps extends BoxProps {}
 
-export const Paper = ({
-  rounded = 'md',
-  shadow = 'xs',
-  overflow = 'hidden',
-  ...props
-}: PaperProps) => {
-  const styles = useStyleConfig('Paper', props);
-
-  return (
-    <Box
-      rounded={rounded}
-      shadow={shadow}
-      overflow={overflow}
-      __css={styles}
-      {...props}
-    />
-  );
-};
+export const Paper = withSx<PaperProps>('Paper')(
+  ({ rounded = 'md', shadow = 'xs', overflow = 'hidden', ...props }) => {
+    return (
+      <Box rounded={rounded} shadow={shadow} overflow={overflow} {...props} />
+    );
+  },
+);
