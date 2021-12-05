@@ -4,6 +4,7 @@ import { isMac } from '@cofe/utils';
 export const CHAR_COMMAND_KEY = '⌘';
 export const CHAR_ALT_KEY = '⌥';
 export const CHAR_SHIFT_KEY = '⇧';
+export const CHAR_BACKSPACE_KEY = '⌫';
 
 export const useShortcut = (
   shortcut: string,
@@ -11,13 +12,13 @@ export const useShortcut = (
 ) => {
   useEffect(() => {
     const keydown = (e: KeyboardEvent) => {
-      if (!e.key) {
+      if (!e.code) {
         return;
       }
 
       const keys = shortcut.split('');
 
-      if (e.key.toLowerCase() !== keys.pop().toLowerCase()) {
+      if (e.code.toLowerCase() !== `key${keys.pop().toLowerCase()}`) {
         return;
       }
 

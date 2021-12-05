@@ -236,7 +236,7 @@ export const DesignCanvas = (props: DesignCanvasProps) => {
       >
         <NodeRenderer isRoot {...tree} />
       </Box>
-      {contextMenuProps.isOpen && <ContextMenu {...contextMenuProps} />}
+      <ContextMenu {...contextMenuProps} />
     </>
   );
 };

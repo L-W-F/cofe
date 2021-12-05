@@ -1,12 +1,13 @@
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 export const useContextMenu = () => {
   const [[isOpen, x, y], setMenuCoord] = useState<[boolean, number?, number?]>([
     false,
   ]);
 
-  const onContextMenu = useCallback((e) => {
+  const onContextMenu = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setMenuCoord([true, e.clientX, e.clientY]);
   }, []);
 
@@ -15,10 +16,10 @@ export const useContextMenu = () => {
   }, []);
 
   useEffect(() => {
-    document.addEventListener('mousedown', onClose);
+    document.addEventListener('contextmenu', onClose);
 
     return () => {
-      document.removeEventListener('mousedown', onClose);
+      document.removeEventListener('contextmenu', onClose);
     };
   }, [onClose]);
 
