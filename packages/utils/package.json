@@ -7,7 +7,6 @@
   "license": "MIT",
   "author": "crossjs <liwenfu@crossjs.com>",
   "dependencies": {
-    "dayjs": "^1.10.7",
     "lodash-es": "^4.17.21"
   },
   "devDependencies": {
