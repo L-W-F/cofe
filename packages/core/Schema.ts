@@ -21,14 +21,15 @@ export class Schema {
       templateKeys.add(schema.type);
     }
 
+    atomCache.delete(schema.type);
+
     map.set(schema.type, schema);
   }
 
   static get(type: string) {
     if (!atomCache.has(type)) {
-      const schema = map.get(type);
-
-      if (schema) {
+      if (map.has(type)) {
+        const schema = map.get(type);
         const mixins = schema?.extends?.map(Schema.get);
 
         if (mixins) {

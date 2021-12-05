@@ -88,8 +88,8 @@ export const SaveTemplate = () => {
                     type: `template:${formData.type}`,
                     template: map(
                       selectedTree,
-                      ({ type, properties }: CofeTree) => {
-                        return u(type, { properties });
+                      ({ type, properties, actions }: CofeTree) => {
+                        return u(type, { properties, actions });
                       },
                     ),
                   },

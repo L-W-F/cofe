@@ -1,25 +1,25 @@
 import { extractDefaults } from './extractDefaults';
 
 describe('extractDefaults', () => {
-  test('undefined', () => {
+  test('empty: undefined', () => {
     expect(extractDefaults()).toBeUndefined();
   });
 
-  test('empty', () => {
+  test('empty: object', () => {
     expect(extractDefaults({})).toBeUndefined();
   });
 
-  test('w/ default', () => {
-    const schema = { type: 'string', default: 'foo' };
+  test('default: simple', () => {
+    expect(extractDefaults({ type: 'string', default: 'foo' })).toBe('foo');
+  });
 
-    expect(extractDefaults(schema)).toBe('foo');
-
-    const schema2 = {
-      type: 'array',
-      default: ['foo', { bar: 'baz' }],
-    };
-
-    expect(extractDefaults(schema2)).toEqual(['foo', { bar: 'baz' }]);
+  test('default: complex', () => {
+    expect(
+      extractDefaults({
+        type: 'array',
+        default: ['foo', { bar: 'baz' }],
+      }),
+    ).toEqual(['foo', { bar: 'baz' }]);
   });
 
   test('type: string', () => {
@@ -38,12 +38,37 @@ describe('extractDefaults', () => {
     expect(extractDefaults({ type: 'array' })).toEqual([]);
   });
 
-  test('type: object', () => {
+  test('type: object #1', () => {
+    expect(
+      extractDefaults({
+        type: 'object',
+        properties: {
+          foo: {
+            type: 'string',
+          },
+          bar: {
+            type: 'string',
+          },
+        },
+      }),
+    ).toEqual({ foo: '', bar: '' });
+  });
+
+  test('type: object #2', () => {
     expect(
       extractDefaults({
         type: 'object',
         properties: { foo: { type: 'array', items: { type: 'string' } } },
       }),
     ).toEqual({ foo: [] });
+  });
+
+  test('type: object #3', () => {
+    expect(
+      extractDefaults({
+        type: 'object',
+        properties: { foo: { type: 'unknown' } },
+      }),
+    ).toEqual({});
   });
 });

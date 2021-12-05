@@ -1,6 +1,6 @@
 import { CofeSchema, CofeTree } from '@cofe/types';
 import { extractDefaults, makeId } from '@cofe/utils';
-import { cloneDeep, isEqual, isEqualWith, merge } from 'lodash-es';
+import { cloneDeep, isEqual, isEqualWith } from 'lodash-es';
 import { u } from 'unist-builder';
 import { map } from 'unist-util-map';
 import { parents } from 'unist-util-parents';
@@ -18,11 +18,17 @@ export class Tree {
     const atomicNode = Tree.createAtomicNode(Schema.get(type));
 
     if (properties) {
-      Object.assign(atomicNode.properties, properties);
+      atomicNode.properties = {
+        ...atomicNode.properties,
+        ...properties,
+      };
     }
 
     if (actions) {
-      Object.assign(atomicNode.actions, actions);
+      atomicNode.actions = {
+        ...atomicNode.actions,
+        ...actions,
+      };
     }
 
     if (children) {
@@ -37,16 +43,16 @@ export class Tree {
     properties,
     actions,
   }: CofeSchema): CofeTree {
-    const props = {
+    const props: Omit<CofeTree, 'type'> = {
       id: makeId(),
     };
 
     if (properties) {
-      Object.assign(props, { properties: extractDefaults(properties) });
+      props.properties = extractDefaults(properties);
     }
 
     if (actions) {
-      Object.assign(props, { actions: extractDefaults(actions) });
+      props.actions = extractDefaults(actions);
     }
 
     return u(type, props);
@@ -70,18 +76,23 @@ export class Tree {
     return Tree.createAtomicNode(schema as CofeSchema);
   }
 
-  static copy(tree: CofeTree) {
-    return cloneDeep(tree);
+  /**
+   * 深度复制整棵树
+   */
+  static copy(tree: CofeTree, makeNewIds?: boolean) {
+    return makeNewIds
+      ? (map(tree, ({ children, ...node }: CofeTree) => {
+          return {
+            ...cloneDeep(node),
+            id: makeId(),
+          };
+        }) as CofeTree)
+      : cloneDeep(tree);
   }
 
-  static clone(tree: CofeTree) {
-    return map(tree, ({ children, ...node }: CofeTree) => {
-      return merge({}, node, {
-        id: makeId(),
-      });
-    }) as CofeTree;
-  }
-
+  /**
+   * Check tree equality deeply
+   */
   static isEqual(tree1: CofeTree, tree2: CofeTree) {
     return isEqual(tree1, tree2);
   }

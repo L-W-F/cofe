@@ -1,28 +1,184 @@
+import { CofeSchema } from '@cofe/types';
+import { Schema } from './Schema';
 import { Tree } from './Tree';
 
 describe('Tree', () => {
-  test('#append', () => {
-    const t1 = Tree.create('foo');
+  test('#create', () => {
+    const t1 = Tree.create({ type: 'foo' });
 
-    Tree.append('bar', t1);
-    Tree.append('baz', t1);
-
-    expect(t1).toHaveProperty(['children', 0, 'type'], 'bar');
-    expect(t1).toHaveProperty(['children', 0, 'id']);
-    expect(t1).toHaveProperty(['children', 1, 'type'], 'baz');
-    expect(t1).toHaveProperty(['children', 1, 'id']);
+    expect(t1).toHaveProperty('type', 'foo');
+    expect(t1).toHaveProperty('id');
   });
 
-  test('#prepend', () => {
+  test('#create w/ shorthand', () => {
     const t1 = Tree.create('foo');
 
-    Tree.prepend('bar', t1);
-    Tree.prepend('baz', t1);
+    expect(t1).toHaveProperty('type', 'foo');
+    expect(t1).toHaveProperty('id');
+  });
 
-    expect(t1).toHaveProperty(['children', 0, 'type'], 'baz');
-    expect(t1).toHaveProperty(['children', 0, 'id']);
-    expect(t1).toHaveProperty(['children', 1, 'type'], 'bar');
-    expect(t1).toHaveProperty(['children', 1, 'id']);
+  test('#create w/ registered', () => {
+    Schema.add({
+      type: 'foo',
+      properties: {
+        type: 'object',
+        properties: {
+          bar: {
+            type: 'string',
+          },
+        },
+      },
+    });
+
+    const t1 = Tree.create('foo');
+
+    expect(t1).toHaveProperty('type', 'foo');
+    expect(t1).toHaveProperty('id');
+    expect(t1).toHaveProperty(['properties', 'bar'], '');
+
+    Schema.del('foo');
+  });
+
+  test('#create w/ actions', () => {
+    const t1 = Tree.create({
+      type: 'foo',
+      actions: {
+        type: 'object',
+        properties: {
+          bar: {
+            type: 'string',
+          },
+        },
+      },
+    });
+
+    expect(t1).toHaveProperty('type', 'foo');
+    expect(t1).toHaveProperty('id');
+    expect(t1).toHaveProperty(['actions', 'bar'], '');
+  });
+
+  const templateSchemaBase: CofeSchema = {
+    type: 'foo',
+  };
+
+  const templateSchemaProperties: CofeSchema['properties'] = {
+    type: 'object',
+    properties: {
+      bar: {
+        type: 'string',
+        default: 'foobar',
+      },
+      baz: {
+        type: 'string',
+        default: 'foobar',
+      },
+    },
+  };
+
+  const templateSchemaActions: CofeSchema['actions'] = {
+    type: 'object',
+    properties: {
+      bar: {
+        type: 'string',
+        default: 'foobar',
+      },
+      baz: {
+        type: 'string',
+        default: 'foobar',
+      },
+    },
+  };
+
+  test('#create w/ template', () => {
+    Schema.add(templateSchemaBase);
+
+    const t1 = Tree.create({
+      type: 'template:foo',
+      template: {
+        type: 'foo',
+        properties: {
+          baz: 'bar',
+        },
+        actions: {
+          bar: 'baz',
+        },
+      },
+    });
+
+    expect(t1).toHaveProperty('type', 'foo');
+    expect(t1).toHaveProperty('id');
+    expect(t1).toHaveProperty(['properties', 'baz'], 'bar');
+    expect(t1).toHaveProperty(['actions', 'bar'], 'baz');
+
+    Schema.del('foo');
+  });
+
+  test('#create w/ template w/properties', () => {
+    Schema.add({ ...templateSchemaBase, properties: templateSchemaProperties });
+
+    const t1 = Tree.create({
+      type: 'template:foo',
+      template: {
+        type: 'foo',
+        properties: {
+          baz: 'bar',
+        },
+      },
+    });
+
+    expect(t1).toHaveProperty('type', 'foo');
+    expect(t1).toHaveProperty('id');
+    expect(t1).toHaveProperty(['properties', 'bar'], 'foobar');
+    expect(t1).toHaveProperty(['properties', 'baz'], 'bar');
+
+    Schema.del('foo');
+  });
+
+  test('#create w/ template w/actions', () => {
+    Schema.add({ ...templateSchemaBase, actions: templateSchemaActions });
+
+    const t1 = Tree.create({
+      type: 'template:foo',
+      template: {
+        type: 'foo',
+        actions: {
+          bar: 'baz',
+        },
+      },
+    });
+
+    expect(t1).toHaveProperty('type', 'foo');
+    expect(t1).toHaveProperty('id');
+    expect(t1).toHaveProperty(['actions', 'bar'], 'baz');
+    expect(t1).toHaveProperty(['actions', 'baz'], 'foobar');
+
+    Schema.del('foo');
+  });
+
+  test('#create w/ template w/ children', () => {
+    Schema.add(templateSchemaBase);
+
+    const t1 = Tree.create({
+      type: 'template:foo',
+      template: {
+        type: 'foo',
+        children: [
+          {
+            type: 'foo',
+          },
+          {
+            type: 'foo',
+          },
+        ],
+      },
+    });
+
+    expect(t1).toHaveProperty('type', 'foo');
+    expect(t1).toHaveProperty('id');
+    expect(t1).toHaveProperty(['children', 0, 'type'], 'foo');
+    expect(t1).toHaveProperty(['children', 1, 'type'], 'foo');
+
+    Schema.del('foo');
   });
 
   test('#isSame', () => {
@@ -41,26 +197,20 @@ describe('Tree', () => {
     expect(Tree.isEqual(t1, t2)).toBeFalsy();
   });
 
-  test('#clone', () => {
+  test('#copy', () => {
     const t1 = Tree.create('foo');
-    const t2 = Tree.clone(t1);
+    const t2 = Tree.copy(t1);
 
-    expect(Tree.isEqual(t1, t2)).toBeFalsy();
+    expect(Tree.isEqual(t1, t2)).toBeTruthy();
     expect(Tree.isSame(t1, t2)).toBeTruthy();
   });
 
-  test('#clone 2', () => {
-    const t1 = Tree.create({ type: 'foo' });
-
-    Tree.append({ type: 'bar' }, t1);
-
-    const t2 = Tree.clone(t1);
+  test('#copy w/ makeNewIds', () => {
+    const t1 = Tree.create('foo');
+    const t2 = Tree.copy(t1, true);
 
     expect(Tree.isEqual(t1, t2)).toBeFalsy();
     expect(Tree.isSame(t1, t2)).toBeTruthy();
-
-    expect(Tree.isEqual(t1.children[0], t2.children[0])).toBeFalsy();
-    expect(Tree.isSame(t1.children[0], t2.children[0])).toBeTruthy();
   });
 
   test('#hydrate', () => {
@@ -73,45 +223,5 @@ describe('Tree', () => {
     expect(t1).not.toHaveProperty('children');
     expect(t2).toHaveProperty('parent');
     expect(t2).not.toHaveProperty('children');
-  });
-
-  test('#hydrate#2', () => {
-    const t1 = Tree.create({ type: 'foo' });
-
-    Tree.append({ type: 'bar' }, t1);
-
-    const t2 = Tree.hydrate(t1);
-
-    expect(t2).toHaveProperty('parent');
-    expect(t2).toHaveProperty('children');
-    expect(t2.children[0]).toHaveProperty('parent');
-  });
-
-  test('#create', () => {
-    const t1 = Tree.create({ type: 'foo' });
-
-    expect(t1).toHaveProperty('type', 'foo');
-    expect(t1).toHaveProperty('id');
-  });
-
-  test('#create #', () => {
-    const t1 = Tree.create('foo');
-
-    expect(t1).toHaveProperty('type', 'foo');
-    expect(t1).toHaveProperty('id');
-  });
-
-  test('#create 2', () => {
-    const t1 = Tree.create({ type: 'foo' });
-
-    expect(t1).toHaveProperty('type', 'foo');
-    expect(t1).toHaveProperty('id');
-  });
-
-  test('#create 3', () => {
-    const t1 = Tree.create({ type: 'foo', id: 'fake' });
-
-    expect(t1).toHaveProperty('type', 'foo');
-    expect(t1).toHaveProperty('id');
   });
 });

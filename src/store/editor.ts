@@ -176,7 +176,7 @@ function duplicateNodeById(tree: CofeTree, id: string) {
   tree = Tree.copy(tree);
 
   visit(tree, { id }, (node, index, parent: any) => {
-    parent.children.splice(index, 0, Tree.clone(node)) as [CofeTree];
+    parent.children.splice(index, 0, Tree.copy(node, true)) as [CofeTree];
 
     return EXIT;
   });
