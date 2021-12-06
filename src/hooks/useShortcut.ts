@@ -5,6 +5,14 @@ export const CHAR_COMMAND_KEY = '⌘';
 export const CHAR_ALT_KEY = '⌥';
 export const CHAR_SHIFT_KEY = '⇧';
 export const CHAR_BACKSPACE_KEY = '⌫';
+export const CHAR_ESCAPE_KEY = '␛';
+export const CHAR_DELETE_KEY = '␡';
+
+const keyCodeMap = {
+  [CHAR_BACKSPACE_KEY]: 'Backspace',
+  [CHAR_ESCAPE_KEY]: 'Escape',
+  [CHAR_DELETE_KEY]: 'Delete',
+};
 
 export const useShortcut = (
   shortcut: string,
@@ -12,13 +20,13 @@ export const useShortcut = (
 ) => {
   useEffect(() => {
     const keydown = (e: KeyboardEvent) => {
-      if (!e.code) {
+      if (!e.key) {
         return;
       }
 
-      const keys = shortcut.split('');
+      const keys = shortcut.split('').map((v) => keyCodeMap[v] ?? v);
 
-      if (e.code.toLowerCase() !== `key${keys.pop().toLowerCase()}`) {
+      if (e.key.toLowerCase() !== keys.pop().toLowerCase()) {
         return;
       }
 

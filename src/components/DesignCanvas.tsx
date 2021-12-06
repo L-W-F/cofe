@@ -2,12 +2,18 @@ import React from 'react';
 import { Box, BoxProps, useColorModeValue } from '@chakra-ui/react';
 import { Renderer, Schema } from '@cofe/core';
 import { CofeDndAdjacent, CofeTree } from '@cofe/types';
-import { isMac } from '@cofe/utils';
 import { pick } from 'lodash-es';
 import { ContextMenu } from './ContextMenu';
 import { useContextMenu } from '@/hooks/useContextMenu';
 import { useDrag } from '@/hooks/useDrag';
 import { useDrop } from '@/hooks/useDrop';
+import {
+  CHAR_BACKSPACE_KEY,
+  CHAR_COMMAND_KEY,
+  CHAR_DELETE_KEY,
+  CHAR_ESCAPE_KEY,
+  useShortcut,
+} from '@/hooks/useShortcut';
 import { useDndState } from '@/store/dnd';
 import { useSelectedTree, useTreeNodeActions } from '@/store/editor';
 
@@ -181,22 +187,17 @@ export const DesignCanvas = (props: DesignCanvasProps) => {
   const { append, remove } = useTreeNodeActions();
   const { triggerProps, ...contextMenuProps } = useContextMenu();
 
-  const handleKeyDown = async (e) => {
-    // Delete
-    // ⌘+Backspace
-    if (e.key === 'Delete' || (e.key === 'Backspace' && isMac && e.metaKey)) {
-      remove(selected);
+  useShortcut(CHAR_DELETE_KEY, (e) => {
+    remove(selected);
+  });
 
-      e.currentTarget.focus();
-    }
+  useShortcut(`${CHAR_COMMAND_KEY}${CHAR_BACKSPACE_KEY}`, (e) => {
+    remove(selected);
+  });
 
-    // Escape
-    if (e.key === 'Escape') {
-      select(null);
-
-      e.currentTarget.focus();
-    }
-  };
+  useShortcut(CHAR_ESCAPE_KEY, (e) => {
+    select(null);
+  });
 
   const handleFocus = (e) => {
     if (e.target.dataset) {
@@ -230,7 +231,6 @@ export const DesignCanvas = (props: DesignCanvasProps) => {
         tabIndex={0}
         minHeight="100%"
         onFocus={handleFocus}
-        onKeyDown={handleKeyDown}
         {...triggerProps}
         {...props}
       >

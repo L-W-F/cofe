@@ -44,7 +44,7 @@ export const CanvasPanel = (props: PaperProps) => {
   }, [id, pages, switchPage]);
 
   return (
-    <Paper flex={1} p={4} {...props}>
+    <Paper flex={0} p={4} {...props}>
       {pages[id] ? <Canvas /> : null}
     </Paper>
   );

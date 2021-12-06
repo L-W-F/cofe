@@ -13,6 +13,7 @@ import {
   IconButton,
   List,
   ListItem,
+  Tooltip,
   useDisclosure,
 } from '@chakra-ui/react';
 import { AddIcon, DesignIcon, EditIcon, PagesIcon } from '@cofe/icons';
@@ -49,13 +50,17 @@ export const AppSettings = () => {
 
   return (
     <>
-      <IconButton
-        aria-label="应用设置"
-        title={`应用设置 [${CHAR_COMMAND_KEY}${CHAR_SHIFT_KEY}M]`}
-        icon={<PagesIcon />}
-        onClick={onOpen}
-        variant="ghost"
-      />
+      <Tooltip
+        hasArrow
+        label={`应用设置 [${CHAR_COMMAND_KEY}${CHAR_SHIFT_KEY}M]`}
+      >
+        <IconButton
+          aria-label="应用设置"
+          icon={<PagesIcon />}
+          onClick={onOpen}
+          variant="ghost"
+        />
+      </Tooltip>
       <Drawer isOpen={isOpen} onClose={onClose} placement="left">
         <DrawerOverlay />
         <DrawerContent>

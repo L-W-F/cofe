@@ -9,6 +9,7 @@ import {
   DrawerHeader,
   DrawerOverlay,
   IconButton,
+  Tooltip,
   useDisclosure,
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
@@ -43,13 +44,17 @@ export const SaveTemplate = () => {
 
   return (
     <>
-      <IconButton
-        aria-label="另存为模板"
-        title={`另存为模板 [${CHAR_COMMAND_KEY}${CHAR_SHIFT_KEY}S]`}
-        icon={<SaveTemplateIcon />}
-        variant="ghost"
-        onClick={onOpen}
-      />
+      <Tooltip
+        hasArrow
+        label={`另存为模板 [${CHAR_COMMAND_KEY}${CHAR_SHIFT_KEY}S]`}
+      >
+        <IconButton
+          aria-label="另存为模板"
+          icon={<SaveTemplateIcon />}
+          variant="ghost"
+          onClick={onOpen}
+        />
+      </Tooltip>
       <Drawer isOpen={isOpen} onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>

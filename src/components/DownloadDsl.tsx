@@ -12,6 +12,7 @@ import {
   FormLabel,
   IconButton,
   Switch,
+  Tooltip,
   useDisclosure,
 } from '@chakra-ui/react';
 import { DownloadIcon } from '@cofe/icons';
@@ -40,13 +41,17 @@ export const DownloadDsl = () => {
 
   return (
     <>
-      <IconButton
-        aria-label="下载 DSL"
-        title={`下载 DSL [${CHAR_COMMAND_KEY}${CHAR_SHIFT_KEY}E]`}
-        icon={<DownloadIcon />}
-        variant="ghost"
-        onClick={onOpen}
-      />
+      <Tooltip
+        hasArrow
+        label={`下载 DSL [${CHAR_COMMAND_KEY}${CHAR_SHIFT_KEY}E]`}
+      >
+        <IconButton
+          aria-label="下载 DSL"
+          icon={<DownloadIcon />}
+          variant="ghost"
+          onClick={onOpen}
+        />
+      </Tooltip>
       <Drawer isOpen={isOpen} onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>

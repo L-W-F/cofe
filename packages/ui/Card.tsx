@@ -1,11 +1,7 @@
-import React from 'react';
-import { ThemingProps, useStyleConfig } from '@chakra-ui/react';
+import { ThemingProps } from '@chakra-ui/react';
 import { Paper, PaperProps } from './Paper';
+import { withSx } from './withSx';
 
 export interface CardProps extends PaperProps, ThemingProps {}
 
-export const Card = (props: CardProps) => {
-  const styles = useStyleConfig('Card', props);
-
-  return <Paper __css={styles} {...props} />;
-};
+export const Card = withSx<CardProps>('Card')(Paper);
