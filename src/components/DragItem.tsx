@@ -1,5 +1,11 @@
 import React, { ComponentType } from 'react';
-import { IconProps, StackProps, Text, VStack } from '@chakra-ui/react';
+import {
+  IconProps,
+  StackProps,
+  Text,
+  useColorModeValue,
+  VStack,
+} from '@chakra-ui/react';
 import {
   AtomButtonIcon,
   AtomFragmentIcon,
@@ -45,6 +51,10 @@ export const DragItem = ({ type, ...props }: DragItemProps) => {
       borderRadius="md"
       cursor="move"
       opacity={dragging?.type === type ? 0.25 : 1}
+      bgColor={useColorModeValue('whiteAlpha.500', 'blackAlpha.500')}
+      _hover={{
+        bgColor: useColorModeValue('whiteAlpha.800', 'blackAlpha.800'),
+      }}
       {...props}
     >
       <DesignerIcon boxSize={8} />
