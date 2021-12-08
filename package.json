@@ -43,8 +43,6 @@
     "@cofe/hooks": "^0.1.0",
     "@cofe/icons": "^0.1.0",
     "@cofe/logger": "^0.1.0",
-    "@cofe/mixins": "^0.1.0",
-    "@cofe/renderers": "^0.1.0",
     "@cofe/types": "^0.1.0",
     "@cofe/ui": "^0.1.0",
     "@cofe/utils": "^0.1.0",

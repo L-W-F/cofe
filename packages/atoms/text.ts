@@ -1,6 +1,6 @@
-import { Schema } from '@cofe/core';
+import { TextRenderer } from './renderers/Text';
 
-Schema.add({
+export const text = {
   type: 'text',
   isInline: true,
   properties: {
@@ -14,4 +14,5 @@ Schema.add({
     },
     required: ['content'],
   },
-});
+  renderer: TextRenderer,
+};

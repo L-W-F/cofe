@@ -1,6 +1,7 @@
-import { Schema } from '@cofe/core';
+import { FragmentRenderer } from './renderers/Fragment';
 
-Schema.add({
+export const fragment = {
   type: 'fragment',
   accept: ['*'],
-});
+  renderer: FragmentRenderer,
+};

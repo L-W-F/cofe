@@ -26,7 +26,6 @@ import { Root } from '@/components/Root';
 import { SplitHandle } from '@/components/SplitHandle';
 import { StateObserver } from '@/components/StateObserver';
 import { TemplatePanel } from '@/components/TemplatePanel';
-import { ThemePanel } from '@/components/ThemePanel';
 import { TreePanel } from '@/components/TreePanel';
 import { withGsspCatch } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
@@ -35,10 +34,6 @@ import { withGsspPermit } from '@/gssp/withGsspPermit';
 import { appState, createDefaultValues } from '@/store/app';
 import { templateState } from '@/store/template';
 import { theme } from '@/theme';
-
-import '@cofe/atoms';
-import '@cofe/mixins';
-import '@cofe/renderers';
 
 const Studio = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
@@ -78,6 +73,12 @@ const Studio = (
 
   return (
     <Root>
+      {props.err ? (
+        <Alert status="error">
+          <AlertIcon />
+          {props.err.message}
+        </Alert>
+      ) : null}
       <Header>
         <HomeEntry />
         <CanvasToolbar />
@@ -108,7 +109,6 @@ const Studio = (
             gridGap={2}
             overflow="hidden"
           >
-            <ThemePanel />
             <TreePanel />
             <PropertyPanel />
             <ActionPanel />
@@ -161,23 +161,21 @@ const Index = (
   }, []);
 
   return appInitialStates && templateInitialStates ? (
-    <ChakraProvider resetCSS theme={theme} colorModeManager={colorModeManager}>
-      <RecoilRoot
-        initializeState={({ set: _set }) => {
-          _set(appState, appInitialStates);
-          _set(templateState, templateInitialStates);
-        }}
+    <RecoilRoot
+      initializeState={({ set: _set }) => {
+        _set(appState, appInitialStates);
+        _set(templateState, templateInitialStates);
+      }}
+    >
+      <ChakraProvider
+        resetCSS
+        theme={theme}
+        colorModeManager={colorModeManager}
       >
-        {props.err ? (
-          <Alert status="error">
-            <AlertIcon />
-            {props.err.message}
-          </Alert>
-        ) : null}
         <Studio {...props} />
-        <StateObserver />
-      </RecoilRoot>
-    </ChakraProvider>
+      </ChakraProvider>
+      <StateObserver />
+    </RecoilRoot>
   ) : null;
 };
 

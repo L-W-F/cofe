@@ -1,6 +1,8 @@
-import { Schema } from '@cofe/core';
+import { withProps } from '@cofe/form/helpers/withProps';
+import { ObjectFieldTemplate } from '@cofe/form/templates/ObjectFieldTemplate';
+import { IconRenderer } from './renderers/Icon';
 
-Schema.add({
+export const icon = {
   type: 'icon',
   isInline: true,
   properties: {
@@ -29,4 +31,31 @@ Schema.add({
     },
     required: ['path'],
   },
-});
+  uiSchema: {
+    properties: {
+      'ui:ObjectFieldTemplate': withProps({
+        gridGap: 2,
+        templateColumns: '1fr 1fr',
+        spanMap: {
+          width: 1,
+          height: 1,
+          color: 2,
+          path: 2,
+        },
+      })(ObjectFieldTemplate),
+      width: {
+        'ui:widget': 'updown',
+      },
+      height: {
+        'ui:widget': 'updown',
+      },
+      color: {
+        'ui:widget': 'color',
+      },
+      path: {
+        'ui:widget': 'textarea',
+      },
+    },
+  },
+  renderer: IconRenderer,
+};

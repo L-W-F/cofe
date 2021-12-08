@@ -7,7 +7,7 @@ import {
   Grid,
   Text,
 } from '@chakra-ui/react';
-import { Schema } from '@cofe/core';
+import * as atoms from '@cofe/atoms';
 import { DragItem } from './DragItem';
 
 export const AtomPanel = () => {
@@ -21,8 +21,10 @@ export const AtomPanel = () => {
       </AccordionButton>
       <AccordionPanel>
         <Grid gridTemplateColumns="1fr 1fr" gridGap={2}>
-          {Schema.getAtomKeys().map((type) => {
-            return <DragItem key={type} type={type} />;
+          {Object.keys(atoms).map((type) => {
+            return type === 'unknown' ? null : (
+              <DragItem key={type} type={type} />
+            );
           })}
         </Grid>
       </AccordionPanel>

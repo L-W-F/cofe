@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Text, TextProps } from '@chakra-ui/react';
-import { Renderer } from '@cofe/core';
 import { CofeRendererProps } from '@cofe/types';
 
 interface TextRendererProps extends CofeRendererProps, TextProps {
@@ -56,8 +55,3 @@ export const TextRenderer = ({
     />
   );
 };
-
-Renderer.add({
-  type: 'text',
-  renderer: TextRenderer,
-});

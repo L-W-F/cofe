@@ -1,3 +1,4 @@
+import { UiSchema } from '@rjsf/core';
 import { JSONSchema4, JSONSchema7 } from 'json-schema';
 
 export interface CofeTreeProperties extends Record<string, any> {}
@@ -42,21 +43,31 @@ export interface CofeApp {
 }
 
 export interface CofeTemplate {
-  id: string;
   type: string;
-  template: CofeTree;
+  icon?: string;
   description?: string;
+  template: {
+    type: string;
+    properties?: CofeTreeProperties;
+    actions?: CofeTreeActions;
+    children?: CofeTemplate['template'][];
+  };
 }
 
 export interface CofeSchema {
   type: string;
-  extends?: string[];
+  icon?: string;
+  description?: string;
   isInline?: boolean;
   accept?: string[];
   properties?: JSONSchema4 & JSONSchema7;
   actions?: JSONSchema4 & JSONSchema7;
   children?: CofeSchema[];
-  template?: CofeSchema;
+  uiSchema?: {
+    properties?: UiSchema;
+    actions?: UiSchema;
+  };
+  renderer?: CofeRenderer;
 }
 
 export type CofeDndAdjacent = 'INSERT_BEFORE' | 'INSERT_AFTER';

@@ -1,6 +1,6 @@
-import { Schema } from '@cofe/core';
+import { GridRenderer } from './renderers/Grid';
 
-Schema.add({
+export const grid = {
   type: 'grid',
   accept: ['!fragment'],
   properties: {
@@ -34,4 +34,5 @@ Schema.add({
       },
     },
   },
-});
+  renderer: GridRenderer,
+};

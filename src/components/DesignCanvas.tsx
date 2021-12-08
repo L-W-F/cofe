@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, BoxProps, useColorModeValue } from '@chakra-ui/react';
-import { Renderer, Schema } from '@cofe/core';
+import * as atoms from '@cofe/atoms';
 import { CofeDndAdjacent, CofeTree } from '@cofe/types';
 import { pick } from 'lodash-es';
 import { ContextMenu } from './ContextMenu';
@@ -100,7 +100,7 @@ const DnDHandle = ({
   const isReference = dragging?.id !== reference?.id && reference?.id === id;
   const isContainer = dragging?.id !== container?.id && container?.id === id;
 
-  const schema = Schema.get(type);
+  const schema = atoms[type];
 
   const adjacentProps = getAdjacentProps(
     isReference ? adjacent : undefined,
@@ -160,22 +160,18 @@ const NodeRenderer = ({
   actions,
   children,
 }: NodeRendererProps) => {
-  const R = Renderer.get(type);
-
-  if (R) {
-    return (
-      <DnDHandle key={id} isRoot={isRoot} type={type} id={id}>
-        <R {...properties} actions={actions} isDesign pointerEvents="none">
-          {children?.map(NodeRenderer)}
-        </R>
-      </DnDHandle>
-    );
+  if (!(type in atoms)) {
+    type = 'unknown';
   }
 
+  const R = atoms[type].renderer;
+
   return (
-    <Box key={id} type={type} id={id}>
-      未知节点
-    </Box>
+    <DnDHandle key={id} isRoot={isRoot} type={type} id={id}>
+      <R {...properties} actions={actions} isDesign pointerEvents="none">
+        {children?.map(NodeRenderer)}
+      </R>
+    </DnDHandle>
   );
 };
 
@@ -221,10 +217,10 @@ export const DesignCanvas = (props: DesignCanvasProps) => {
       <Box
         ref={dropRef}
         bgImage={`
-        linear-gradient(45deg, ${cellColor} 25%, transparent 25%),
-        linear-gradient(-45deg, ${cellColor} 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, ${cellColor} 75%),
-        linear-gradient(-45deg, transparent 75%, ${cellColor} 75%);
+          linear-gradient(45deg, ${cellColor} 25%, transparent 25%),
+          linear-gradient(-45deg, ${cellColor} 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, ${cellColor} 75%),
+          linear-gradient(-45deg, transparent 75%, ${cellColor} 75%);
         `}
         bgSize="20px 20px"
         bgPosition="0 0, 0 10px, 10px -10px, -10px 0px"

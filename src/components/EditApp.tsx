@@ -18,7 +18,7 @@ interface EditAppProps {
 }
 
 export const EditApp = ({ trigger }: EditAppProps) => {
-  const { title, description } = useAppValue();
+  const { title, description, theme } = useAppValue();
   const { updateApp } = useAppActions();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -44,7 +44,7 @@ export const EditApp = ({ trigger }: EditAppProps) => {
           <DrawerHeader>编辑应用</DrawerHeader>
           <DrawerBody>
             <Form
-              formData={{ title, description }}
+              formData={{ title, description, theme }}
               schema={{
                 type: 'object',
                 properties: {
@@ -56,8 +56,46 @@ export const EditApp = ({ trigger }: EditAppProps) => {
                     type: 'string',
                     title: '描述',
                   },
+                  theme: {
+                    type: 'object',
+                    title: '主题',
+                    properties: {
+                      colors: {
+                        type: 'object',
+                        properties: {
+                          brand: {
+                            type: 'string',
+                          },
+                        },
+                      },
+                      shapes: {
+                        type: 'object',
+                        properties: {
+                          radii: {
+                            type: 'string',
+                            enum: ['sm', 'md', 'lg'],
+                            default: 'md',
+                          },
+                        },
+                      },
+                    },
+                  },
                 },
                 required: ['title'],
+              }}
+              uiSchema-={{
+                theme: {
+                  colors: {
+                    brand: {
+                      'ui:widget': 'color',
+                    },
+                  },
+                  shapes: {
+                    radii: {
+                      'ui:widget': 'radio',
+                    },
+                  },
+                },
               }}
               onChange={(e) => {
                 updateApp(e.formData);

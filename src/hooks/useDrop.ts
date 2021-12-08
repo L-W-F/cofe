@@ -1,10 +1,12 @@
 import { RefCallback, useEffect, useRef, useState } from 'react';
+import * as atoms from '@cofe/atoms';
 import { Schema, Tree } from '@cofe/core';
 import { CofeDndAdjacent, CofeDndIdentity, CofeDndPayload } from '@cofe/types';
 import { isEqual } from 'lodash-es';
 import { select } from 'unist-util-select';
 import { useDndState } from '@/store/dnd';
 import { useSelectedTree } from '@/store/editor';
+import { useTemplateValue } from '@/store/template';
 
 interface DropOptions {
   onDrop: (payload: CofeDndPayload) => void;
@@ -14,6 +16,7 @@ export const useDrop = ({ onDrop }: DropOptions): RefCallback<HTMLElement> => {
   const selectedTree = useSelectedTree();
   const { dragging, reset, setAdjacent, setReference, setContainer } =
     useDndState();
+  const templates = useTemplateValue();
   const [dropHandle, setDropHandle] = useState<HTMLElement>(null);
   const referenceRef = useRef<CofeDndIdentity>();
   const containerRef = useRef<CofeDndIdentity>();
@@ -42,7 +45,9 @@ export const useDrop = ({ onDrop }: DropOptions): RefCallback<HTMLElement> => {
           }
 
           onDrop({
-            dragging: dragging.id ?? Tree.create(dragging.type),
+            dragging:
+              dragging.id ??
+              Tree.create(templates[dragging.type] ?? dragging.type),
             reference: reference?.id,
             container: container?.id,
             adjacent,
@@ -64,7 +69,7 @@ export const useDrop = ({ onDrop }: DropOptions): RefCallback<HTMLElement> => {
               .querySelector(`[data-id=${reference.id}]`)
               .getBoundingClientRect();
 
-            const { isInline } = Schema.get(reference.type);
+            const { isInline } = atoms[reference.type] ?? atoms.unknown;
 
             adjacent = (
               isInline ? e.clientX > x + width / 2 : e.clientY > y + height / 2
@@ -140,6 +145,7 @@ export const useDrop = ({ onDrop }: DropOptions): RefCallback<HTMLElement> => {
     setAdjacent,
     setReference,
     setContainer,
+    templates,
   ]);
 
   return setDropHandle;
@@ -154,7 +160,7 @@ function getAcceptChain(node: any, type: string) {
   while (node) {
     chain.push({ type: node.type, id: node.id });
 
-    if (Schema.isAccepted(Schema.get(node.type)?.accept, type)) {
+    if (Schema.isAccepted(atoms[node.type]?.accept, type)) {
       return chain.slice(-2) as [
         {
           type: string;

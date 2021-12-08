@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, BoxProps } from '@chakra-ui/react';
-import { Renderer } from '@cofe/core';
+import * as atoms from '@cofe/atoms';
 import { CofeTree } from '@cofe/types';
 import { useSelectedTree } from '@/store/editor';
 
@@ -13,20 +13,16 @@ export const NodeRenderer = ({
   actions,
   children,
 }: NodeRendererProps) => {
-  const R = Renderer.get(type);
-
-  if (R) {
-    return (
-      <R key={id} id={id} {...properties} actions={actions}>
-        {children?.map(NodeRenderer)}
-      </R>
-    );
+  if (!(type in atoms)) {
+    type = 'unknown';
   }
 
+  const R = atoms[type].renderer;
+
   return (
-    <Box key={id} id={id}>
-      未知节点
-    </Box>
+    <R key={id} id={id} {...properties} actions={actions}>
+      {children?.map(NodeRenderer)}
+    </R>
   );
 };
 

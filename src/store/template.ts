@@ -1,5 +1,4 @@
-import { useCallback, useEffect } from 'react';
-import { Schema } from '@cofe/core';
+import { useCallback } from 'react';
 import { CofeSchema } from '@cofe/types';
 import { omit } from 'lodash-es';
 import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
@@ -12,17 +11,7 @@ export const templateState = atom({
 });
 
 export const useTemplateValue = () => {
-  const schemas = useRecoilValue(templateState);
-
-  useEffect(() => {
-    if (schemas) {
-      Object.values(schemas).forEach((schema) => {
-        Schema.add(schema as any);
-      });
-    }
-  }, [schemas]);
-
-  return schemas;
+  return useRecoilValue(templateState);
 };
 
 export const useTemplateActions = () => {

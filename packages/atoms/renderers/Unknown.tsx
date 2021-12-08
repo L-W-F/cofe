@@ -1,13 +1,15 @@
 import React, { Children, Fragment, ReactNode } from 'react';
 import { Box } from '@chakra-ui/react';
-import { Renderer } from '@cofe/core';
 import { CofeRendererProps } from '@cofe/types';
 
-interface FragmentRendererProps extends CofeRendererProps {
+interface UnknownRendererProps extends CofeRendererProps {
   children?: ReactNode;
 }
 
-const FragmentRenderer = ({ isDesign, children }: FragmentRendererProps) => {
+export const UnknownRenderer = ({
+  isDesign,
+  children,
+}: UnknownRendererProps) => {
   return (
     <Fragment>
       {isDesign ? (
@@ -15,7 +17,7 @@ const FragmentRenderer = ({ isDesign, children }: FragmentRendererProps) => {
           children
         ) : (
           <Box color="gray.400" height={'calc(100%)'}>
-            Fragment
+            Unknown
           </Box>
         )
       ) : (
@@ -24,8 +26,3 @@ const FragmentRenderer = ({ isDesign, children }: FragmentRendererProps) => {
     </Fragment>
   );
 };
-
-Renderer.add({
-  type: 'fragment',
-  renderer: FragmentRenderer,
-});

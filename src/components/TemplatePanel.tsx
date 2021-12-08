@@ -11,18 +11,20 @@ import { DragItem } from './DragItem';
 import { useTemplateValue } from '@/store/template';
 
 export const TemplatePanel = () => {
-  const schemas = useTemplateValue();
+  const templates = useTemplateValue();
 
   return (
     <AccordionItem>
       <AccordionButton>
         <AccordionIcon />
-        <Text as="h2" whiteSpace="nowrap">模板</Text>
+        <Text as="h2" whiteSpace="nowrap">
+          模板
+        </Text>
       </AccordionButton>
       <AccordionPanel>
         <Grid gridTemplateColumns="1fr 1fr" gridGap={2}>
-          {schemas &&
-            Object.entries(schemas).map(([type, schema]) => {
+          {templates &&
+            Object.entries(templates).map(([type]) => {
               return <DragItem key={type} type={type} />;
             })}
         </Grid>

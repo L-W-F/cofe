@@ -1,6 +1,5 @@
 import React from 'react';
 import { Icon, IconProps } from '@chakra-ui/react';
-import { Renderer } from '@cofe/core';
 import { CofeRendererProps } from '@cofe/types';
 
 interface IconRendererProps extends CofeRendererProps, IconProps {
@@ -38,8 +37,3 @@ export const IconRenderer = ({
     </Icon>
   );
 };
-
-Renderer.add({
-  type: 'icon',
-  renderer: IconRenderer,
-});

@@ -7,6 +7,7 @@
   "license": "MIT",
   "author": "crossjs <liwenfu@crossjs.com>",
   "dependencies": {
+    "@cofe/atoms": "^0.1.0",
     "@cofe/types": "^0.1.0",
     "@cofe/utils": "^0.1.0",
     "lodash-es": "^4.17.21",

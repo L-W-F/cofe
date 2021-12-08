@@ -1,5 +1,3 @@
-import { CofeSchema } from '@cofe/types';
-import { Schema } from './Schema';
 import { Tree } from './Tree';
 
 describe('Tree', () => {
@@ -18,25 +16,11 @@ describe('Tree', () => {
   });
 
   test('#create w/ registered', () => {
-    Schema.add({
-      type: 'foo',
-      properties: {
-        type: 'object',
-        properties: {
-          bar: {
-            type: 'string',
-          },
-        },
-      },
-    });
+    const t1 = Tree.create('icon');
 
-    const t1 = Tree.create('foo');
-
-    expect(t1).toHaveProperty('type', 'foo');
+    expect(t1).toHaveProperty('type', 'icon');
     expect(t1).toHaveProperty('id');
-    expect(t1).toHaveProperty(['properties', 'bar'], '');
-
-    Schema.del('foo');
+    expect(t1).toHaveProperty(['properties', 'width'], 24);
   });
 
   test('#create w/ actions', () => {
@@ -57,41 +41,7 @@ describe('Tree', () => {
     expect(t1).toHaveProperty(['actions', 'bar'], '');
   });
 
-  const templateSchemaBase: CofeSchema = {
-    type: 'foo',
-  };
-
-  const templateSchemaProperties: CofeSchema['properties'] = {
-    type: 'object',
-    properties: {
-      bar: {
-        type: 'string',
-        default: 'foobar',
-      },
-      baz: {
-        type: 'string',
-        default: 'foobar',
-      },
-    },
-  };
-
-  const templateSchemaActions: CofeSchema['actions'] = {
-    type: 'object',
-    properties: {
-      bar: {
-        type: 'string',
-        default: 'foobar',
-      },
-      baz: {
-        type: 'string',
-        default: 'foobar',
-      },
-    },
-  };
-
   test('#create w/ template', () => {
-    Schema.add(templateSchemaBase);
-
     const t1 = Tree.create({
       type: 'template:foo',
       template: {
@@ -99,23 +49,23 @@ describe('Tree', () => {
         properties: {
           baz: 'bar',
         },
-        actions: {
-          bar: 'baz',
-        },
+        actions: [
+          {
+            type: 'bar',
+            action: 'baz',
+          },
+        ],
       },
     });
 
     expect(t1).toHaveProperty('type', 'foo');
     expect(t1).toHaveProperty('id');
     expect(t1).toHaveProperty(['properties', 'baz'], 'bar');
-    expect(t1).toHaveProperty(['actions', 'bar'], 'baz');
-
-    Schema.del('foo');
+    expect(t1).toHaveProperty(['actions', 0, 'type'], 'bar');
+    expect(t1).toHaveProperty(['actions', 0, 'action'], 'baz');
   });
 
   test('#create w/ template w/properties', () => {
-    Schema.add({ ...templateSchemaBase, properties: templateSchemaProperties });
-
     const t1 = Tree.create({
       type: 'template:foo',
       template: {
@@ -128,36 +78,30 @@ describe('Tree', () => {
 
     expect(t1).toHaveProperty('type', 'foo');
     expect(t1).toHaveProperty('id');
-    expect(t1).toHaveProperty(['properties', 'bar'], 'foobar');
     expect(t1).toHaveProperty(['properties', 'baz'], 'bar');
-
-    Schema.del('foo');
   });
 
   test('#create w/ template w/actions', () => {
-    Schema.add({ ...templateSchemaBase, actions: templateSchemaActions });
-
     const t1 = Tree.create({
       type: 'template:foo',
       template: {
         type: 'foo',
-        actions: {
-          bar: 'baz',
-        },
+        actions: [
+          {
+            type: 'bar',
+            action: 'baz',
+          },
+        ],
       },
     });
 
     expect(t1).toHaveProperty('type', 'foo');
     expect(t1).toHaveProperty('id');
-    expect(t1).toHaveProperty(['actions', 'bar'], 'baz');
-    expect(t1).toHaveProperty(['actions', 'baz'], 'foobar');
-
-    Schema.del('foo');
+    expect(t1).toHaveProperty(['actions', 0, 'type'], 'bar');
+    expect(t1).toHaveProperty(['actions', 0, 'action'], 'baz');
   });
 
   test('#create w/ template w/ children', () => {
-    Schema.add(templateSchemaBase);
-
     const t1 = Tree.create({
       type: 'template:foo',
       template: {
@@ -177,8 +121,6 @@ describe('Tree', () => {
     expect(t1).toHaveProperty('id');
     expect(t1).toHaveProperty(['children', 0, 'type'], 'foo');
     expect(t1).toHaveProperty(['children', 1, 'type'], 'foo');
-
-    Schema.del('foo');
   });
 
   test('#isSame', () => {
