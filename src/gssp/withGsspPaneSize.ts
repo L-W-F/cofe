@@ -5,7 +5,7 @@ export const withGsspPaneSize =
   (options?) => (next?) => async (context: GetServerSidePropsContext) => {
     debug('gssp')('withGsspPaneSize');
 
-    const { lps = '240', rps = '240' } = context.req.cookies;
+    const { lps = '0', rps = '0' } = context.req.cookies;
 
     if (next) {
       const { props, ...rest } = await next(context);
