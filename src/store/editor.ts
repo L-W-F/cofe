@@ -24,7 +24,7 @@ export const editorIdState = atom({
 
 export const editorModeState = atom({
   key: 'editor.mode',
-  default: 1,
+  default: 3,
 });
 
 export const editorStackState = atom({
