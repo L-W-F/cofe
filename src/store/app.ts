@@ -21,19 +21,47 @@ export const createDefaultValues = (): CofeApp => ({
             type: 'fragment',
             children: [
               {
-                type: 'fragment',
+                type: 'grid',
+                properties: {
+                  columns: 1,
+                },
                 children: [
                   {
-                    type: 'fragment',
-                    children: [
-                      {
-                        type: 'text',
-                        properties: {
-                          content: '您好',
-                        },
-                      },
-                    ],
+                    type: 'text',
+                    properties: {
+                      content: '您好，欢迎体验 **COFE** 无代码。',
+                    },
                   },
+                  {
+                    type: 'text',
+                    properties: {
+                      content:
+                        '您可以通过页面顶部的模式按钮切换到编辑、源码或预览模式。',
+                    },
+                  },
+                  {
+                    type: 'text',
+                    properties: {
+                      content:
+                        '您也可以从页面左右边缘拉出组件、模板、属性配置等操作面板。',
+                    },
+                  },
+                  {
+                    type: 'text',
+                    properties: {
+                      content:
+                        '您还可以使用一些快捷键，比如使用 ⌘Z、⌘⇧Z 进行“时间旅行”。',
+                    },
+                  },
+                ],
+              },
+              {
+                type: 'grid',
+                properties: {
+                  rows: 1,
+                  columns: 1,
+                },
+                children: [
                   {
                     type: 'button',
                     children: [
@@ -46,6 +74,9 @@ export const createDefaultValues = (): CofeApp => ({
                           content: '开始',
                         },
                       },
+                      {
+                        type: 'icon',
+                      },
                     ],
                   },
                 ],
@@ -53,32 +84,32 @@ export const createDefaultValues = (): CofeApp => ({
               {
                 type: 'grid',
                 properties: {
-                  rows: 2,
-                  columns: 2,
+                  rows: 1,
+                  columns: 4,
                 },
                 children: [
                   {
                     type: 'text',
                     properties: {
-                      content: '我',
+                      content: 'C',
                     },
                   },
                   {
                     type: 'text',
                     properties: {
-                      content: '是',
+                      content: 'O',
                     },
                   },
                   {
                     type: 'text',
                     properties: {
-                      content: '*文*',
+                      content: 'F',
                     },
                   },
                   {
                     type: 'text',
                     properties: {
-                      content: '**D**',
+                      content: 'E',
                     },
                   },
                 ],
