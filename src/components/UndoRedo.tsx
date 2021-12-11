@@ -16,9 +16,9 @@ export const UndoRedo = () => {
     useCallback(
       (e) => {
         e.preventDefault();
-        undo();
+        canUndo && undo();
       },
-      [undo],
+      [canUndo, undo],
     ),
   );
 
@@ -27,9 +27,9 @@ export const UndoRedo = () => {
     useCallback(
       (e) => {
         e.preventDefault();
-        redo();
+        canRedo && redo();
       },
-      [redo],
+      [canRedo, redo],
     ),
   );
 
