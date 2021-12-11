@@ -15,7 +15,7 @@ export class Tree {
     properties,
     actions,
     children,
-  }: CofeSchema): CofeTree {
+  }: CofeTemplate['template']): CofeTree {
     const atomicNode = Tree.create(type);
 
     if (properties) {
@@ -26,10 +26,7 @@ export class Tree {
     }
 
     if (actions) {
-      atomicNode.actions = {
-        ...atomicNode.actions,
-        ...actions,
-      };
+      atomicNode.actions = [...atomicNode.actions, ...actions];
     }
 
     if (children) {

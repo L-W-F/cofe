@@ -91,6 +91,7 @@ export const SaveTemplate = () => {
                 create({
                   [`template:${formData.type}`]: {
                     type: `template:${formData.type}`,
+                    description: formData.description,
                     template: map(
                       selectedTree,
                       ({ type, properties, actions }: CofeTree) => {
