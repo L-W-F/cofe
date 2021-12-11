@@ -30,16 +30,16 @@ export const useShortcut = (
         return;
       }
 
-      if (!e.altKey && keys.includes(CHAR_ALT_KEY)) {
+      if (e.altKey !== keys.includes(CHAR_ALT_KEY)) {
         return;
       }
 
-      if (!e.shiftKey && keys.includes(CHAR_SHIFT_KEY)) {
+      if (e.shiftKey !== keys.includes(CHAR_SHIFT_KEY)) {
         return;
       }
 
       if (
-        !((!isMac && e.ctrlKey) || (isMac && e.metaKey)) &&
+        ((!isMac && e.ctrlKey) || (isMac && e.metaKey)) !==
         keys.includes(CHAR_COMMAND_KEY)
       ) {
         return;
