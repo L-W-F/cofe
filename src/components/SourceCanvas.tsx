@@ -19,7 +19,7 @@ export const SourceCanvas = (props: SourceCanvasProps) => {
       height="100%"
       resize="none"
       whiteSpace="pre"
-      defaultValue={useMemo(() => JSON.stringify(tree, null, 4), [tree])}
+      value={useMemo(() => JSON.stringify(tree, null, 4), [tree])}
       onChange={(e) => {
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);
