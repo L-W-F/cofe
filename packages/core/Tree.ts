@@ -19,14 +19,20 @@ export class Tree {
     const atomicNode = Tree.create(type);
 
     if (properties) {
-      atomicNode.properties = {
-        ...atomicNode.properties,
-        ...properties,
-      };
+      atomicNode.properties = atomicNode.properties
+        ? {
+            ...atomicNode.properties,
+            ...properties,
+          }
+        : {
+            ...properties,
+          };
     }
 
     if (actions) {
-      atomicNode.actions = [...atomicNode.actions, ...actions];
+      atomicNode.actions = atomicNode.actions
+        ? [...atomicNode.actions, ...actions]
+        : [...actions];
     }
 
     if (children) {
