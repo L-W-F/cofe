@@ -21,7 +21,7 @@
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-react": "^7.16.0",
-    "@babel/preset-typescript": "^7.16.0",
+    "@babel/preset-typescript": "^7.16.5",
     "babel-plugin-inline-react-svg": "^2.0.1",
     "babel-plugin-root-import": "^6.6.0",
     "core-js": "^3.19.3"
