@@ -11,7 +11,7 @@
     "mdast-util-from-markdown": "^1.2.0",
     "mdast-util-gfm": "^2.0.0",
     "mdast-util-to-hast": "^12.1.0",
-    "micromark-extension-gfm": "^2.0.0",
+    "micromark-extension-gfm": "^2.0.1",
     "unified": "^10.1.1",
     "unist-builder": "^3.0.0",
     "unist-util-visit": "^4.1.0"
