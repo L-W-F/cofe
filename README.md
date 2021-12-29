@@ -2,6 +2,7 @@
 
 ![CI](https://github.com/crossjs/cofe/actions/workflows/ci.yml/badge.svg)
 ![CodeQL](https://github.com/crossjs/cofe/actions/workflows/codeql-analysis.yml/badge.svg)
+[![Deduplicate](https://github.com/crossjs/cofe/actions/workflows/dedupe.yml/badge.svg)](https://github.com/crossjs/cofe/actions/workflows/dedupe.yml)
 ![Vercel](https://img.shields.io/github/deployments/crossjs/cofe/production?label=vercel&logo=vercel)
 
 ## 开始开发
