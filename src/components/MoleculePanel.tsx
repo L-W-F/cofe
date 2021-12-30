@@ -18,11 +18,11 @@ export const MoleculePanel = () => {
       <AccordionButton>
         <AccordionIcon />
         <Text as="h2" whiteSpace="nowrap">
-          模板
+          分子模板
         </Text>
       </AccordionButton>
       <AccordionPanel>
-        <Grid gridMoleculeColumns="1fr 1fr" gridGap={2}>
+        <Grid gridTemplateColumns="1fr 1fr" gridGap={2}>
           {molecules &&
             Object.entries(molecules).map(([type]) => {
               return <DragItem key={type} type={type} />;
