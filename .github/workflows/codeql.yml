@@ -12,13 +12,11 @@
 name: "CodeQL"
 
 on:
+  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ next ]
+    branches: [ main ]
   pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ next ]
-  schedule:
-    - cron: '34 13 * * 2'
+    branches: [ main ]
 
 jobs:
   analyze:
