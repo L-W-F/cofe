@@ -1,12 +1,12 @@
-import { CofeSchema, CofeTemplate } from '@cofe/types';
+import { CofeAtom, CofeMolecule } from '@cofe/types';
 
 export class Schema {
-  static isAtom(schema: CofeSchema | CofeTemplate) {
+  static isAtom(schema: CofeAtom | CofeMolecule) {
     return schema.type.indexOf(':') === -1;
   }
 
-  static isTemplate(schema: CofeSchema | CofeTemplate) {
-    return schema.type.indexOf('template:') === 0;
+  static isMolecule(schema: CofeAtom | CofeMolecule) {
+    return schema.type.indexOf('molecule:') === 0;
   }
 
   static isAccepted(accept: string[], type: string) {

@@ -41,10 +41,10 @@ describe('Tree', () => {
     expect(t1).toHaveProperty(['actions', 'bar'], '');
   });
 
-  test('#create w/ template', () => {
+  test('#create w/ molecule', () => {
     const t1 = Tree.create({
-      type: 'template:foo',
-      template: {
+      type: 'molecule:foo',
+      pattern: {
         type: 'foo',
         properties: {
           baz: 'bar',
@@ -65,10 +65,10 @@ describe('Tree', () => {
     expect(t1).toHaveProperty(['actions', 0, 'action'], 'baz');
   });
 
-  test('#create w/ template w/properties', () => {
+  test('#create w/ molecule w/properties', () => {
     const t1 = Tree.create({
-      type: 'template:foo',
-      template: {
+      type: 'molecule:foo',
+      pattern: {
         type: 'foo',
         properties: {
           baz: 'bar',
@@ -81,10 +81,10 @@ describe('Tree', () => {
     expect(t1).toHaveProperty(['properties', 'baz'], 'bar');
   });
 
-  test('#create w/ template w/actions', () => {
+  test('#create w/ molecule w/actions', () => {
     const t1 = Tree.create({
-      type: 'template:foo',
-      template: {
+      type: 'molecule:foo',
+      pattern: {
         type: 'foo',
         actions: [
           {
@@ -101,10 +101,10 @@ describe('Tree', () => {
     expect(t1).toHaveProperty(['actions', 0, 'action'], 'baz');
   });
 
-  test('#create w/ template w/ children', () => {
+  test('#create w/ molecule w/ children', () => {
     const t1 = Tree.create({
-      type: 'template:foo',
-      template: {
+      type: 'molecule:foo',
+      pattern: {
         type: 'foo',
         children: [
           {

@@ -4,7 +4,7 @@ import { Toolbar } from '@cofe/ui';
 import { AppSettings } from './AppSettings';
 import { DownloadDsl } from './DownloadDsl';
 import { ModeSwitch } from './ModeSwitch';
-import { SaveTemplate } from './SaveTemplate';
+import { SaveMolecule } from './SaveMolecule';
 import { UndoRedo } from './UndoRedo';
 
 export const CanvasToolbar = () => {
@@ -15,7 +15,7 @@ export const CanvasToolbar = () => {
       <Box flex={1} />
       <ModeSwitch />
       <Box flex={1} />
-      <SaveTemplate />
+      <SaveMolecule />
       <DownloadDsl />
     </Toolbar>
   );

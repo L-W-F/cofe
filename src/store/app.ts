@@ -16,8 +16,8 @@ export const createDefaultValues = (): CofeApp => ({
         id,
         title: '默认页面',
         tree: Tree.create({
-          type: 'template:',
-          template: {
+          type: 'molecule:',
+          pattern: {
             type: 'fragment',
             children: [
               {

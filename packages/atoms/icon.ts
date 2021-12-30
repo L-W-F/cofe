@@ -1,8 +1,9 @@
 import { withProps } from '@cofe/form/helpers/withProps';
 import { ObjectFieldTemplate } from '@cofe/form/templates/ObjectFieldTemplate';
+import { CofeAtom } from '@cofe/types';
 import { IconRenderer } from './renderers/Icon';
 
-export const icon = {
+export const icon: CofeAtom = {
   type: 'icon',
   isInline: true,
   properties: {

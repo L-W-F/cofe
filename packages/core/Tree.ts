@@ -1,5 +1,5 @@
 import * as atoms from '@cofe/atoms';
-import { CofeSchema, CofeTemplate, CofeTree } from '@cofe/types';
+import { CofeAtom, CofeMolecule, CofeTree } from '@cofe/types';
 import { extractDefaults, makeId } from '@cofe/utils';
 import { cloneDeep, isEqual, isEqualWith } from 'lodash-es';
 import { u } from 'unist-builder';
@@ -15,7 +15,7 @@ export class Tree {
     properties,
     actions,
     children,
-  }: CofeTemplate['template']): CofeTree {
+  }: CofeMolecule['pattern']): CofeTree {
     const atomicNode = Tree.create(type);
 
     if (properties) {
@@ -46,7 +46,7 @@ export class Tree {
     type,
     properties,
     actions,
-  }: CofeSchema): CofeTree {
+  }: CofeAtom): CofeTree {
     const props: Omit<CofeTree, 'type'> = {
       id: makeId(),
     };
@@ -62,7 +62,7 @@ export class Tree {
     return u(type, props);
   }
 
-  static create(schema: string | CofeSchema | CofeTemplate): CofeTree {
+  static create(schema: string | CofeAtom | CofeMolecule): CofeTree {
     if (typeof schema === 'string') {
       if (schema in atoms) {
         schema = atoms[schema];
@@ -73,11 +73,11 @@ export class Tree {
       }
     }
 
-    if (Schema.isTemplate(schema as CofeTemplate)) {
-      return Tree.createCompositeNode((schema as CofeTemplate).template);
+    if (Schema.isMolecule(schema as CofeMolecule)) {
+      return Tree.createCompositeNode((schema as CofeMolecule).pattern);
     }
 
-    return Tree.createAtomicNode(schema as CofeSchema);
+    return Tree.createAtomicNode(schema as CofeAtom);
   }
 
   /**

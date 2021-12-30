@@ -10,7 +10,7 @@ export const StateObserver = () => {
     for (const node of snapshot.getNodes_UNSTABLE({ isModified: true })) {
       debug('atom')('[%s] %O', node.key, snapshot.getLoadable(node));
 
-      if (node.key === 'app' || node.key === 'template') {
+      if (node.key === 'app' || node.key === 'molecule') {
         set(node.key, snapshot.getLoadable(node).contents);
         debug('db')('[%s] ⏬', node.key);
       }

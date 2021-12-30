@@ -1,6 +1,7 @@
+import { CofeAtom } from '@cofe/types';
 import { LinkRenderer } from './renderers/Link';
 
-export const link = {
+export const link: CofeAtom = {
   type: 'link',
   extends: ['mixin:actions'],
   accept: ['text', 'icon'],

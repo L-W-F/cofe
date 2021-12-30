@@ -42,19 +42,19 @@ export interface CofeApp {
   pages?: Record<CofePage['id'], CofePage>;
 }
 
-export interface CofeTemplate {
+export interface CofeMolecule {
   type: string;
   icon?: string;
   description?: string;
-  template: {
-    type: string;
+  pattern: {
+    type: CofeAtom['type'];
     properties?: CofeTreeProperties;
     actions?: CofeTreeActions;
-    children?: CofeTemplate['template'][];
+    children?: CofeMolecule['pattern'][];
   };
 }
 
-export interface CofeSchema {
+export interface CofeAtom {
   type: string;
   icon?: string;
   description?: string;
@@ -62,7 +62,7 @@ export interface CofeSchema {
   accept?: string[];
   properties?: JSONSchema4 & JSONSchema7;
   actions?: JSONSchema4 & JSONSchema7;
-  children?: CofeSchema[];
+  children?: CofeAtom[];
   uiSchema?: {
     properties?: UiSchema;
     actions?: UiSchema;

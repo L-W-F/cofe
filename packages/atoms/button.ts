@@ -1,6 +1,7 @@
+import { CofeAtom } from '@cofe/types';
 import { ButtonRenderer } from './renderers/Button';
 
-export const button = {
+export const button: CofeAtom = {
   type: 'button',
   accept: ['text', 'icon'],
   isInline: true,

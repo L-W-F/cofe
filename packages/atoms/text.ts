@@ -1,6 +1,7 @@
+import { CofeAtom } from '@cofe/types';
 import { TextRenderer } from './renderers/Text';
 
-export const text = {
+export const text: CofeAtom = {
   type: 'text',
   isInline: true,
   properties: {

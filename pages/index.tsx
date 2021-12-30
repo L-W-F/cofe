@@ -20,19 +20,19 @@ import { CanvasToolbar } from '@/components/CanvasToolbar';
 import { ColorModeSwitch } from '@/components/ColorModeSwitch';
 import { Header } from '@/components/Header';
 import { HomeEntry } from '@/components/HomeEntry';
+import { MoleculePanel } from '@/components/MoleculePanel';
 import { PropertyPanel } from '@/components/PropertyPanel';
 import { RepoEntry } from '@/components/RepoEntry';
 import { Root } from '@/components/Root';
 import { SplitHandle } from '@/components/SplitHandle';
 import { StateObserver } from '@/components/StateObserver';
-import { TemplatePanel } from '@/components/TemplatePanel';
 import { TreePanel } from '@/components/TreePanel';
 import { withGsspCatch } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
 import { withGsspPaneSize } from '@/gssp/withGsspPaneSize';
 import { withGsspPermit } from '@/gssp/withGsspPermit';
 import { appState, createDefaultValues } from '@/store/app';
-import { templateState } from '@/store/template';
+import { moleculeState } from '@/store/molecule';
 import { theme } from '@/theme';
 
 const Studio = (
@@ -95,7 +95,7 @@ const Studio = (
           overflow="hidden"
         >
           <AtomPanel />
-          <TemplatePanel />
+          <MoleculePanel />
         </Accordion>
         <SplitHandle {...sp1.handleProps} />
         <Flex flex={1}>
@@ -125,7 +125,7 @@ const Index = (
   const colorModeManager = cookieStorageManager(props.colorMode);
 
   const [appInitialStates, setAppInitialStates] = useState(null);
-  const [templateInitialStates, setTemplateInitialStates] = useState(null);
+  const [moleculeInitialStates, setMoleculeInitialStates] = useState(null);
 
   useEffect(() => {
     const dbKey = 'app';
@@ -145,26 +145,26 @@ const Index = (
   }, []);
 
   useEffect(() => {
-    const dbKey = 'template';
+    const dbKey = 'molecule';
 
     // fetch from local
     get(dbKey)
       .then((v) => {
-        setTemplateInitialStates(v ?? {});
+        setMoleculeInitialStates(v ?? {});
 
         debug('db')('[%s] ⏫ %O', dbKey, v);
       })
       .catch((e) => {
-        setTemplateInitialStates({});
+        setMoleculeInitialStates({});
         debug('db')('[%s] ⛔ %O', dbKey, e);
       });
   }, []);
 
-  return appInitialStates && templateInitialStates ? (
+  return appInitialStates && moleculeInitialStates ? (
     <RecoilRoot
       initializeState={({ set: _set }) => {
         _set(appState, appInitialStates);
-        _set(templateState, templateInitialStates);
+        _set(moleculeState, moleculeInitialStates);
       }}
     >
       <ChakraProvider

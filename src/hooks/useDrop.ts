@@ -5,8 +5,8 @@ import { CofeDndAdjacent, CofeDndIdentity, CofeDndPayload } from '@cofe/types';
 import { isEqual } from 'lodash-es';
 import { select } from 'unist-util-select';
 import { useDndState } from '@/store/dnd';
+import { useMoleculeValue } from '@/store/molecule';
 import { useSelectedTree } from '@/store/editor';
-import { useTemplateValue } from '@/store/template';
 
 interface DropOptions {
   onDrop: (payload: CofeDndPayload) => void;
@@ -16,7 +16,7 @@ export const useDrop = ({ onDrop }: DropOptions): RefCallback<HTMLElement> => {
   const selectedTree = useSelectedTree();
   const { dragging, reset, setAdjacent, setReference, setContainer } =
     useDndState();
-  const templates = useTemplateValue();
+  const molecules = useMoleculeValue();
   const [dropHandle, setDropHandle] = useState<HTMLElement>(null);
   const referenceRef = useRef<CofeDndIdentity>();
   const containerRef = useRef<CofeDndIdentity>();
@@ -47,7 +47,7 @@ export const useDrop = ({ onDrop }: DropOptions): RefCallback<HTMLElement> => {
           onDrop({
             dragging:
               dragging.id ??
-              Tree.create(templates[dragging.type] ?? dragging.type),
+              Tree.create(molecules[dragging.type] ?? dragging.type),
             reference: reference?.id,
             container: container?.id,
             adjacent,
@@ -145,7 +145,7 @@ export const useDrop = ({ onDrop }: DropOptions): RefCallback<HTMLElement> => {
     setAdjacent,
     setReference,
     setContainer,
-    templates,
+    molecules,
   ]);
 
   return setDropHandle;

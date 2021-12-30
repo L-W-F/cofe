@@ -7,9 +7,9 @@ describe('Schema', () => {
     expect(Schema.isAtom({ type: 'foo:bar' })).toBeFalsy();
   });
 
-  test('#isTemplate', () => {
-    expect(Schema.isTemplate({ type: 'foo' })).toBeFalsy();
-    expect(Schema.isTemplate({ type: 'template:foo' })).toBeTruthy();
+  test('#isMolecule', () => {
+    expect(Schema.isMolecule({ type: 'foo' })).toBeFalsy();
+    expect(Schema.isMolecule({ type: 'molecule:foo' })).toBeTruthy();
   });
 
   test('#isAccepted', () => {

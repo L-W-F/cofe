@@ -8,10 +8,10 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { DragItem } from './DragItem';
-import { useTemplateValue } from '@/store/template';
+import { useMoleculeValue } from '@/store/molecule';
 
-export const TemplatePanel = () => {
-  const templates = useTemplateValue();
+export const MoleculePanel = () => {
+  const molecules = useMoleculeValue();
 
   return (
     <AccordionItem>
@@ -22,9 +22,9 @@ export const TemplatePanel = () => {
         </Text>
       </AccordionButton>
       <AccordionPanel>
-        <Grid gridTemplateColumns="1fr 1fr" gridGap={2}>
-          {templates &&
-            Object.entries(templates).map(([type]) => {
+        <Grid gridMoleculeColumns="1fr 1fr" gridGap={2}>
+          {molecules &&
+            Object.entries(molecules).map(([type]) => {
               return <DragItem key={type} type={type} />;
             })}
         </Grid>
@@ -34,5 +34,5 @@ export const TemplatePanel = () => {
 };
 
 if (process.env.NODE_ENV === 'development') {
-  TemplatePanel.displayName = 'TemplatePanel';
+  MoleculePanel.displayName = 'MoleculePanel';
 }

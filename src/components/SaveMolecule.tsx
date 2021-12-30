@@ -13,7 +13,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
-import { SaveTemplateIcon } from '@cofe/icons';
+import { SaveMoleculeIcon } from '@cofe/icons';
 import { CofeTree } from '@cofe/types';
 import { u } from 'unist-builder';
 import { map } from 'unist-util-map';
@@ -23,11 +23,11 @@ import {
   useShortcut,
 } from '@/hooks/useShortcut';
 import { useSelectedTree } from '@/store/editor';
-import { useTemplateActions } from '@/store/template';
+import { useMoleculeActions } from '@/store/molecule';
 
-export const SaveTemplate = () => {
+export const SaveMolecule = () => {
   const selectedTree = useSelectedTree();
-  const { create } = useTemplateActions();
+  const { create } = useMoleculeActions();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [formData, setFormData] = useState(null);
 
@@ -46,11 +46,11 @@ export const SaveTemplate = () => {
     <>
       <Tooltip
         hasArrow
-        label={`另存为模板 [${CHAR_COMMAND_KEY}${CHAR_SHIFT_KEY}S]`}
+        label={`另存为分子模板 [${CHAR_COMMAND_KEY}${CHAR_SHIFT_KEY}S]`}
       >
         <IconButton
-          aria-label="另存为模板"
-          icon={<SaveTemplateIcon />}
+          aria-label="另存为分子模板"
+          icon={<SaveMoleculeIcon />}
           variant="ghost"
           onClick={onOpen}
         />
@@ -59,7 +59,7 @@ export const SaveTemplate = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>另存为模板</DrawerHeader>
+          <DrawerHeader>另存为分子模板</DrawerHeader>
           <DrawerBody>
             <Form
               formData={formData}
@@ -89,10 +89,10 @@ export const SaveTemplate = () => {
               loadingText="保存"
               onClick={() => {
                 create({
-                  [`template:${formData.type}`]: {
-                    type: `template:${formData.type}`,
+                  [`molecule:${formData.type}`]: {
+                    type: `molecule:${formData.type}`,
                     description: formData.description,
-                    template: map(
+                    pattern: map(
                       selectedTree,
                       ({ type, properties, actions }: CofeTree) => {
                         return u(type, { properties, actions });

@@ -1,6 +1,7 @@
+import { CofeAtom } from '@cofe/types';
 import { GridRenderer } from './renderers/Grid';
 
-export const grid = {
+export const grid: CofeAtom = {
   type: 'grid',
   accept: ['!fragment'],
   properties: {
