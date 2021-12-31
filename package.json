@@ -78,7 +78,7 @@
     "@cofe/eslint-config-cofe": "^0.0.2",
     "@testing-library/react": "^12.1.2",
     "@types/cookie": "^0.4.1",
-    "@types/jest": "^27.0.3",
+    "@types/jest": "^27.4.0",
     "@types/json-schema": "^7.0.9",
     "@types/lodash-es": "^4.17.5",
     "@types/react": "^17.0.38",
