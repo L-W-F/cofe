@@ -21,9 +21,9 @@ export const AtomPanel = () => {
       </AccordionButton>
       <AccordionPanel>
         <Grid gridTemplateColumns="1fr 1fr" gridGap={2}>
-          {Object.keys(atoms).map((type) => {
+          {Object.values(atoms).map(({ type, icon }) => {
             return type === 'unknown' ? null : (
-              <DragItem key={type} type={type} />
+              <DragItem key={type} type={type} icon={icon} />
             );
           })}
         </Grid>
