@@ -18,7 +18,18 @@ const breakpoints = createBreakpoints({
 export const theme = extendTheme({
   config,
   colors: {
-    // black: '#16161D',
+    primary: {
+      main: 'var(--primary-main)',
+      light: 'var(--primary-light)',
+      dark: 'var(--primary-dark)',
+      contrastText: 'var(--primary-contrastText)',
+    },
+    secondary: {
+      main: 'var(--secondary-main)',
+      light: 'var(--secondary-light)',
+      dark: 'var(--secondary-dark)',
+      contrastText: 'var(--secondary-contrastText)',
+    },
   },
   fonts,
   breakpoints,
@@ -37,7 +48,7 @@ export const theme = extendTheme({
       transition: 'color 0.2s',
       baseStyle: {
         _hover: {
-          color: 'teal',
+          color: 'secondary.main',
         },
       },
     },
@@ -74,6 +85,16 @@ export const theme = extendTheme({
   },
   styles: {
     global: (props) => ({
+      ':root': {
+        '--primary-main': mode('#2e7d32', '#1b5e20')(props),
+        '--primary-light': mode('#60ac5d', '#4c8c4a')(props),
+        '--primary-dark': mode('#004f04', '#003300')(props),
+        '--primary-contrastText': '#ffffff',
+        '--secondary-main': mode('#d84315', '#bf360c')(props),
+        '--secondary-light': mode('#ff7543', '#f9683a')(props),
+        '--secondary-dark': mode('#9f0000', '#870000')(props),
+        '--secondary-contrastText': '#ffffff',
+      },
       body: {
         fontFamily: 'body',
         color: mode('gray.800', 'gray.100')(props),
