@@ -58,7 +58,7 @@ const NodeItem = ({
   children,
 }: NodeItemProps) => {
   const {
-    isSorting,
+    isDragging,
     attributes,
     listeners,
     setNodeRef,
@@ -76,7 +76,6 @@ const NodeItem = ({
         transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : null
       }
       transition={transition}
-      // zIndex={active?.id === id ? 1 : 0}
       {...attributes}
     >
       <Grid
@@ -138,7 +137,7 @@ const NodeItem = ({
             icon={<DragHandleIcon />}
             variant="ghost"
             size="sm"
-            cursor={isSorting ? 'grabbing' : 'grab'}
+            cursor={isDragging ? 'grabbing' : 'grab'}
             visibility="hidden"
             _groupHover={{ visibility: 'visible' }}
             {...listeners}
@@ -260,9 +259,7 @@ export const TreePanel = (props: PaperProps) => {
 
   return (
     <Paper overflow="auto" borderRadius={0} p={2} {...props}>
-      <List>
-        <NodeItem {...tree} />
-      </List>
+      <NodeList nodes={[tree]} />
     </Paper>
   );
 };
