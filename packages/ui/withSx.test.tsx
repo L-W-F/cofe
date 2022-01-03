@@ -4,7 +4,9 @@ import { create } from 'react-test-renderer';
 import { withSx } from './withSx';
 
 test('withSx', () => {
-  const Test = withSx('Test')(({ sx }) => <>{JSON.stringify(sx)}</>);
+  const Test = withSx('Test')(({ borderRadius }) => (
+    <>{JSON.stringify(borderRadius)}</>
+  ));
 
   const component = create(
     <ChakraProvider
