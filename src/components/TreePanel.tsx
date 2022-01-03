@@ -159,6 +159,7 @@ const NodeItem = ({
               {Object.values(atoms).map((atom) =>
                 Schema.isAccepted(atoms[type]?.accept, atom.type) ? (
                   <MenuItem
+                    key={atom.type}
                     icon={
                       <Icon viewBox="0 0 24 24">
                         <path
@@ -216,8 +217,7 @@ const NodeList = ({ nodes = [], level = 0 }: NodeListProps) => {
 
         insert({
           from: e.active.id,
-          to: e.over.id,
-          position: e.delta.y > 0 ? 'after' : 'before',
+          [e.delta.y > 0 ? 'after' : 'before']: e.over.id,
         });
       }}
     >
