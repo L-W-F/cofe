@@ -26,12 +26,21 @@ import { Paper, PaperProps } from '@cofe/ui';
 import { isMobile } from '@cofe/utils';
 import {
   DndContext,
+  MeasuringStrategy,
   MouseSensor,
   TouchSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import { SortableContext, useSortable } from '@dnd-kit/sortable';
+import {
+  restrictToVerticalAxis,
+  restrictToWindowEdges,
+} from '@dnd-kit/modifiers';
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import { useDndState } from '@/store/dnd';
 import { useSelectedTree, useTreeNodeActions } from '@/store/editor';
 
@@ -67,6 +76,7 @@ const NodeItem = ({
         transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : null
       }
       transition={transition}
+      // zIndex={active?.id === id ? 1 : 0}
       {...attributes}
     >
       <Grid
@@ -205,6 +215,8 @@ const NodeList = ({ nodes = [], level = 0 }: NodeListProps) => {
   return (
     <DndContext
       sensors={sensors}
+      modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
+      measuring={{ droppable: { strategy: MeasuringStrategy.Always } }}
       onDragEnd={(e) => {
         if (!e.active || !e.over) {
           return;
@@ -220,7 +232,10 @@ const NodeList = ({ nodes = [], level = 0 }: NodeListProps) => {
         });
       }}
     >
-      <SortableContext items={items.length > 1 ? items : []}>
+      <SortableContext
+        items={items.length > 1 ? items : []}
+        strategy={verticalListSortingStrategy}
+      >
         <List>
           {nodes.map((node) => (
             <NodeItem

@@ -1,11 +1,11 @@
-import React, { ComponentType } from 'react';
+import React, { ComponentType, forwardRef } from 'react';
 import { CSSObject, useStyleConfig } from '@chakra-ui/react';
 
 export const withSx =
   <T extends any = any>(name: string, defaultProps?: T) =>
   (Component: ComponentType<T & { sx?: CSSObject }>) =>
-  (props: T & { sx?: CSSObject }) => {
-    const sx = useStyleConfig(name, props);
+    forwardRef((props: T & { sx?: CSSObject }, ref) => {
+      const sx = useStyleConfig(name, props);
 
-    return <Component {...defaultProps} {...sx} {...props} />;
-  };
+      return <Component ref={ref} {...defaultProps} {...sx} {...props} />;
+    });
