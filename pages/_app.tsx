@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import Script from 'next/script';
+// import Script from 'next/script';
 
 // https://github.com/visionmedia/debug#browser-support
 if (process.env.NEXT_PUBLIC_DEBUG && typeof localStorage !== 'undefined') {

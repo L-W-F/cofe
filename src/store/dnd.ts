@@ -15,6 +15,7 @@ export const dndState = atom<DndState>({
   key: 'dnd',
   default: {
     dragging: null,
+    selected: null,
     reference: null,
     container: null,
     adjacent: null,
@@ -44,6 +45,7 @@ export const useDndState = () => {
             : {
                 ...state,
                 dragging: payload,
+                selected: payload,
               },
         );
       },

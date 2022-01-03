@@ -6,6 +6,7 @@ export const RepoEntry = () => {
   return (
     <Link
       isExternal
+      colorScheme="gray"
       aria-label="查看代码仓库"
       href="https://github.com/crossjs/cofe"
     >

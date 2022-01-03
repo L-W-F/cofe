@@ -13,7 +13,6 @@ export class Tree {
   private static createCompositeNode({
     type,
     properties,
-    actions,
     children,
   }: CofeMolecule['pattern']): CofeTree {
     const atomicNode = Tree.create(type);
@@ -29,12 +28,6 @@ export class Tree {
           };
     }
 
-    if (actions) {
-      atomicNode.actions = atomicNode.actions
-        ? [...atomicNode.actions, ...actions]
-        : [...actions];
-    }
-
     if (children) {
       atomicNode.children = children?.map((c) => Tree.createCompositeNode(c));
     }
@@ -42,21 +35,13 @@ export class Tree {
     return atomicNode;
   }
 
-  private static createAtomicNode({
-    type,
-    properties,
-    actions,
-  }: CofeAtom): CofeTree {
+  private static createAtomicNode({ type, properties }: CofeAtom): CofeTree {
     const props: Omit<CofeTree, 'type'> = {
       id: makeId(),
     };
 
     if (properties) {
       props.properties = extractDefaults(properties);
-    }
-
-    if (actions) {
-      props.actions = extractDefaults(actions);
     }
 
     return u(type, props);

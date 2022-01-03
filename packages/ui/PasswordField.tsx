@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { forwardRef } from 'react';
 import {
   IconButton,
   Input,
@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@cofe/icons';
 
-export const PasswordField = React.forwardRef<HTMLInputElement, InputProps>(
+export const PasswordField = forwardRef<HTMLInputElement, InputProps>(
   (props, ref) => {
     const { isOpen, onToggle } = useDisclosure();
 

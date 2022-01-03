@@ -23,24 +23,6 @@ describe('Tree', () => {
     expect(t1).toHaveProperty(['properties', 'width'], 24);
   });
 
-  test('#create w/ actions', () => {
-    const t1 = Tree.create({
-      type: 'foo',
-      actions: {
-        type: 'object',
-        properties: {
-          bar: {
-            type: 'string',
-          },
-        },
-      },
-    });
-
-    expect(t1).toHaveProperty('type', 'foo');
-    expect(t1).toHaveProperty('id');
-    expect(t1).toHaveProperty(['actions', 'bar'], '');
-  });
-
   test('#create w/ molecule', () => {
     const t1 = Tree.create({
       type: 'molecule:foo',
@@ -49,20 +31,12 @@ describe('Tree', () => {
         properties: {
           baz: 'bar',
         },
-        actions: [
-          {
-            type: 'bar',
-            action: 'baz',
-          },
-        ],
       },
     });
 
     expect(t1).toHaveProperty('type', 'foo');
     expect(t1).toHaveProperty('id');
     expect(t1).toHaveProperty(['properties', 'baz'], 'bar');
-    expect(t1).toHaveProperty(['actions', 0, 'type'], 'bar');
-    expect(t1).toHaveProperty(['actions', 0, 'action'], 'baz');
   });
 
   test('#create w/ molecule w/properties', () => {
@@ -79,26 +53,6 @@ describe('Tree', () => {
     expect(t1).toHaveProperty('type', 'foo');
     expect(t1).toHaveProperty('id');
     expect(t1).toHaveProperty(['properties', 'baz'], 'bar');
-  });
-
-  test('#create w/ molecule w/actions', () => {
-    const t1 = Tree.create({
-      type: 'molecule:foo',
-      pattern: {
-        type: 'foo',
-        actions: [
-          {
-            type: 'bar',
-            action: 'baz',
-          },
-        ],
-      },
-    });
-
-    expect(t1).toHaveProperty('type', 'foo');
-    expect(t1).toHaveProperty('id');
-    expect(t1).toHaveProperty(['actions', 0, 'type'], 'bar');
-    expect(t1).toHaveProperty(['actions', 0, 'action'], 'baz');
   });
 
   test('#create w/ molecule w/ children', () => {

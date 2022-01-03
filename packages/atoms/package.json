@@ -11,6 +11,7 @@
     "@cofe/core": "^0.1.0",
     "@cofe/md": "^0.1.0",
     "@cofe/types": "^0.1.0",
+    "@cofe/ui": "^0.1.0",
     "react": "^17.0.2"
   },
   "devDependencies": {

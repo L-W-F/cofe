@@ -1,9 +1,4 @@
-import { uiSchemas } from './uiSchemas';
+import { withTheme } from '@rjsf/core';
+import { theme } from './theme';
 
-export * from './Form';
-
-export const Ui = {
-  get(type: string) {
-    return uiSchemas[type];
-  },
-};
+export const Form = withTheme(theme);

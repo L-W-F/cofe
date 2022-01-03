@@ -23,6 +23,7 @@ export const FieldTemplate = ({
   rawHelp,
   children,
   rawErrors,
+  uiSchema: { inline },
 }: FieldTemplateProps) => {
   return hidden ? null : (
     <FormControl
@@ -32,9 +33,10 @@ export const FieldTemplate = ({
       isInvalid={Boolean(rawErrors)}
       id={id}
       as={Flex}
-      flexDirection="column"
+      flexDirection={inline ? 'row' : 'column'}
+      alignItems={inline ? 'center' : undefined}
     >
-      {label && <FormLabel>{label}</FormLabel>}
+      {label && <FormLabel mb={inline ? 0 : undefined}>{label}</FormLabel>}
       {children}
       {Boolean(rawErrors) && (
         <FormErrorMessage>

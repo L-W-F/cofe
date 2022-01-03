@@ -8,24 +8,28 @@ export const SplitHandle = (
   return (
     <Box
       cursor="col-resize"
-      px={0.5}
-      width={2}
+      position="relative"
+      width={4}
       flexGrow={0}
       flexShrink={0}
-      flexBasis={2}
+      flexBasis={4}
       userSelect="none"
-      _hover={{
-        '&:before': {
-          content: '""',
-          display: 'block',
-          height: '100%',
-          bgColor: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
-        },
+      _before={{
+        content: '""',
+        display: 'block',
+        height: '100%',
+        bgColor: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
       }}
-      _active={{
-        '&:before': {
-          bgColor: useColorModeValue('blackAlpha.400', 'whiteAlpha.400'),
-        },
+      _after={{
+        content: '""',
+        display: 'block',
+        position: 'absolute',
+        top: 'calc(50% - 4px)',
+        left: 1,
+        right: 1,
+        height: 8,
+        borderRadius: '8px',
+        bgColor: useColorModeValue('blackAlpha.400', 'whiteAlpha.400'),
       }}
       {...props}
     />

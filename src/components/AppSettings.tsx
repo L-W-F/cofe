@@ -16,8 +16,8 @@ import {
   Tooltip,
   useDisclosure,
 } from '@chakra-ui/react';
-import { AddIcon, DesignIcon, EditIcon, PagesIcon } from '@cofe/icons';
-import { DeletePage } from './DeletePage';
+import { AddIcon, DeleteIcon, DesignIcon, PagesIcon } from '@cofe/icons';
+import { Confirm } from '@cofe/ui';
 import { EditApp } from './EditApp';
 import { EditPage } from './EditPage';
 import {
@@ -25,11 +25,11 @@ import {
   CHAR_SHIFT_KEY,
   useShortcut,
 } from '@/hooks/useShortcut';
-import { useAppValue } from '@/store/app';
+import { useAppState } from '@/store/app';
 import { useEditorId, useSwitchPage } from '@/store/editor';
 
 export const AppSettings = () => {
-  const { pages } = useAppValue();
+  const { pages, removePage } = useAppState();
   const id = useEditorId();
   const switchPage = useSwitchPage();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -71,7 +71,23 @@ export const AppSettings = () => {
               <ListItem key={_id} as={HStack}>
                 <Box flex={1}>{page.title}</Box>
                 <EditPage page={page} />
-                {canDelete && <DeletePage page={page} />}
+                {canDelete && (
+                  <Confirm
+                    onConfirm={() => {
+                      removePage(page);
+                    }}
+                    title="删除页面"
+                    content={`确定删除「${page.title}」吗？`}
+                  >
+                    <IconButton
+                      aria-label="删除页面"
+                      icon={<DeleteIcon />}
+                      variant="ghost"
+                      colorScheme="error"
+                      size="xs"
+                    />
+                  </Confirm>
+                )}
                 <IconButton
                   aria-label="设计"
                   title="设计"
@@ -88,9 +104,7 @@ export const AppSettings = () => {
             ))}
           </DrawerBody>
           <DrawerFooter as={HStack} justifyContent="space-between">
-            <EditApp
-              trigger={<Button leftIcon={<EditIcon />}>编辑应用</Button>}
-            />
+            <EditApp />
             <EditPage
               trigger={<Button leftIcon={<AddIcon />}>创建页面</Button>}
               page={{ title: '', description: '' }}

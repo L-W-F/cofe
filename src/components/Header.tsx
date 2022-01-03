@@ -7,7 +7,7 @@ export const Header = ({
   ...props
 }: ToolbarProps) => {
   return (
-    <AppBar mb={4}>
+    <AppBar>
       <Toolbar gridGap={2} {...props}>
         {children}
       </Toolbar>

@@ -10,7 +10,6 @@ interface IconRendererProps extends CofeRendererProps, IconProps {
 }
 
 export const IconRenderer = ({
-  isDesign,
   width,
   height,
   color,
@@ -18,21 +17,7 @@ export const IconRenderer = ({
   ...props
 }: IconRendererProps) => {
   return (
-    <Icon
-      viewBox={`0 0 ${width} ${height}`}
-      _empty={
-        isDesign
-          ? {
-              '&:before': {
-                content: '"Icon"',
-                color: 'gray.400',
-                height: '1rem',
-              },
-            }
-          : null
-      }
-      {...props}
-    >
+    <Icon viewBox={`0 0 ${width} ${height}`} {...props}>
       <path fill={color} d={path} />
     </Icon>
   );

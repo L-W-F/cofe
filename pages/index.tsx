@@ -1,121 +1,64 @@
 import React, { useEffect, useState } from 'react';
 import { InferGetServerSidePropsType } from 'next';
 import {
-  Accordion,
   Alert,
   AlertIcon,
   ChakraProvider,
   cookieStorageManager,
-  Flex,
+  Grid,
+  GridItem,
 } from '@chakra-ui/react';
 import { compose } from '@cofe/gssp';
-import { useSplitPane } from '@cofe/hooks';
 import { debug } from '@cofe/logger';
 import { get } from 'idb-keyval';
 import { RecoilRoot } from 'recoil';
-import { ActionPanel } from '@/components/ActionPanel';
-import { AtomPanel } from '@/components/AtomPanel';
 import { CanvasPanel } from '@/components/CanvasPanel';
 import { CanvasToolbar } from '@/components/CanvasToolbar';
 import { ColorModeSwitch } from '@/components/ColorModeSwitch';
 import { Header } from '@/components/Header';
 import { HomeEntry } from '@/components/HomeEntry';
-import { MoleculePanel } from '@/components/MoleculePanel';
 import { PropertyPanel } from '@/components/PropertyPanel';
 import { RepoEntry } from '@/components/RepoEntry';
-import { Root } from '@/components/Root';
-import { SplitHandle } from '@/components/SplitHandle';
 import { StateObserver } from '@/components/StateObserver';
 import { TreePanel } from '@/components/TreePanel';
 import { withGsspCatch } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
-import { withGsspPaneSize } from '@/gssp/withGsspPaneSize';
 import { withGsspPermit } from '@/gssp/withGsspPermit';
-import { appState, createDefaultValues } from '@/store/app';
+import { appState } from '@/store/app';
 import { moleculeState } from '@/store/molecule';
 import { theme } from '@/theme';
+import { createDefaultValues } from '@/utils/createDefaultValues';
 
 const Studio = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => {
-  const sp1 = useSplitPane({
-    initialSize: props.lps,
-    maxSize: 240,
-    onInit: (size, pane) => {
-      pane.style.width = `${size}px`;
-      pane.style.display = size ? 'block' : 'none';
-    },
-    onResize: (size, pane) => {
-      pane.style.width = `${size}px`;
-      pane.style.display = size ? 'block' : 'none';
-    },
-    onEnd: (size) => {
-      document.cookie = `lps=${size}`;
-    },
-  });
-
-  const sp2 = useSplitPane({
-    direction: 'row-reverse',
-    initialSize: props.rps,
-    maxSize: 400,
-    onInit: (size, pane) => {
-      pane.style.width = `${size}px`;
-      pane.style.display = size ? 'block' : 'none';
-    },
-    onResize: (size, pane) => {
-      pane.style.width = `${size}px`;
-      pane.style.display = size ? 'block' : 'none';
-    },
-    onEnd: (size) => {
-      document.cookie = `rps=${size}`;
-    },
-  });
-
   return (
-    <Root>
+    <>
       {props.err ? (
         <Alert status="error">
           <AlertIcon />
           {props.err.message}
         </Alert>
       ) : null}
-      <Header>
-        <HomeEntry />
-        <CanvasToolbar />
-        <ColorModeSwitch />
-        <RepoEntry />
-      </Header>
-      <Flex flex={1}>
-        <Accordion
-          ref={sp1.paneRef}
-          allowMultiple
-          defaultIndex={[0]}
-          direction="column"
-          gridGap={2}
-          overflow="hidden"
-        >
-          <AtomPanel />
-          <MoleculePanel />
-        </Accordion>
-        <SplitHandle {...sp1.handleProps} />
-        <Flex flex={1}>
-          <CanvasPanel flex={1} />
-          <SplitHandle {...sp2.handleProps} />
-          <Accordion
-            ref={sp2.paneRef}
-            allowMultiple
-            defaultIndex={[0]}
-            direction="column"
-            gridGap={2}
-            overflow="hidden"
-          >
-            <TreePanel />
-            <PropertyPanel />
-            <ActionPanel />
-          </Accordion>
-        </Flex>
-      </Flex>
-    </Root>
+      <Grid gridTemplate="48px minmax(0, 1fr) / 1fr" h="100vh">
+        <Header>
+          <HomeEntry />
+          <CanvasToolbar />
+          <ColorModeSwitch />
+          <RepoEntry />
+        </Header>
+        <GridItem as={Grid} rowStart={2} gridTemplate="1fr / 280px 1fr">
+          <GridItem as={TreePanel} colStart={1} rowStart={1} pos="relative" />
+          <GridItem
+            as={PropertyPanel}
+            colStart={1}
+            rowStart={1}
+            pos="relative"
+          />
+          <GridItem as={CanvasPanel} colStart={2} rowStart={1} pos="relative" />
+        </GridItem>
+      </Grid>
+    </>
   );
 };
 
@@ -183,7 +126,6 @@ export const getServerSideProps = compose([
   withGsspPermit(),
   withGsspCatch(),
   withGsspColorMode(),
-  withGsspPaneSize(),
 ]);
 
 export default Index;

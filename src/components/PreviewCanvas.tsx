@@ -10,7 +10,6 @@ export const NodeRenderer = ({
   type,
   id,
   properties,
-  actions,
   children,
 }: NodeRendererProps) => {
   if (!(type in atoms)) {
@@ -20,7 +19,7 @@ export const NodeRenderer = ({
   const R = atoms[type].renderer;
 
   return (
-    <R key={id} id={id} {...properties} actions={actions}>
+    <R key={id} id={id} {...properties}>
       {children?.map(NodeRenderer)}
     </R>
   );

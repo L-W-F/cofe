@@ -15,7 +15,7 @@ import { Form } from '@cofe/form';
 import { EditIcon } from '@cofe/icons';
 import { CofeApp } from '@cofe/types';
 import { makeId } from '@cofe/utils';
-import { useAppActions } from '@/store/app';
+import { useAppState } from '@/store/app';
 
 interface EditPageProps {
   trigger?: ReactElement;
@@ -23,7 +23,7 @@ interface EditPageProps {
 }
 
 export const EditPage = ({ trigger, page }: EditPageProps) => {
-  const { createPage, updatePage } = useAppActions();
+  const { createPage, updatePage } = useAppState();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [formData, setFormData] = useState(page);
 

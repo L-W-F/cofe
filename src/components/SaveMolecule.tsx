@@ -85,7 +85,7 @@ export const SaveMolecule = () => {
           <DrawerFooter>
             <Button
               isFullWidth
-              colorScheme="teal"
+              colorScheme="primary"
               loadingText="保存"
               onClick={() => {
                 create({
@@ -94,8 +94,8 @@ export const SaveMolecule = () => {
                     description: formData.description,
                     pattern: map(
                       selectedTree,
-                      ({ type, properties, actions }: CofeTree) => {
-                        return u(type, { properties, actions });
+                      ({ type, properties }: CofeTree) => {
+                        return u(type, { properties });
                       },
                     ),
                   },

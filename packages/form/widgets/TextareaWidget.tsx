@@ -17,6 +17,7 @@ export const TextareaWidget = ({
   return (
     <Textarea
       id={id}
+      rows={8}
       autoFocus={autofocus}
       isReadOnly={readonly}
       isRequired={required}

@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { Tree } from '@cofe/core';
-import { CofeDndPayload, CofeTree } from '@cofe/types';
+import { CofeAppendPayload, CofeInsertPayload, CofeTree } from '@cofe/types';
 import {
   atom,
   selector,
@@ -13,18 +13,9 @@ import { select } from 'unist-util-select';
 import { EXIT, visit } from 'unist-util-visit';
 import { useDndState } from './dnd';
 
-export const MODE_DESIGN = 1;
-export const MODE_SOURCE = 2;
-export const MODE_PREVIEW = 3;
-
 export const editorIdState = atom({
   key: 'editor.id',
   default: '',
-});
-
-export const editorModeState = atom({
-  key: 'editor.mode',
-  default: 3,
 });
 
 export const editorStackState = atom({
@@ -38,10 +29,6 @@ export const editorCursorState = atom({
 });
 
 export const useEditorId = () => useRecoilValue(editorIdState);
-export const useEditorMode = () => useRecoilValue(editorModeState);
-
-export const useSwitchMode = (payload) =>
-  useSetRecoilState(editorModeState)(payload);
 
 export const useSwitchPage = () => {
   const setStack = useSetRecoilState(editorStackState);
@@ -91,7 +78,16 @@ export const useTreeNodeActions = () => {
     append: useCallback(
       (payload) => {
         setStack((stack) =>
-          [appendNodeByDnd(stack[cursor], payload)].concat(stack.slice(cursor)),
+          [appendNode(stack[cursor], payload)].concat(stack.slice(cursor)),
+        );
+        setCursor(0);
+      },
+      [cursor, setCursor, setStack],
+    ),
+    insert: useCallback(
+      (payload) => {
+        setStack((stack) =>
+          [insertNode(stack[cursor], payload)].concat(stack.slice(cursor)),
         );
         setCursor(0);
       },
@@ -191,47 +187,39 @@ function removeNodeById(tree: CofeTree, id: string) {
   );
 }
 
-function appendNodeByDnd(
+function appendNode(tree: CofeTree, { from, to }: CofeAppendPayload) {
+  tree = Tree.copy(tree);
+
+  visit(tree, { id: to }, (node) => {
+    node.children = node.children ? [...node.children, from] : [from];
+
+    return EXIT;
+  });
+
+  return tree;
+}
+
+function insertNode(
   tree: CofeTree,
-  { dragging, container, reference, adjacent }: CofeDndPayload,
+  { from, before, after }: CofeInsertPayload,
 ) {
   tree = Tree.copy(tree);
 
   let child: CofeTree;
 
   // 从现有树中拖动
-  if (typeof dragging === 'string') {
-    visit(tree, { id: dragging }, (node, index, parent: any) => {
-      [child] = parent.children.splice(index, 1) as [CofeTree];
+  visit(tree, { id: from }, (node, index, parent: any) => {
+    [child] = parent.children.splice(index, 1) as [CofeTree];
 
-      return EXIT;
-    });
-  } else {
-    child = dragging;
-  }
+    return EXIT;
+  });
 
   // 前插或后插
-  if (adjacent && reference) {
-    visit(tree, { id: reference }, (node, index, parent: any) => {
-      parent.children.splice(
-        adjacent === 'INSERT_BEFORE' ? index : index + 1,
-        0,
-        child,
-      );
+  visit(tree, { id: before ?? after }, (node, index, parent: any) => {
+    parent.children.splice(before ? index : index + 1, 0, child);
 
-      return EXIT;
-    });
-  } else {
-    visit(tree, { id: container }, (node, index, parent) => {
-      if (!node.children) {
-        node.children = [];
-      }
-
-      node.children = [...node.children, child];
-
-      return EXIT;
-    });
-  }
+    return EXIT;
+  });
 
   return tree;
 }
@@ -242,10 +230,6 @@ function updateNode(tree: CofeTree, payload: Partial<CofeTree>) {
   visit(tree, { id: payload.id }, (node, index, parent) => {
     if ('properties' in payload) {
       node.properties = { ...node.properties, ...payload.properties };
-    }
-
-    if ('actions' in payload) {
-      node.actions = [...payload.actions];
     }
 
     return EXIT;

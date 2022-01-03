@@ -4,6 +4,5 @@ export * from './DesignIcon';
 export * from './DuplicateIcon';
 export * from './GithubIcon';
 export * from './GitlabIcon';
-export * from './JsonIcon';
 export * from './PagesIcon';
 export * from './SaveMoleculeIcon';

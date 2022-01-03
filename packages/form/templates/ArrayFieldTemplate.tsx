@@ -59,7 +59,7 @@ export const ArrayFieldTemplate = ({
                     aria-label="移除此项"
                     icon={<DeleteIcon />}
                     tabIndex={-1}
-                    // colorScheme="red"
+                    colorScheme="error"
                     onClick={onDropIndexClick(index)}
                   />
                 )}

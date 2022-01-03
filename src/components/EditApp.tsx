@@ -1,42 +1,27 @@
-import React, { cloneElement, ReactElement } from 'react';
+import React from 'react';
 import {
+  Button,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-  IconButton,
   useDisclosure,
 } from '@chakra-ui/react';
 import { Form } from '@cofe/form';
 import { EditIcon } from '@cofe/icons';
-import { useAppActions, useAppValue } from '@/store/app';
+import { useAppState } from '@/store/app';
 
-interface EditAppProps {
-  trigger?: ReactElement;
-}
-
-export const EditApp = ({ trigger }: EditAppProps) => {
-  const { title, description, theme } = useAppValue();
-  const { updateApp } = useAppActions();
+export const EditApp = () => {
+  const { title, description, theme, updateApp } = useAppState();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      {trigger ? (
-        cloneElement(trigger, {
-          onClick: onOpen,
-        })
-      ) : (
-        <IconButton
-          aria-label="编辑应用"
-          size="xs"
-          icon={<EditIcon />}
-          variant="ghost"
-          onClick={onOpen}
-        />
-      )}
+      <Button leftIcon={<EditIcon />} onClick={onOpen}>
+        编辑应用
+      </Button>
       <Drawer placement="left" isOpen={isOpen} onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>

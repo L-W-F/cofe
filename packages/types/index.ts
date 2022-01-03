@@ -3,18 +3,10 @@ import { JSONSchema4, JSONSchema7 } from 'json-schema';
 
 export interface CofeTreeProperties extends Record<string, any> {}
 
-export interface CofeTreeActions
-  extends Array<{
-    type: string;
-    action: string;
-    params?: string[];
-  }> {}
-
 export interface CofeTree {
   type: string;
   id: string;
   properties?: CofeTreeProperties;
-  actions?: CofeTreeActions;
   parent?: CofeTree;
   children?: CofeTree[];
 }
@@ -49,7 +41,6 @@ export interface CofeMolecule {
   pattern: {
     type: CofeAtom['type'];
     properties?: CofeTreeProperties;
-    actions?: CofeTreeActions;
     children?: CofeMolecule['pattern'][];
   };
 }
@@ -61,12 +52,8 @@ export interface CofeAtom {
   isInline?: boolean;
   accept?: string[];
   properties?: JSONSchema4 & JSONSchema7;
-  actions?: JSONSchema4 & JSONSchema7;
   children?: CofeAtom[];
-  uiSchema?: {
-    properties?: UiSchema;
-    actions?: UiSchema;
-  };
+  form?: UiSchema;
   renderer?: CofeRenderer;
 }
 
@@ -77,16 +64,18 @@ export interface CofeDndIdentity {
   id?: string;
 }
 
-export interface CofeDndPayload {
-  dragging: CofeDndIdentity['id'] | CofeTree;
-  reference?: CofeDndIdentity['id'];
-  container?: CofeDndIdentity['id'];
-  adjacent: CofeDndAdjacent;
+export interface CofeAppendPayload {
+  from: CofeTree;
+  to: CofeDndIdentity['id'];
 }
 
-export interface CofeRendererProps {
-  isDesign?: boolean;
+export interface CofeInsertPayload {
+  from: CofeDndIdentity['id'];
+  before?: CofeDndIdentity['id'];
+  after?: CofeDndIdentity['id'];
 }
+
+export interface CofeRendererProps {}
 
 export interface CofeRenderer {
   (props: CofeRendererProps & Record<string, any>): JSX.Element;

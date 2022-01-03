@@ -6,7 +6,7 @@ import { CofeIcon } from '@cofe/icons';
 export const HomeEntry = () => {
   return (
     <NextLink aria-label="返回首页" href="/" passHref>
-      <Link>
+      <Link colorScheme="gray">
         <CofeIcon boxSize="6" />
       </Link>
     </NextLink>

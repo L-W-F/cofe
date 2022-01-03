@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { cloneElement, ReactElement, ReactNode, useRef } from 'react';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -6,32 +6,34 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   Button,
-  IconButton,
   useDisclosure,
 } from '@chakra-ui/react';
-import { DeleteIcon } from '@cofe/icons';
-import { CofeApp } from '@cofe/types';
-import { useAppActions } from '@/store/app';
 
-interface DeletePageProps {
-  page: CofeApp['pages'][string];
+export interface ConfirmProps {
+  children: ReactElement;
+  title: ReactNode;
+  content: ReactNode;
+  onConfirm: () => void;
+  cancel?: ReactNode;
+  confirm?: ReactNode;
 }
 
-export const DeletePage = ({ page }: DeletePageProps) => {
-  const { removePage } = useAppActions();
+export const Confirm = ({
+  children,
+  title,
+  content,
+  cancel = '取消',
+  confirm = '删除',
+  onConfirm,
+}: ConfirmProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
 
   return (
     <>
-      <IconButton
-        aria-label="删除页面"
-        size="xs"
-        icon={<DeleteIcon />}
-        variant="ghost"
-        colorScheme="red"
-        onClick={onOpen}
-      />
+      {cloneElement(children, {
+        onClick: onOpen,
+      })}
       <AlertDialog
         preserveScrollBarGap
         isOpen={isOpen}
@@ -40,23 +42,23 @@ export const DeletePage = ({ page }: DeletePageProps) => {
       >
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            删除页面
+            {title}
           </AlertDialogHeader>
-          <AlertDialogBody>确定删除「{page.title}」吗？</AlertDialogBody>
+          <AlertDialogBody>{content}</AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose}>
-              取消
+              {cancel}
             </Button>
             <Button
-              loadingText="删除"
-              colorScheme="red"
+              loadingText={typeof confirm === 'string' ? confirm : undefined}
+              colorScheme="error"
               onClick={() => {
-                removePage(page);
+                onConfirm();
                 onClose();
               }}
               ml={3}
             >
-              删除
+              {confirm}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -66,5 +68,5 @@ export const DeletePage = ({ page }: DeletePageProps) => {
 };
 
 if (process.env.NODE_ENV === 'development') {
-  DeletePage.displayName = 'DeletePage';
+  Confirm.displayName = 'Confirm';
 }

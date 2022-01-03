@@ -14,6 +14,10 @@ export class Schema {
       return false;
     }
 
+    if (type === 'unknown') {
+      return false;
+    }
+
     return accept.some((r) => {
       if (r === '*') {
         return true;

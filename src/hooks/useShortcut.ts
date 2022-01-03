@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { isMac } from '@cofe/utils';
+import { isMac, isMobile } from '@cofe/utils';
 
 export const CHAR_COMMAND_KEY = '⌘';
 export const CHAR_ALT_KEY = '⌥';
@@ -19,29 +19,34 @@ export const useShortcut = (
   callback: (e: KeyboardEvent) => void,
 ) => {
   useEffect(() => {
+    if (isMobile) {
+      return;
+    }
+
+    const keys = shortcut.split('').map((v) => keyCodeMap[v] ?? v);
+    const lastKey = keys.pop().toLowerCase();
+    const altKey = keys.includes(CHAR_ALT_KEY);
+    const shiftKey = keys.includes(CHAR_SHIFT_KEY);
+    const commandKey = keys.includes(CHAR_COMMAND_KEY);
+
     const keydown = (e: KeyboardEvent) => {
       if (!e.key) {
         return;
       }
 
-      const keys = shortcut.split('').map((v) => keyCodeMap[v] ?? v);
-
-      if (e.key.toLowerCase() !== keys.pop().toLowerCase()) {
+      if (e.key.toLowerCase() !== lastKey) {
         return;
       }
 
-      if (e.altKey !== keys.includes(CHAR_ALT_KEY)) {
+      if (e.altKey !== altKey) {
         return;
       }
 
-      if (e.shiftKey !== keys.includes(CHAR_SHIFT_KEY)) {
+      if (e.shiftKey !== shiftKey) {
         return;
       }
 
-      if (
-        ((!isMac && e.ctrlKey) || (isMac && e.metaKey)) !==
-        keys.includes(CHAR_COMMAND_KEY)
-      ) {
+      if (((!isMac && e.ctrlKey) || (isMac && e.metaKey)) !== commandKey) {
         return;
       }
 

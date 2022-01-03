@@ -21,10 +21,10 @@ import {
   CHAR_SHIFT_KEY,
   useShortcut,
 } from '@/hooks/useShortcut';
-import { useAppValue } from '@/store/app';
+import { useAppState } from '@/store/app';
 
 export const DownloadDsl = () => {
-  const { id, title, description, pages } = useAppValue();
+  const { id, title, description, pages } = useAppState();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [format, setFormat] = useState(true);
 
@@ -74,7 +74,7 @@ export const DownloadDsl = () => {
           <DrawerFooter>
             <Button
               isFullWidth
-              colorScheme="teal"
+              colorScheme="primary"
               loadingText="保存"
               onClick={() => {
                 const anchor = document.createElement('a');
