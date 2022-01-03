@@ -14,7 +14,7 @@ import {
   MenuList,
 } from '@chakra-ui/react';
 import * as atoms from '@cofe/atoms';
-import { Tree } from '@cofe/core';
+import { Schema, Tree } from '@cofe/core';
 import {
   ChevronDownIcon,
   ChevronRightIcon,
@@ -32,7 +32,6 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';
-import { Schema } from '@/../packages/core';
 import { useDndState } from '@/store/dnd';
 import { useSelectedTree, useTreeNodeActions } from '@/store/editor';
 
