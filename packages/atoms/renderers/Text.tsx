@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text, TextProps } from '@chakra-ui/react';
+import { Box, BoxProps } from '@chakra-ui/react';
 import { CofeRendererProps } from '@cofe/types';
 
-interface TextRendererProps extends CofeRendererProps, TextProps {
+interface TextRendererProps extends CofeRendererProps, BoxProps {
   content?: string;
   colorScheme?: string;
 }
@@ -11,7 +11,8 @@ export const TextRenderer = ({
   // dropping children
   children,
   content,
+  as = "span",
   ...props
 }: TextRendererProps) => {
-  return <Text {...props}>{content}</Text>;
+  return <Box as={as} {...props}>{content}</Box>;
 };
