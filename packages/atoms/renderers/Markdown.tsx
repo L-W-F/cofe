@@ -37,5 +37,15 @@ export const MarkdownRenderer = ({
     });
   }, [content]);
 
-  return <Markdown {...hProps} {...props} />;
+  return (
+    <Markdown
+      sx={{
+        '& li': {
+          marginInlineStart: '2em',
+        },
+      }}
+      {...hProps}
+      {...props}
+    />
+  );
 };
