@@ -1,7 +1,8 @@
-import React from 'react';
+import React,  { useEffect } from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-// import Script from 'next/script';
+import { useRouter } from 'next/router';
+import Script from 'next/script';
 
 // https://github.com/visionmedia/debug#browser-support
 if (process.env.NEXT_PUBLIC_DEBUG && typeof localStorage !== 'undefined') {
