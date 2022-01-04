@@ -18,7 +18,7 @@ export const text: CofeAtom = {
         type: 'string',
         title: '色调',
         enum: hues,
-        default: 'gray',
+        default: 'current',
       },
     },
     required: ['content'],

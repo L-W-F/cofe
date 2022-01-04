@@ -64,9 +64,12 @@ export const components: ThemeComponents = {
   },
   Text: {
     baseStyle: ({ colorScheme, ...props }) => ({
-      color: `var(--chakra-colors-${colorScheme}-${
-        colorScheme === 'gray' ? mode(700, 200)(props) : 500
-      })`,
+      color:
+        colorScheme === 'current'
+          ? 'inherit'
+          : `var(--chakra-colors-${colorScheme}-${
+              colorScheme === 'gray' ? mode(700, 200)(props) : 500
+            })`,
     }),
     defaultProps: {
       colorScheme: 'gray',

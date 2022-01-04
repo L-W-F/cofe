@@ -1,4 +1,5 @@
 export const hues = [
+  'current',
   'primary',
   'secondary',
   'error',
