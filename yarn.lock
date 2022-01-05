@@ -1181,10 +1181,20 @@
     "@chakra-ui/react-utils" "1.2.1"
     "@chakra-ui/utils" "1.9.1"
 
-"@chakra-ui/hooks@1.7.1", "@chakra-ui/hooks@^1.7.1":
+"@chakra-ui/hooks@1.7.1":
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/@chakra-ui/hooks/-/hooks-1.7.1.tgz#0242b678f40ef00e4834a8a856c8881dcda0072d"
   integrity sha512-hgN19X6GUKQYAHczmFY+GAT8vl9h+X+nGWrIAnmvZ6BgUXxDajnTNhZeWhj0ZkR+7A7dCE6Y/3X44GafUgChMw==
+  dependencies:
+    "@chakra-ui/react-utils" "1.2.1"
+    "@chakra-ui/utils" "1.9.1"
+    compute-scroll-into-view "1.0.14"
+    copy-to-clipboard "3.3.1"
+
+"@chakra-ui/hooks@^1.7.2":
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/hooks/-/hooks-1.7.2.tgz#64341c06b141cdc4c08ccab0308b46b20c11a99b"
+  integrity sha512-XJnya9ugAPYUedtQULKaLYBezE9cZMOkDm0MQl7FEuJKZ9ocHD6Pwpwf9Z03R91XQmcNL8gZ1NS0GT9v/xNl3Q==
   dependencies:
     "@chakra-ui/react-utils" "1.2.1"
     "@chakra-ui/utils" "1.9.1"
