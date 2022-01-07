@@ -23,7 +23,6 @@ import { StateObserver } from '@/components/StateObserver';
 import { TreePanel } from '@/components/TreePanel';
 import { withGsspCatch } from '@/gssp/withGsspCatch';
 import { withGsspColorMode } from '@/gssp/withGsspColorMode';
-import { withGsspPermit } from '@/gssp/withGsspPermit';
 import { appState } from '@/store/app';
 import { moleculeState } from '@/store/molecule';
 import { theme } from '@/theme';
@@ -123,7 +122,6 @@ const Index = (
 };
 
 export const getServerSideProps = compose([
-  withGsspPermit(),
   withGsspCatch(),
   withGsspColorMode(),
 ]);
