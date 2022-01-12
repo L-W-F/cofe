@@ -8233,15 +8233,10 @@ stylis@3.5.4:
   resolved "https://registry.nlark.com/stylis/download/stylis-3.5.4.tgz?cache=0&sync_timestamp=1620389242964&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fstylis%2Fdownload%2Fstylis-3.5.4.tgz#f665f25f5e299cf3d64654ab949a57c768b73fbe"
   integrity sha1-9mXyX14pnPPWRlSrlJpXx2i3P74=
 
-stylis@4.0.13:
+stylis@4.0.13, stylis@^4.0.3:
   version "4.0.13"
   resolved "https://registry.yarnpkg.com/stylis/-/stylis-4.0.13.tgz#f5db332e376d13cc84ecfe5dace9a2a51d954c91"
   integrity sha512-xGPXiFVl4YED9Jh7Euv2V220mriG9u4B2TA6Ybjc1catrstKD2PpIdU3U0RKpkVBC2EhmL/F0sPCr9vrFTNRag==
-
-stylis@^4.0.3:
-  version "4.0.10"
-  resolved "https://registry.nlark.com/stylis/download/stylis-4.0.10.tgz?cache=0&sync_timestamp=1620389242964&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fstylis%2Fdownload%2Fstylis-4.0.10.tgz#446512d1097197ab3f02fb3c258358c3f7a14240"
-  integrity sha1-RGUS0Qlxl6s/Avs8JYNYw/ehQkA=
 
 supports-color@^5.3.0:
   version "5.5.0"
