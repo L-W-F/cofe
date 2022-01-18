@@ -24,6 +24,8 @@
   "globRoot": "./..",
   "ignorePaths": [
       "node_modules",
+      ".github",
+      ".vscode",
       "cspell.json"
   ]
 }
