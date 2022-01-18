@@ -1,23 +1,4 @@
 {
-  "cSpell.words": [
-    "chakra",
-    "cofe",
-    "coord",
-    "gssp",
-    "hocs",
-    "keyval",
-    "lowcode",
-    "Menlo",
-    "middlewares",
-    "Mobi",
-    "monospace",
-    "rjsf",
-    "semibold",
-    "shallowequal",
-    "unist",
-    "upsert",
-    "vercel"
-  ],
   "editor.renderWhitespace": "all",
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "editor.codeActionsOnSave": {

@@ -1,0 +1,29 @@
+{
+  "version": "0.2",
+  "words": [
+    "chakra",
+    "cofe",
+    "coord",
+    "crossjs",
+    "gssp",
+    "hocs",
+    "liwenfu",
+    "keyval",
+    "lowcode",
+    "Menlo",
+    "middlewares",
+    "Mobi",
+    "monospace",
+    "rjsf",
+    "semibold",
+    "shallowequal",
+    "unist",
+    "upsert",
+    "vercel"
+  ],
+  "globRoot": "./..",
+  "ignorePaths": [
+      "node_modules",
+      "cspell.json"
+  ]
+}
