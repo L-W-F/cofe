@@ -1530,20 +1530,12 @@
     "@chakra-ui/form-control" "1.5.4"
     "@chakra-ui/utils" "1.10.0"
 
-"@chakra-ui/theme-tools@1.3.2":
+"@chakra-ui/theme-tools@1.3.2", "@chakra-ui/theme-tools@^1.3.1":
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/@chakra-ui/theme-tools/-/theme-tools-1.3.2.tgz#6f3f3212fa603bb42b061bc2a0c69b8bcc15934d"
   integrity sha512-7UyUv6k6CXr3WX7BrR7vAZ2Iobxyyy2INZtlUqS2JK+6/YV1FCmBKsNaTSFHvcSYb/eAPYJwgeQdhkzA1HTKpQ==
   dependencies:
     "@chakra-ui/utils" "1.10.0"
-    "@ctrl/tinycolor" "^3.4.0"
-
-"@chakra-ui/theme-tools@^1.3.1":
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/theme-tools/-/theme-tools-1.3.1.tgz#3c1d490a0c3157ba83c5e82ef60de4605cdb0f3a"
-  integrity sha512-D8arJ5uFGuYZrrFGpXqgov8FhsJYWRyar5oBZY5TJR9gsVYBlJ8Ai91pwM/NflCFqzerTOgyt7bNSGQMdZ8ghA==
-  dependencies:
-    "@chakra-ui/utils" "1.9.1"
     "@ctrl/tinycolor" "^3.4.0"
 
 "@chakra-ui/theme@1.13.0":
