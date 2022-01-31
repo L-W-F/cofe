@@ -1079,10 +1079,10 @@
     "@chakra-ui/utils" "1.10.0"
     "@chakra-ui/visually-hidden" "1.1.2"
 
-"@chakra-ui/cli@^1.7.1":
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/cli/-/cli-1.7.1.tgz#6b7de6b08cc3fe322be23a41dfa2ddfed394eef6"
-  integrity sha512-2g3Q7iXdaL1xGGYgu3T8jCxj2dLAlFAs4Md7THixE6Z3tyMNr27BSg0t0ZG2DHQqrMXXVMuWja6f8wHKQ1id9g==
+"@chakra-ui/cli@^1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/cli/-/cli-1.8.0.tgz#1be7d97807d2ebc6eabb1a753a49a9ead6fcb791"
+  integrity sha512-uX4fKSP9ocvH7VaXfdGrAESdbfjyFTg9iUCowVPbx3SE2sgYVfqzDpI3c9cdbUuPlEtY5SQ+GA/+V+4ovWsYvQ==
   dependencies:
     "@chakra-ui/utils" "^1.10.0"
     cli-check-node "^1.3.4"
