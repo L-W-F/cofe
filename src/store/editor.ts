@@ -142,11 +142,11 @@ export const useSelectedTree = () => {
 };
 
 export const useSelectedNode = () => {
-  const tree = useSelectedTree();
+  const selectedTree = useSelectedTree();
   const { selected } = useDndState();
 
   return selected?.id
-    ? (select(`[id=${selected.id}]`, tree as any) as CofeTree)
+    ? (select(`[id=${selected.id}]`, selectedTree as any) as CofeTree)
     : null;
 };
 

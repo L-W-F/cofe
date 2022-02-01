@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, BoxProps } from '@chakra-ui/react';
 import * as atoms from '@cofe/atoms';
 import { CofeTree } from '@cofe/types';
-import { useSelectedTree } from '@/store/editor';
+import { useSelectedNode, useSelectedTree } from '@/store/editor';
 
 interface NodeRendererProps extends CofeTree {}
 
@@ -25,14 +25,58 @@ export const NodeRenderer = ({
   );
 };
 
+const Highlight = () => {
+  const selectedNode = useSelectedNode();
+  const [props, setProps] = useState({
+    opacity: 0,
+  });
+
+  useEffect(() => {
+    if (selectedNode) {
+      const el = document.querySelector(`#${selectedNode.id}`);
+
+      el.scrollIntoViewIfNeeded();
+
+      const { left, top, width, height } = el.getBoundingClientRect();
+
+      setProps({
+        left: `${left}px`,
+        top: `${top}px`,
+        width: `${width}px`,
+        height: `${height}px`,
+      });
+    } else {
+      setProps({
+        opacity: 0,
+      });
+    }
+  }, [selectedNode]);
+
+  return (
+    props && (
+      <Box
+        position="fixed"
+        zIndex={10}
+        bgColor="red.500"
+        opacity={0.2}
+        shadow="outline"
+        transition="all ease-in-out 500ms"
+        pointerEvents="none"
+        {...props}
+      />
+    )
+  );
+};
+
 interface PreviewCanvasProps extends BoxProps {}
 
 export const PreviewCanvas = (props: PreviewCanvasProps) => {
-  const tree = useSelectedTree();
+  const selectedTree = useSelectedTree();
 
   return (
     <Box {...props}>
-      <NodeRenderer {...tree} />
+      <Highlight />
+      <NodeRenderer {...selectedTree} />
     </Box>
   );
 };

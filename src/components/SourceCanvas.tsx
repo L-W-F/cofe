@@ -5,7 +5,7 @@ import { useSelectedTree, useStackActions } from '@/store/editor';
 interface SourceCanvasProps {}
 
 export const SourceCanvas = (props: SourceCanvasProps) => {
-  const tree = useSelectedTree();
+  const selectedTree = useSelectedTree();
   const { push } = useStackActions();
   const toast = useToast({
     status: 'error',
@@ -19,7 +19,10 @@ export const SourceCanvas = (props: SourceCanvasProps) => {
       height="100%"
       resize="none"
       whiteSpace="pre"
-      value={useMemo(() => JSON.stringify(tree, null, 4), [tree])}
+      value={useMemo(
+        () => JSON.stringify(selectedTree, null, 4),
+        [selectedTree],
+      )}
       onChange={(e) => {
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);

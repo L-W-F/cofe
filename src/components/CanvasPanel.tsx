@@ -7,15 +7,15 @@ import { useEditorId, useSelectedTree, useSwitchPage } from '@/store/editor';
 export const CanvasPanel = (props: PaperProps) => {
   const { pages, updatePage } = useAppState();
   const switchPage = useSwitchPage();
-  const tree = useSelectedTree();
+  const selectedNode = useSelectedTree();
   const id = useEditorId();
 
   // 自动保存页面
   useEffect(() => {
-    if (id && tree) {
-      updatePage({ id, tree });
+    if (id && selectedNode) {
+      updatePage({ id, tree: selectedNode });
     }
-  }, [updatePage, id, tree]);
+  }, [updatePage, id, selectedNode]);
 
   // 自动切换页面
   useEffect(() => {

@@ -260,11 +260,11 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 export const TreePanel = (props: PaperProps) => {
-  const tree = useSelectedTree();
+  const selectedTree = useSelectedTree();
 
   return (
     <Paper overflow="auto" borderRadius={0} p={2} {...props}>
-      <NodeList nodes={[tree]} />
+      <NodeList nodes={[selectedTree]} />
     </Paper>
   );
 };
