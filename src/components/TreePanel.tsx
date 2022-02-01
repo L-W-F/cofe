@@ -59,6 +59,7 @@ const NodeItem = ({
 }: NodeItemProps) => {
   const {
     isDragging,
+    isSorting,
     attributes,
     listeners,
     setNodeRef,
@@ -72,6 +73,10 @@ const NodeItem = ({
   return (
     <ListItem
       ref={setNodeRef}
+      position={isDragging ? 'relative' : 'initial'}
+      zIndex={isDragging ? 1 : 0}
+      boxShadow={isDragging ? 'outline' : 0}
+      pointerEvents={isSorting ? 'none' : 'initial'}
       transform={
         transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : null
       }
