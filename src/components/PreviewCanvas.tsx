@@ -32,24 +32,29 @@ const Highlight = () => {
   });
 
   useEffect(() => {
-    if (selectedNode) {
+    if (selectedNode?.id) {
       const el = document.querySelector(`#${selectedNode.id}`);
 
-      el.scrollIntoViewIfNeeded();
+      if (el) {
+        el.scrollIntoViewIfNeeded();
 
-      const { left, top, width, height } = el.getBoundingClientRect();
+        const { left, top, width, height } = el.getBoundingClientRect();
 
-      setProps({
-        left: `${left}px`,
-        top: `${top}px`,
-        width: `${width}px`,
-        height: `${height}px`,
-      });
-    } else {
-      setProps({
-        opacity: 0,
-      });
+        setProps({
+          left: `${left}px`,
+          top: `${top}px`,
+          width: `${width}px`,
+          height: `${height}px`,
+          opacity: 0.2,
+        });
+
+        return;
+      }
     }
+
+    setProps({
+      opacity: 0,
+    });
   }, [selectedNode]);
 
   return (
@@ -58,7 +63,6 @@ const Highlight = () => {
         position="fixed"
         zIndex={10}
         bgColor="red.500"
-        opacity={0.2}
         shadow="outline"
         transition="all ease-in-out 500ms"
         pointerEvents="none"
