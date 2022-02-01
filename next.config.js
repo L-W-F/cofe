@@ -38,7 +38,11 @@ const nextConfig = tm(tmModules, {
    * @returns import('webpack').Configuration
    */
   webpack: (config) => {
-    config.resolve.fallback = { fs: false, path: false, process: false, url: false };
+    config.resolve.fallback = {
+      fs: false,
+      path: false,
+      url: false,
+    };
 
     return config;
   },
