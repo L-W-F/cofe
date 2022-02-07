@@ -85,7 +85,7 @@
     "@types/react-test-renderer": "^17.0.1",
     "@types/shallowequal": "^1.1.1",
     "assert": "^2.0.0",
-    "babel-jest": "^27.4.6",
+    "babel-jest": "^27.5.0",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.32.0",
