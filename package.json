@@ -33,9 +33,9 @@
     "postinstall": "chakra-cli tokens ./src/theme/index.ts"
   },
   "dependencies": {
-    "@chakra-ui/hooks": "^1.7.2",
+    "@chakra-ui/hooks": "^1.8.2",
     "@chakra-ui/react": "^1.8.1",
-    "@chakra-ui/theme-tools": "^1.3.3",
+    "@chakra-ui/theme-tools": "^1.3.4",
     "@cofe/atoms": "^0.1.0",
     "@cofe/core": "^0.1.0",
     "@cofe/form": "^0.1.0",
