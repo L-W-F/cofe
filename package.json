@@ -76,7 +76,7 @@
     "@chakra-ui/cli": "^1.8.1",
     "@cofe/babel-preset-cofe": "^0.0.1",
     "@cofe/eslint-config-cofe": "^0.0.2",
-    "@testing-library/react": "^12.1.2",
+    "@testing-library/react": "^12.1.3",
     "@types/cookie": "^0.4.1",
     "@types/jest": "^27.4.0",
     "@types/json-schema": "^7.0.9",
