@@ -55,7 +55,7 @@
     "framer-motion": "^6.2.6",
     "idb-keyval": "^6.1.0",
     "lodash-es": "^4.17.21",
-    "next": "^12.0.10",
+    "next": "^12.1.0",
     "next-transpile-modules": "^9.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
