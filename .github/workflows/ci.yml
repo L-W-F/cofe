@@ -1,13 +1,23 @@
 name: CI
 on: push
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: cspell-action
       uses: streetsidesoftware/cspell-action@v1.3.6
-    - name: Install modules
-      run: yarn
+    - name: Install dependencies
+      run: yarn --frozen-lockfile
     - name: Run tests
       run: yarn test
+    - name: Install Playwright
+      run: npx playwright install --with-deps
+    - name: Run your tests
+      run: yarn test:e2e
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: playwright-results
+        path: test-results
