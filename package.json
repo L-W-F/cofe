@@ -51,7 +51,7 @@
     "@dnd-kit/modifiers": "^5.0.0",
     "@dnd-kit/sortable": "^6.0.0",
     "@emotion/react": "^11.7.1",
-    "@emotion/styled": "^11.6.0",
+    "@emotion/styled": "^11.8.1",
     "cookie": "^0.4.2",
     "framer-motion": "^6.2.6",
     "idb-keyval": "^6.1.0",
