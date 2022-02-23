@@ -1603,7 +1603,7 @@
     framesync "5.3.0"
     lodash.mergewith "4.6.2"
 
-"@chakra-ui/utils@1.10.4", "@chakra-ui/utils@^1.10.2", "@chakra-ui/utils@^1.10.4":
+"@chakra-ui/utils@1.10.4", "@chakra-ui/utils@^1.10.4":
   version "1.10.4"
   resolved "https://registry.yarnpkg.com/@chakra-ui/utils/-/utils-1.10.4.tgz#40a32d4efd8684b2e7432a40b285796383eacfd3"
   integrity sha512-AM91VQQxw8F4F1WDA28mqKY6NFIOuzc2Ekkna88imy2OiqqmYH0xkq8J16L2qj4cLiLozpYqba3C79pWioy6FA==
@@ -2220,10 +2220,10 @@
     prop-types "^15.7.2"
     tslib "^2.1.0"
 
-"@rjsf/core@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@rjsf/core/-/core-4.0.0.tgz#6ac3478e958afaa18c4a3645a82f63977d770060"
-  integrity sha512-UPfpa0QaI4/nhapFOIvMAiQ44fXdHlqULQt/p8Jky53669TJo6IOMsXmTd7w3FWJTKHp2NSCcDAsyATxZOtRtg==
+"@rjsf/core@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@rjsf/core/-/core-4.0.1.tgz#3363aadbaf40f7086f8669c4a645ed0cddd6c2da"
+  integrity sha512-3HZ5Udy/Yvtixjn/dOcVm4IBoF/HM/LmUAPZt98elSAISga3vhzGc3zv7Fi3IbDNrvL6ZdJbfIj+BtR0q4Rnrg==
   dependencies:
     "@types/json-schema" "^7.0.7"
     ajv "^6.7.0"
