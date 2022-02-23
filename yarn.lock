@@ -1603,7 +1603,7 @@
     framesync "5.3.0"
     lodash.mergewith "4.6.2"
 
-"@chakra-ui/utils@1.10.4", "@chakra-ui/utils@^1.10.2", "@chakra-ui/utils@^1.10.4":
+"@chakra-ui/utils@1.10.4", "@chakra-ui/utils@^1.10.4":
   version "1.10.4"
   resolved "https://registry.yarnpkg.com/@chakra-ui/utils/-/utils-1.10.4.tgz#40a32d4efd8684b2e7432a40b285796383eacfd3"
   integrity sha512-AM91VQQxw8F4F1WDA28mqKY6NFIOuzc2Ekkna88imy2OiqqmYH0xkq8J16L2qj4cLiLozpYqba3C79pWioy6FA==
@@ -2402,12 +2402,12 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@^27.4.0":
-  version "27.4.0"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-27.4.0.tgz#037ab8b872067cae842a320841693080f9cb84ed"
-  integrity sha512-gHl8XuC1RZ8H2j5sHv/JqsaxXkDDM9iDOgu0Wp8sjs4u/snb2PVehyWXJPr+ORA0RPpgw231mnutWI1+0hgjIQ==
+"@types/jest@^27.4.1":
+  version "27.4.1"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-27.4.1.tgz#185cbe2926eaaf9662d340cc02e548ce9e11ab6d"
+  integrity sha512-23iPJADSmicDVrWk+HT58LMJtzLAnB2AgIzplQuq/bSrGaxCrlvRFjGbXmamnnk/mAmCdLStiGqggu28ocUyiw==
   dependencies:
-    jest-diff "^27.0.0"
+    jest-matcher-utils "^27.0.0"
     pretty-format "^27.0.0"
 
 "@types/json-schema@^7.0.7", "@types/json-schema@^7.0.9":
@@ -5339,7 +5339,7 @@ jest-config@^27.5.0:
     pretty-format "^27.5.0"
     slash "^3.0.0"
 
-jest-diff@^27.0.0, jest-diff@^27.2.5, jest-diff@^27.5.0, jest-diff@^27.5.1:
+jest-diff@^27.2.5, jest-diff@^27.5.0, jest-diff@^27.5.1:
   version "27.5.1"
   resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-27.5.1.tgz#a07f5011ac9e6643cf8a95a462b7b1ecf6680def"
   integrity sha512-m0NvkX55LDt9T4mctTEgnZk3fmEg3NRYutvMPWM/0iPnkFj2wIeF45O1718cMSOFO1vINkqmxqD8vE37uTEbqw==
@@ -5458,7 +5458,7 @@ jest-matcher-utils@27.2.5:
     jest-get-type "^27.0.6"
     pretty-format "^27.2.5"
 
-jest-matcher-utils@^27.2.5, jest-matcher-utils@^27.5.0:
+jest-matcher-utils@^27.0.0, jest-matcher-utils@^27.2.5, jest-matcher-utils@^27.5.0:
   version "27.5.1"
   resolved "https://registry.yarnpkg.com/jest-matcher-utils/-/jest-matcher-utils-27.5.1.tgz#9c0cdbda8245bc22d2331729d1091308b40cf8ab"
   integrity sha512-z2uTx/T6LBaCoNWNFWwChLBKYxTMcGBRjAt+2SbP929/Fflb9aa5LGma654Rz8z9HLxsrUaYzxE9T/EFIL/PAw==
