@@ -74,7 +74,7 @@
     "unist-util-visit": "^4.1.0"
   },
   "devDependencies": {
-    "@chakra-ui/cli": "^1.8.2",
+    "@chakra-ui/cli": "^1.9.0",
     "@cofe/babel-preset-cofe": "^0.0.1",
     "@cofe/eslint-config-cofe": "^0.0.2",
     "@playwright/test": "^1.19.2",
