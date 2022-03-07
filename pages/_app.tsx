@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -8,23 +8,8 @@ if (process.env.NEXT_PUBLIC_DEBUG && typeof localStorage !== 'undefined') {
   localStorage.setItem('debug', process.env.NEXT_PUBLIC_DEBUG);
 }
 
-const pageview = (url: string) => {
-  (window as any).dataLayer.push({
-    event: 'pageview',
-    page: url,
-  });
-};
-
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
-
-  useEffect(() => {
-    router.events.on('routeChangeComplete', pageview);
-
-    return () => {
-      router.events.off('routeChangeComplete', pageview);
-    };
-  }, [router.events]);
 
   return (
     <>
