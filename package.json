@@ -63,7 +63,7 @@
     "recoil": "^0.6.1",
     "shallowequal": "^1.1.0",
     "shelljs": "^0.8.5",
-    "unified": "^10.1.1",
+    "unified": "^10.1.2",
     "unist-builder": "^3.0.0",
     "unist-util-filter": "^4.0.0",
     "unist-util-map": "^3.0.0",
