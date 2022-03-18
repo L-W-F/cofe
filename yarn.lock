@@ -8046,10 +8046,10 @@ unist-util-is@^5.0.0:
   resolved "https://registry.nlark.com/unist-util-is/download/unist-util-is-5.1.1.tgz#e8aece0b102fa9bc097b0fef8f870c496d4a6236"
   integrity sha1-6K7OCxAvqbwJew/vj4cMSW1KYjY=
 
-unist-util-map@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npm.taobao.org/unist-util-map/download/unist-util-map-3.0.0.tgz#ec4c3e4f3f65f559b6c232087af2a470f3e5db89"
-  integrity sha1-7Ew+Tz9l9Vm2wjIIevKkcPPl24k=
+unist-util-map@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/unist-util-map/-/unist-util-map-3.0.1.tgz#95ceee79d898bc146084e460a9cdc7ff1cf73e94"
+  integrity sha512-TOLoGOyT6pYI3JjTBZ1z76Rp7g+xcfgzuQDESuOUTZIkqpOIXsqZTvI25fKCYjMAmADbeulxusIgoB5IBPGZuQ==
   dependencies:
     "@types/unist" "^2.0.0"
 
