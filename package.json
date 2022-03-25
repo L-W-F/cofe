@@ -83,7 +83,7 @@
     "@types/jest": "^27.4.1",
     "@types/json-schema": "^7.0.10",
     "@types/lodash-es": "^4.17.6",
-    "@types/react": "^17.0.42",
+    "@types/react": "^17.0.43",
     "@types/react-test-renderer": "^17.0.1",
     "@types/shallowequal": "^1.1.1",
     "assert": "^2.0.0",
