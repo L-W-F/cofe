@@ -2365,10 +2365,10 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/cookie@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.nlark.com/@types/cookie/download/@types/cookie-0.4.1.tgz?cache=0&sync_timestamp=1629707141196&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fcookie%2Fdownload%2F%40types%2Fcookie-0.4.1.tgz#bfd02c1f2224567676c1545199f87c3a861d878d"
-  integrity sha1-v9AsHyIkVnZ2wVRRmfh8OoYdh40=
+"@types/cookie@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@types/cookie/-/cookie-0.5.0.tgz#14ebcd209f2555e341548c31128d4deb34dfb2b0"
+  integrity sha512-CJWHVHHupxBYfIlMM+qzXx4dRKIV1VzOm0cP3Wpqten8MDx1tK+y92YDXUshN1ONAfwodvKxDNkw35/pNs+izg==
 
 "@types/debug@^4.0.0", "@types/debug@^4.1.7":
   version "4.1.7"
