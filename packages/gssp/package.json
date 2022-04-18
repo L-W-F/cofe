@@ -7,9 +7,9 @@
   "license": "MIT",
   "author": "crossjs <liwenfu@crossjs.com>",
   "devDependencies": {
-    "next": "^12.1.4"
+    "next": "^12.1.5"
   },
   "peerDependencies": {
-    "next": "^12.1.4"
+    "next": "^12.1.5"
   }
 }
